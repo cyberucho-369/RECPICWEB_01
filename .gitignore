@@ -1,0 +1,6 @@
+# macOS resource forks
+._*
+.DS_Store
+
+# Temp files
+.tmp/

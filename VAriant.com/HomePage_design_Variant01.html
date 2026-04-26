@@ -1,0 +1,1040 @@
+<html lang="cs" class="scroll-smooth" vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">[REC]PIC | Cinematic Video Production</title>
+    
+    <script src="https://cdn.tailwindcss.com/3.4.17" vid="5"></script>
+    <script vid="6">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#000000',
+                        pure: '#FFFFFF',
+                        muted: 'rgba(255, 255, 255, 0.65)',
+                        dark: 'rgba(255, 0, 0, 0.4)',
+                        accent: '#E00020',
+                        glass: 'rgba(224, 0, 32, 0.05)',
+                        glassBorder: 'rgba(224, 0, 32, 0.2)',
+                    },
+                    fontFamily: {
+                        sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+                        mono: ['"SF Mono"', 'Menlo', 'Monaco', '"Courier New"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style vid="7">
+        :root {
+            --bg-void: #000000;
+            --text-pure: #FFFFFF;
+            --text-muted: rgba(255, 255, 255, 0.65);
+            --text-dark: rgba(255, 0, 0, 0.4);
+            --accent-red: #E00020;
+            --glass-bg: rgba(224, 0, 32, 0.05);
+            --glass-border: rgba(224, 0, 32, 0.2);
+            --safe-zone: clamp(1.5rem, 4vw, 3rem);
+        }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-pure);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent-red);
+            width: 0%;
+            z-index: 9999;
+            box-shadow: 0 0 10px var(--accent-red);
+            transition: width 0.1s ease-out;
+        }
+
+        
+        .noise-overlay {
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        
+        #main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: var(--safe-zone) clamp(1rem, 5vw, 4rem);
+            background: transparent;
+            border-bottom: 1px solid transparent;
+        }
+        #main-header.scrolled {
+            padding: 1rem clamp(1rem, 5vw, 4rem);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-bottom: 4px;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--accent-red); }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0%; height: 1px;
+            background-color: var(--accent-red);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+        
+        .hud-crosshair { position: absolute; width: 20px; height: 20px; pointer-events: none; z-index: 10; }
+        .hud-tl { top: var(--safe-zone); left: var(--safe-zone); border-top: 1px solid var(--text-dark); border-left: 1px solid var(--text-dark); }
+        .hud-tr { top: var(--safe-zone); right: var(--safe-zone); border-top: 1px solid var(--text-dark); border-right: 1px solid var(--text-dark); }
+        .hud-bl { bottom: var(--safe-zone); left: var(--safe-zone); border-bottom: 1px solid var(--text-dark); border-left: 1px solid var(--text-dark); }
+        .hud-br { bottom: var(--safe-zone); right: var(--safe-zone); border-bottom: 1px solid var(--text-dark); border-right: 1px solid var(--text-dark); }
+        
+        
+        .hud-dark.hud-tl { border-color: rgba(0,0,0,0.4); }
+        .hud-dark.hud-tr { border-color: rgba(0,0,0,0.4); }
+        .hud-dark.hud-bl { border-color: rgba(0,0,0,0.4); }
+        .hud-dark.hud-br { border-color: rgba(0,0,0,0.4); }
+
+        
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-up.is-visible { opacity: 1; transform: translateY(0); }
+        
+        .delay-100 { transition-delay: 0.1s; }
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-300 { transition-delay: 0.3s; }
+        .delay-400 { transition-delay: 0.4s; }
+        .delay-500 { transition-delay: 0.5s; }
+
+        
+        @keyframes pulse-dot {
+            0% { box-shadow: 0 0 0 0 rgba(224, 0, 32, 0.6); transform: scale(1); }
+            70% { box-shadow: 0 0 0 10px rgba(224, 0, 32, 0); transform: scale(1.1); }
+            100% { box-shadow: 0 0 0 0 rgba(224, 0, 32, 0); transform: scale(1); }
+        }
+        .status-pulse { animation: pulse-dot 2s infinite; }
+        
+        @keyframes cycleWords {
+            0%, 25% { transform: translateY(0); }
+            33%, 58% { transform: translateY(-100%); }
+            66%, 91% { transform: translateY(-200%); }
+            100% { transform: translateY(0); }
+        }
+        .eyebrow-text span { display: block; animation: cycleWords 9s infinite; }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee { animation: marquee 25s linear infinite; }
+
+        
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1.2rem;
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-pure);
+            font-size: 0.75rem;
+            font-family: 'SF Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-outline:hover {
+            border-color: var(--accent-red);
+            background: rgba(224, 0, 32, 0.1);
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background: var(--accent-red);
+            border: 1px solid var(--accent-red);
+            color: var(--text-pure);
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .btn-primary:hover {
+            background: #ff0024;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(224, 0, 32, 0.4);
+        }
+        .btn-primary:hover::before { transform: translateX(100%); }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glass-panel:hover {
+            background: rgba(224, 0, 32, 0.06);
+            border-color: rgba(224, 0, 32, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px -10px rgba(224, 0, 32, 0.1);
+        }
+
+        
+        .faq-item.active .faq-content-wrapper { grid-template-rows: 1fr; }
+        .faq-item.active .faq-glass-panel { opacity: 1; transform: translateY(0); }
+        .faq-item.active .plus-icon { transform: rotate(45deg); color: #E00020; }
+        .faq-item.active .faq-toggle span { color: #E00020; }
+        
+        .cinematic-overlay {
+            background: 
+                linear-gradient(90deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 60%, #000000 100%),
+                radial-gradient(circle at 40% 50%, transparent 0%, rgba(0,0,0,0.8) 100%);
+            mix-blend-mode: multiply;
+        }
+    </style>
+</head>
+<body vid="8">
+
+    
+    <div id="scroll-progress" vid="9"></div>
+
+    
+    <header id="main-header" class="flex justify-between items-center" vid="10">
+        <a href="#section-hero" class="text-[1.25rem] font-bold tracking-[-0.05em] flex items-center gap-[0.15rem]" vid="11">
+            <span class="text-accent" vid="12">[REC]</span><span class="text-pure" vid="13">PIC</span>
+        </a>
+        
+        <nav class="hidden md:block" vid="14">
+            <ul class="flex gap-10" vid="15">
+                <li vid="16"><a href="#section-hero" class="nav-link active" vid="17">O nás</a></li>
+                <li vid="18"><a href="#section-portfolio" class="nav-link" vid="19">Portfolio</a></li>
+                <li vid="20"><a href="#section-problem" class="nav-link" vid="21">Proč video</a></li>
+                <li vid="22"><a href="#section-services" class="nav-link" vid="23">Ai video</a></li>
+                <li vid="24"><a href="#section-faq" class="nav-link" vid="25">Kontakt</a></li>
+            </ul>
+        </nav>
+
+        <div class="flex items-center gap-8" vid="26">
+            <div class="font-mono text-xs text-muted flex gap-2 uppercase" vid="27">
+                <span class="text-accent cursor-pointer" vid="28">CZ</span> / <span class="cursor-pointer hover:text-white transition-colors" vid="29">EN</span>
+            </div>
+            <a href="#section-faq" class="btn-outline hidden sm:inline-flex" vid="30">NEZÁVAZNĚ POPTAT</a>
+        </div>
+    </header>
+
+    
+    <section id="section-hero" class="relative w-full h-screen flex flex-col justify-center overflow-hidden" vid="31">
+        <div class="absolute inset-0 z-0" vid="32">
+            <video autoplay="" loop="" muted="" playsinline="" class="w-full h-full object-cover opacity-40 scale-105" style="animation: slowDrift 60s linear infinite alternate;" vid="33">
+                <source src="https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4" type="video/mp4" vid="34">
+            </video>
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_40%_50%,transparent_0%,rgba(0,0,0,0.85)_80%,rgba(0,0,0,1)_100%),linear-gradient(to_right,rgba(0,0,0,0.95)_0%,transparent_40%)]" vid="35"></div>
+            
+            <div class="parallax absolute top-1/2 right-[5%] -translate-y-1/2 text-[45vw] font-sans tracking-[-0.05em] text-accent opacity-5 pointer-events-none select-none mix-blend-color-dodge leading-[0.8]" data-speed="0.2" vid="36">4</div>
+        </div>
+        
+        <div class="hud-crosshair hud-tl" vid="37"></div>
+        <div class="hud-crosshair hud-tr" vid="38"></div>
+        <div class="hud-crosshair hud-bl" vid="39"></div>
+        <div class="hud-crosshair hud-br" vid="40"></div>
+
+        <div class="relative z-10 max-w-[1440px] w-full mx-auto px-8 lg:px-24 xl:px-32" vid="41">
+            <div class="max-w-[800px] reveal-up is-visible" vid="42">
+                <div class="flex items-center gap-4 mb-8" vid="43">
+                    <div class="flex items-center gap-2 font-mono text-[0.7rem] text-accent tracking-[0.1em] font-bold" vid="44">
+                        <div class="w-2.5 h-2.5 bg-accent rounded-full status-pulse" vid="45"></div>
+                        REC
+                    </div>
+                    <div class="font-mono text-[0.75rem] text-pure uppercase tracking-[0.1em] h-[1.2em] overflow-hidden relative" vid="46">
+                        <div class="eyebrow-text" vid="47">
+                            <span vid="48">Výprávíme Vaše příbehy</span>
+                            <span vid="49">Buďte středem zájmu</span>
+                            <span vid="50">Emoce v pohybu</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h1 class="text-[clamp(3rem,5vw,4.5rem)] font-normal leading-[1.1] tracking-[-0.03em] mb-6 text-shadow-lg" vid="51">
+                    Video, které buduje důvěru, značku a nové klienty.
+                </h1>
+
+                <p class="text-[clamp(1.1rem,1.5vw,1.25rem)] text-muted max-w-[600px] mb-14 leading-relaxed font-medium" vid="52">
+                    Nápad, scénář, produkce a postprodukce až po finální video. Jsme <span class="text-accent font-bold" vid="53">[REC]</span>PIC videoprodukce — nástroj pro váš vizuální růst.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-8" vid="54">
+                    <a href="#section-faq" class="btn-primary" vid="55">
+                        NEZÁVAZNĚ POPTAT
+                        <svg class="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24" vid="56"><path d="M5 12h14M12 5l7 7-7 7" vid="57"></path></svg>
+                    </a>
+                    <div class="flex flex-col gap-1" vid="58">
+                        <div class="text-accent text-sm tracking-[0.1em]" vid="59">★★★★★</div>
+                        <div class="font-mono text-[0.7rem] text-muted uppercase tracking-[0.05em]" vid="60">16 let na trhu / 300 dokončených projektů</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-28 left-0 right-0 flex flex-col items-center reveal-up delay-400" vid="61">
+            <div class="w-full max-w-[1440px] mx-auto px-8 lg:px-24 xl:px-32" vid="62">
+                <div class="flex items-end justify-between w-full" vid="63">
+                    <div class="flex flex-col gap-2" vid="64">
+                        <span class="font-mono text-[11px] text-accent tracking-[0.2em] uppercase font-bold" vid="65">SYS.01</span>
+                        <span class="text-sm md:text-base lg:text-lg text-white/80 tracking-wide whitespace-nowrap" vid="66">Vaše značka bude skutečně vidět</span>
+                    </div>
+                    <div class="flex flex-col gap-2 items-center" vid="67">
+                        <span class="font-mono text-[11px] text-accent tracking-[0.2em] uppercase font-bold" vid="68">SYS.02</span>
+                        <span class="text-sm md:text-base lg:text-lg text-white/80 tracking-wide whitespace-nowrap" vid="69">Přirozený zájem o vaše služby</span>
+                    </div>
+                    <div class="flex flex-col gap-2 items-end" vid="70">
+                        <span class="font-mono text-[11px] text-accent tracking-[0.2em] uppercase font-bold" vid="71">SYS.03</span>
+                        <span class="text-sm md:text-base lg:text-lg text-white/80 tracking-wide whitespace-nowrap" vid="72">Kvalitní video produkce za rozumnou cenu</span>
+                    </div>
+                </div>
+                <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent mt-8" vid="73"></div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 reveal-up delay-500 is-visible" vid="74">
+            <div class="w-[22px] h-[34px] border-[1.5px] border-white/40 rounded-full relative" vid="75">
+                <div class="w-[2px] h-[6px] bg-white/90 rounded-sm absolute top-[6px] left-1/2 -translate-x-1/2 animate-[scrollWheel_1.5s_ease-in-out_infinite]" vid="76"></div>
+            </div>
+            <span class="font-mono text-[0.6rem] text-white/60 uppercase tracking-[0.15em]" vid="77">Scroll</span>
+        </div>
+    </section>
+
+    
+    <section id="section-problem" class="relative w-full min-h-screen bg-black flex flex-col md:flex-row border-t border-glassBorder z-20" vid="78">
+        <div class="noise-overlay" vid="79"></div>
+        <div class="hud-crosshair hud-tl" vid="80"></div>
+        <div class="hud-crosshair hud-tr" vid="81"></div>
+        <div class="hud-crosshair hud-bl" vid="82"></div>
+        <div class="hud-crosshair hud-br" vid="83"></div>
+        <div class="timecode-ticker absolute bottom-8 right-8 md:bottom-[clamp(2rem,5vw,4rem)] md:right-[clamp(2rem,5vw,4rem)] z-50 font-mono text-xs text-accent tracking-[0.15em] font-bold" vid="84"></div>
+
+        <div class="w-full md:w-[60%] relative flex flex-col justify-center border-b md:border-b-0 md:border-r border-glassBorder p-12 md:px-16 lg:px-24 xl:px-32 min-h-[50vh] md:min-h-screen" vid="85">
+            <div class="absolute inset-0 z-0 overflow-hidden" vid="86">
+                <img src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg" alt="Business problem" class="w-full h-full object-cover opacity-40 grayscale-[50%] scale-105 parallax" data-speed="0.1" vid="87">
+                <div class="absolute inset-0 cinematic-overlay" vid="88"></div>
+            </div>
+
+            <div class="relative z-10 max-w-4xl reveal-up" vid="89">
+                <div class="flex items-center gap-3 mb-10" vid="90">
+                    <div class="w-2.5 h-2.5 bg-accent rounded-full status-pulse" vid="91"></div>
+                    <span class="font-mono text-xs tracking-[0.2em] text-accent uppercase font-bold" vid="92">recording : problem</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-normal leading-[1.05] tracking-tight mb-6 text-balance drop-shadow-2xl" vid="93">
+                    Máte co říct jen to dnes nikdo
+                </h2>
+                <div class="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-light tracking-wide mt-2" vid="94">
+                    <span class="font-mono tracking-tighter text-accent font-extralight" vid="95">
+                        neposlouchá / nechápe / nepamatuje si
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full md:w-[40%] bg-black relative flex flex-col justify-center p-12 md:px-16 xl:px-24 min-h-[50vh] md:min-h-screen overflow-hidden" vid="96">
+            <div class="absolute top-0 left-0 w-[1px] h-full bg-gradient-to-b from-transparent via-glassBorder to-transparent -translate-x-px" vid="97"></div>
+            <div class="parallax absolute -right-20 -bottom-20 text-[35vh] font-bold leading-none text-accent opacity-[0.03] pointer-events-none select-none tracking-tighter" data-speed="0.15" vid="98">ERR</div>
+            
+            <div class="flex flex-col gap-12 lg:gap-16 max-w-2xl relative z-10" vid="99">
+                <div class="relative pl-8 group reveal-up delay-100" vid="100">
+                    <div class="absolute left-0 top-1 bottom-0 w-[2px] bg-gradient-to-b from-accent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" vid="101"></div>
+                    <div class="font-mono text-xs tracking-[0.15em] text-accent mb-3 font-bold uppercase" vid="102">ERR 01</div>
+                    <p class="text-lg xl:text-xl text-muted leading-relaxed font-normal" vid="103">
+                        Lidé Váš obsah ignorují. Ne proto, že by nebyl důležitý, ale protože je nezaujme.
+                    </p>
+                </div>
+                <div class="relative pl-8 group reveal-up delay-200" vid="104">
+                    <div class="absolute left-0 top-1 bottom-0 w-[2px] bg-gradient-to-b from-accent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" vid="105"></div>
+                    <div class="font-mono text-xs tracking-[0.15em] text-accent mb-3 font-bold uppercase" vid="106">ERR 02</div>
+                    <p class="text-lg xl:text-xl text-muted leading-relaxed font-normal" vid="107">
+                        Vysvětlujete složité věci pořád dokola. A stejně jim málokdo opravdu rozumí.
+                    </p>
+                </div>
+                <div class="relative pl-8 group reveal-up delay-300" vid="108">
+                    <div class="absolute left-0 top-1 bottom-0 w-[2px] bg-gradient-to-b from-accent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" vid="109"></div>
+                    <div class="font-mono text-xs tracking-[0.15em] text-accent mb-3 font-bold uppercase" vid="110">ERR 03</div>
+                    <p class="text-lg xl:text-xl text-muted leading-relaxed font-normal" vid="111">
+                        Vaše komunikace nefunguje. Lidé si ji nepamatují a nerozhodují se podle ní.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="relative w-full min-h-screen bg-black flex flex-col md:flex-row border-t border-glassBorder z-20 overflow-hidden" vid="112">
+        <div class="noise-overlay" vid="113"></div>
+        <div class="hud-crosshair hud-tl" vid="114"></div>
+        <div class="hud-crosshair hud-tr" vid="115"></div>
+        <div class="hud-crosshair hud-bl" vid="116"></div>
+        <div class="hud-crosshair hud-br" vid="117"></div>
+        <div class="timecode-ticker absolute bottom-8 right-8 md:bottom-[clamp(2rem,5vw,4rem)] md:right-[clamp(2rem,5vw,4rem)] z-50 font-mono text-xs text-accent tracking-[0.15em] font-bold" vid="118"></div>
+
+        <div class="w-full md:w-1/2 relative flex flex-col justify-center border-b md:border-b-0 md:border-r border-glassBorder p-12 md:px-16 lg:px-24 xl:px-32 min-h-[50vh] md:min-h-screen" vid="119">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(224,0,32,0.03)_0%,transparent_60%)] pointer-events-none" vid="120"></div>
+            <div class="parallax absolute left-10 bottom-10 text-[15vh] font-bold leading-none text-white opacity-[0.02] pointer-events-none font-mono tracking-tighter" data-speed="0.1" vid="121">01</div>
+            
+            <div class="relative z-10 max-w-2xl reveal-up" vid="122">
+                <div class="flex items-center gap-3 mb-8 lg:mb-12" vid="123">
+                    <div class="w-2.5 h-2.5 bg-accent rounded-full status-pulse" vid="124"></div>
+                    <span class="font-mono text-xs tracking-[0.2em] text-accent uppercase font-bold" vid="125">recording: solution</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-normal leading-[1.05] tracking-tight mb-8 text-balance drop-shadow-2xl" vid="126">
+                    Video jako řešení
+                </h2>
+                <div class="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-light tracking-wide text-accent leading-tight" vid="127">
+                    Rozumíme tomu, protože to zažíváme s klienty v praxi.
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full md:w-1/2 bg-black relative flex flex-col justify-center p-12 md:px-16 lg:px-24 xl:px-32 min-h-[50vh] md:min-h-screen" vid="128">
+            <div class="absolute top-0 left-0 w-[1px] h-full bg-gradient-to-b from-transparent via-[rgba(224,0,32,0.15)] to-transparent -translate-x-px" vid="129"></div>
+            <div class="parallax absolute -right-16 top-1/2 -translate-y-1/2 text-[28vh] font-bold leading-none text-accent opacity-[0.02] pointer-events-none whitespace-nowrap rotate-90 origin-center" data-speed="0.15" vid="130">[REC]PIC</div>
+
+            <div class="flex flex-col gap-10 lg:gap-14 max-w-2xl relative z-10" vid="131">
+                <div class="relative pl-8 lg:pl-10 group reveal-up delay-100" vid="132">
+                    <div class="absolute left-0 top-1 bottom-0 w-[2px] bg-gradient-to-b from-accent to-transparent opacity-40 group-hover:opacity-100 transition-opacity duration-700" vid="133"></div>
+                    <p class="text-lg xl:text-xl text-muted leading-relaxed font-normal group-hover:text-white/85 transition-colors duration-500" vid="134">
+                        Vidíme, jak důležité informace zapadají v dlouhých textech, složité nabídky se špatně vysvětlují a obsah lidi jednoduše nebaví. A také víme, jak frustrující je, když komunikace bere čas i energii, ale výsledek se nedostavuje.
+                    </p>
+                </div>
+                <div class="relative pl-8 lg:pl-10 group reveal-up delay-200" vid="135">
+                    <div class="absolute left-0 top-1 bottom-0 w-[2px] bg-gradient-to-b from-accent to-transparent opacity-40 group-hover:opacity-100 transition-opacity duration-700" vid="136"></div>
+                    <p class="text-lg xl:text-xl text-muted leading-relaxed font-normal group-hover:text-white/85 transition-colors duration-500" vid="137">
+                        Právě proto naše kreativní video produkce <span class="text-accent font-medium tracking-wide" vid="138">[REC]</span><span class="text-muted font-medium tracking-wide group-hover:text-white/85 transition-colors duration-500" vid="139">PIC</span> dělá videa, která věci zjednoduší, zpřehlední a konečně rozfungují.
+                    </p>
+                </div>
+                <div class="relative pl-8 lg:pl-10 group reveal-up delay-300" vid="140">
+                    <div class="absolute left-0 top-1 bottom-0 w-[2px] bg-gradient-to-b from-accent to-transparent opacity-40 group-hover:opacity-100 transition-opacity duration-700" vid="141"></div>
+                    <p class="text-lg xl:text-xl text-muted leading-relaxed font-normal group-hover:text-white/85 transition-colors duration-500" vid="142">
+                        Na trhu působíme už 16 let. Ať už potřebujete natáčení rozhovoru, korporátní video nebo video pro sociální sítě, vždy vám dodáme funkční řešení.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="section-strategy" class="relative w-full bg-white text-black py-20 lg:py-32 z-20 flex flex-col justify-center overflow-hidden" vid="143">
+        <div class="noise-overlay opacity-5" vid="144"></div>
+        <div class="hud-crosshair hud-dark hud-tl" vid="145"></div>
+        <div class="hud-crosshair hud-dark hud-tr" vid="146"></div>
+        <div class="hud-crosshair hud-dark hud-bl" vid="147"></div>
+        <div class="hud-crosshair hud-dark hud-br" vid="148"></div>
+
+        <div class="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24 xl:px-32 relative z-10 w-full reveal-up" vid="149">
+            <div class="flex items-center gap-3 mb-10 lg:mb-16" vid="150">
+                <div class="w-2 h-2 bg-accent rounded-sm status-pulse" vid="151"></div>
+                <span class="font-mono text-xs tracking-[0.2em] text-accent uppercase font-bold" vid="152">Approach : Strategy</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16" vid="153">
+                <div class="flex flex-col group relative reveal-up delay-100" vid="154">
+                    <div class="absolute left-0 top-0 w-px h-full bg-black/10 origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-500 -translate-x-6" vid="155"></div>
+                    <div class="font-mono text-[11px] text-accent mb-5 tracking-[0.15em] uppercase font-bold" vid="156">01 // Execution</div>
+                    <h3 class="text-3xl lg:text-4xl font-medium tracking-tight mb-5 text-black leading-tight" vid="157">Jistota bez starostí</h3>
+                    <p class="text-base text-black/60 leading-relaxed font-normal" vid="158">
+                        Nemusíte řešit techniku, štáb ani detaily. Produkci řešíme od nápadu po finální výstup. Rychle, v termínu a za dobrou cenu.
+                    </p>
+                </div>
+                <div class="flex flex-col group relative reveal-up delay-200" vid="159">
+                    <div class="absolute left-0 top-0 w-px h-full bg-black/10 origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-500 -translate-x-6" vid="160"></div>
+                    <div class="font-mono text-[11px] text-accent mb-5 tracking-[0.15em] uppercase font-bold" vid="161">02 // Purpose</div>
+                    <h3 class="text-3xl lg:text-4xl font-medium tracking-tight mb-5 text-black leading-tight" vid="162">Video, které funguje</h3>
+                    <p class="text-base text-black/60 leading-relaxed font-normal" vid="163">
+                        Vždy řešíme, co má video skutečně splnit: vysvětlit složitou věc, podpořit důvěru, zaujmout na sítích nebo pomoci s náborem.
+                    </p>
+                </div>
+                <div class="flex flex-col group relative reveal-up delay-300" vid="164">
+                    <div class="absolute left-0 top-0 w-px h-full bg-black/10 origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-500 -translate-x-6" vid="165"></div>
+                    <div class="font-mono text-[11px] text-accent mb-5 tracking-[0.15em] uppercase font-bold" vid="166">03 // Impact</div>
+                    <h3 class="text-3xl lg:text-4xl font-medium tracking-tight mb-5 text-black leading-tight" vid="167">Srozumitelně a lidsky</h3>
+                    <p class="text-base text-black/60 leading-relaxed font-normal" vid="168">
+                        Ať už reklamní video nebo promo video pro sociální sítě, produkty, služby i sdělení měníme na videa, kterým lidé lehce porozumí a reagují na ně.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <div class="w-full h-px bg-gradient-to-r from-transparent via-[#E00020]/30 to-transparent relative flex items-center justify-center z-30 bg-black py-12" vid="169">
+        <div class="absolute left-8 md:left-16 lg:left-24 font-mono text-[10px] text-accent tracking-[0.2em] bg-black px-4 py-1 -translate-y-1/2 border border-[#E00020]/20 text-opacity-80" vid="170">SYS.DIV // 892.4</div>
+        <div class="w-1.5 h-1.5 bg-accent rotate-45 shadow-[0_0_10px_rgba(224,0,32,0.8)]" vid="171"></div>
+        <div class="absolute right-8 md:right-16 lg:right-24 w-12 h-px bg-[#E00020]/50" vid="172"></div>
+    </div>
+
+    
+    <section class="relative w-full bg-black py-20 flex flex-col justify-center overflow-hidden z-20" vid="173">
+        <div class="noise-overlay" vid="174"></div>
+        <div class="hud-crosshair hud-tl" vid="175"></div>
+        <div class="hud-crosshair hud-tr" vid="176"></div>
+        <div class="hud-crosshair hud-bl" vid="177"></div>
+        <div class="hud-crosshair hud-br" vid="178"></div>
+        
+        <div class="parallax absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[25vw] font-bold leading-none text-accent opacity-[0.02] pointer-events-none select-none tracking-tighter z-0" data-speed="0.05" vid="179">PROOF</div>
+
+        <div class="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24 xl:px-32 relative z-10 w-full" vid="180">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch" vid="181">
+                
+                <div class="glass-panel p-8 flex flex-col h-full relative group reveal-up delay-100" vid="182">
+                    <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-accent opacity-30 group-hover:opacity-100 transition-opacity duration-300" vid="183"></div>
+                    <div class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-accent opacity-30 group-hover:opacity-100 transition-opacity duration-300" vid="184"></div>
+                    <svg class="w-6 h-6 text-accent/40 mb-6 transform -scale-x-100" fill="currentColor" viewBox="0 0 24 24" vid="185"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" vid="186"></path></svg>
+                    <p class="text-base text-white/70 leading-relaxed font-normal flex-grow mb-6" vid="187">Potřebovali jsme jednoduše ukázat, že výroba CAG dveří je z velké části proces nejen pomocí strojů, ale také ruční práce. Video od RECPIC naši vizi převedlo do srozumitelného příběhu, který zákazníkovi tento proces jednoduchou formou představí. Děkujeme.</p>
+                    <div class="flex items-center gap-5 mt-auto pt-6 border-t border-accent/10" vid="188">
+                        <div class="w-12 h-12 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center font-mono text-sm text-accent group-hover:bg-accent/20 transition-colors" vid="189">HN</div>
+                        <div vid="190">
+                            <div class="font-medium text-base text-white tracking-wide" vid="191">Hana Nebeska</div>
+                            <div class="font-mono text-[10px] text-white/40 tracking-[0.15em] uppercase mt-1" vid="192">CAG Dveře</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-panel p-8 flex flex-col h-full relative group reveal-up delay-200" vid="193">
+                    <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-accent opacity-30 group-hover:opacity-100 transition-opacity duration-300" vid="194"></div>
+                    <div class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-accent opacity-30 group-hover:opacity-100 transition-opacity duration-300" vid="195"></div>
+                    <svg class="w-6 h-6 text-accent/40 mb-6 transform -scale-x-100" fill="currentColor" viewBox="0 0 24 24" vid="196"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" vid="197"></path></svg>
+                    <p class="text-base text-white/70 leading-relaxed font-normal flex-grow mb-6" vid="198">Jsme interaktivní muzeum v centru Prahy. Chtěli jsme přilákat víc návštěvníků. Byla to naše první spolupráce s Ivanem z RECPIC. Jeho tým dokázal skvěle přenést atmosféru muzea do kampaní, díky kterým lidé přesně vědí, proč k nám přijít.</p>
+                    <div class="flex items-center gap-5 mt-auto pt-6 border-t border-accent/10" vid="199">
+                        <div class="w-12 h-12 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center font-mono text-sm text-accent group-hover:bg-accent/20 transition-colors" vid="200">MV</div>
+                        <div vid="201">
+                            <div class="font-medium text-base text-white tracking-wide" vid="202">Michal Vala</div>
+                            <div class="font-mono text-[10px] text-white/40 tracking-[0.15em] uppercase mt-1" vid="203">Interaktivní Muzeum</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-panel p-8 flex flex-col h-full relative group reveal-up delay-300" vid="204">
+                    <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-accent opacity-30 group-hover:opacity-100 transition-opacity duration-300" vid="205"></div>
+                    <div class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-accent opacity-30 group-hover:opacity-100 transition-opacity duration-300" vid="206"></div>
+                    <svg class="w-6 h-6 text-accent/40 mb-6 transform -scale-x-100" fill="currentColor" viewBox="0 0 24 24" vid="207"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" vid="208"></path></svg>
+                    <p class="text-base text-white/70 leading-relaxed font-normal flex-grow mb-6" vid="209">Jako prodejci potravinových doplňků jsme spolupracovali s Ivanem na videích pro značku Maxulen. Všechno šlo hladce, videa pomohla rozptýlit pochybnosti kolem důvěry i účinků a výrazně zjednodušila online komunikaci — mohu doporučit.</p>
+                    <div class="flex items-center gap-5 mt-auto pt-6 border-t border-accent/10" vid="210">
+                        <div class="w-12 h-12 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center font-mono text-sm text-accent group-hover:bg-accent/20 transition-colors" vid="211">PD</div>
+                        <div vid="212">
+                            <div class="font-medium text-base text-white tracking-wide" vid="213">Přemysl Douša</div>
+                            <div class="font-mono text-[10px] text-white/40 tracking-[0.15em] uppercase mt-1" vid="214">Maxulen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <div class="w-full h-px bg-gradient-to-r from-transparent via-[#E00020]/30 to-transparent relative flex items-center justify-center z-30 bg-black" vid="215">
+        <div class="absolute left-8 md:left-16 lg:left-24 font-mono text-[10px] text-accent tracking-[0.2em] bg-black px-4 py-1 -translate-y-1/2 border border-[#E00020]/20 text-opacity-80" vid="216">SYS.CLIENTS // 892.4</div>
+        <div class="w-1.5 h-1.5 bg-accent rotate-45 shadow-[0_0_10px_rgba(224,0,32,0.8)]" vid="217"></div>
+        <div class="absolute right-8 md:right-16 lg:right-24 w-12 h-px bg-[#E00020]/50" vid="218"></div>
+    </div>
+    <section class="w-full bg-black py-10 lg:py-16 overflow-hidden relative border-b border-glassBorder" vid="219">
+        <div class="noise-overlay" vid="220"></div>
+        <div class="relative z-10" vid="221">
+            <div class="flex items-center gap-3 mb-8 px-8 md:px-16 lg:px-24 max-w-[1440px] mx-auto reveal-up" vid="222">
+                <div class="w-1.5 h-1.5 bg-accent rounded-sm status-pulse" vid="223"></div>
+                <span class="font-mono text-[10px] tracking-[0.2em] text-accent uppercase font-bold" vid="224">Trusted Partners // 01</span>
+            </div>
+            <div class="relative w-full overflow-hidden reveal-up delay-100" vid="225">
+                <div class="flex animate-marquee opacity-60 hover:opacity-100 transition-opacity duration-500" vid="226">
+                    
+                    <div class="flex gap-16 px-8 items-center font-mono text-xl text-white/50 tracking-widest whitespace-nowrap" vid="227">
+                        CAG DVEŘE  ///  INTERAKTIVNÍ MUZEUM  ///  MAXULEN  ///  TECH PRO  ///  NEXUS CORP  ///  GLOBAL LOGISTICS  ///  CAG DVEŘE  ///  INTERAKTIVNÍ MUZEUM  ///  MAXULEN  ///  TECH PRO
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="section-services" class="relative w-full bg-white text-black py-20 lg:py-32 z-20" vid="228">
+        <div class="noise-overlay opacity-5" vid="229"></div>
+        <div class="hud-crosshair hud-dark hud-tl" vid="230"></div>
+        <div class="hud-crosshair hud-dark hud-tr" vid="231"></div>
+        <div class="hud-crosshair hud-dark hud-bl" vid="232"></div>
+        <div class="hud-crosshair hud-dark hud-br" vid="233"></div>
+
+        <div class="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24 xl:px-32 relative z-10" vid="234">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6" vid="235">
+                
+                <div class="relative w-full aspect-[16/10] sm:aspect-[16/9] border border-black/20 flex flex-col justify-center p-6 group cursor-pointer hover:border-black/40 transition-all duration-300 bg-white reveal-up" vid="236">
+                    <div class="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="237"></div>
+                    <div class="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="238"></div>
+                    <div class="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="239"></div>
+                    <div class="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="240"></div>
+                    <h3 class="text-xl lg:text-2xl font-medium tracking-tight text-black leading-tight mb-3" vid="241">Konzultace zdarma</h3>
+                    <p class="text-sm lg:text-base text-black/60 leading-relaxed font-normal" vid="242">Zoom call, mobil nebo email. Nevíte si rady a potřebujete poradit? Ozvěte se nám.</p>
+                </div>
+                
+                <div class="relative w-full aspect-[16/10] sm:aspect-[16/9] border border-black/20 flex flex-col justify-center p-6 group cursor-pointer hover:border-black/40 transition-all duration-300 bg-white reveal-up delay-100" vid="243">
+                    <div class="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="244"></div>
+                    <div class="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="245"></div>
+                    <div class="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="246"></div>
+                    <div class="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="247"></div>
+                    <h3 class="text-xl lg:text-2xl font-medium tracking-tight text-black leading-tight mb-3" vid="248">Scénář</h3>
+                    <p class="text-sm lg:text-base text-black/60 leading-relaxed font-normal" vid="249">Bez toho to prostě nejde. Vytvoříme promyšlený scénář s jasným sdělením a silným příběhem.</p>
+                </div>
+                
+                <div class="relative w-full aspect-[16/10] sm:aspect-[16/9] border border-black/20 flex flex-col justify-center p-6 group cursor-pointer hover:border-black/40 transition-all duration-300 bg-white reveal-up delay-200" vid="250">
+                    <div class="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="251"></div>
+                    <div class="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="252"></div>
+                    <div class="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="253"></div>
+                    <div class="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="254"></div>
+                    <h3 class="text-xl lg:text-2xl font-medium tracking-tight text-black leading-tight mb-3" vid="255">Rozpočet</h3>
+                    <p class="text-sm lg:text-base text-black/60 leading-relaxed font-normal" vid="256">Každý projekt je jiný, víme to. Dostanete přehlednou kalkulaci a řešení na míru vašim možnostem.</p>
+                </div>
+                
+                <div class="relative w-full aspect-[16/10] sm:aspect-[16/9] border border-black/20 flex flex-col justify-center p-6 group cursor-pointer hover:border-black/40 transition-all duration-300 bg-white reveal-up delay-100" vid="257">
+                    <div class="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="258"></div>
+                    <div class="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="259"></div>
+                    <div class="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="260"></div>
+                    <div class="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="261"></div>
+                    <h3 class="text-xl lg:text-2xl font-medium tracking-tight text-black leading-tight mb-3" vid="262">Casting a lokace</h3>
+                    <p class="text-sm lg:text-base text-black/60 leading-relaxed font-normal" vid="263">Zajistíme vhodné herce i lokace tak, aby vše vizuálně i obsahově sedělo záměru videa.</p>
+                </div>
+                
+                <div class="relative w-full aspect-[16/10] sm:aspect-[16/9] border border-black/20 flex flex-col justify-center p-6 group cursor-pointer hover:border-black/40 transition-all duration-300 bg-white reveal-up delay-200" vid="264">
+                    <div class="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="265"></div>
+                    <div class="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="266"></div>
+                    <div class="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="267"></div>
+                    <div class="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="268"></div>
+                    <h3 class="text-xl lg:text-2xl font-medium tracking-tight text-black leading-tight mb-3" vid="269">Filmování a technika</h3>
+                    <p class="text-sm lg:text-base text-black/60 leading-relaxed font-normal" vid="270">Profesionální vybavení, světla, dron i kvalitní audio technika – základ pro opravdu skvělé výsledky.</p>
+                </div>
+                
+                <div class="relative w-full aspect-[16/10] sm:aspect-[16/9] border border-black/20 flex flex-col justify-center p-6 group cursor-pointer hover:border-black/40 transition-all duration-300 bg-white reveal-up delay-300" vid="271">
+                    <div class="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="272"></div>
+                    <div class="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="273"></div>
+                    <div class="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="274"></div>
+                    <div class="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-black/30 group-hover:border-black/60 transition-colors duration-300" vid="275"></div>
+                    <h3 class="text-xl lg:text-2xl font-medium tracking-tight text-black leading-tight mb-3" vid="276">Postprodukce</h3>
+                    <p class="text-sm lg:text-base text-black/60 leading-relaxed font-normal" vid="277">Kompletní střih, barvy, zvuk i grafika. Hotové video připravené k publikování.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <div id="section-portfolio" class="w-full h-px bg-gradient-to-r from-transparent via-[#E00020]/30 to-transparent relative flex items-center justify-center bg-black py-12" vid="278">
+        <div class="absolute left-8 md:left-16 lg:left-24 font-mono text-[10px] text-accent tracking-[0.2em] bg-black px-4 py-1 -translate-y-1/2 border border-[#E00020]/20 z-10" vid="279">SYS.PORTFOLIO // 892.6</div>
+        <div class="w-1.5 h-1.5 bg-accent rotate-45 shadow-[0_0_10px_rgba(224,0,32,0.8)] z-10" vid="280"></div>
+        <div class="absolute right-8 md:right-16 lg:right-24 w-12 h-px bg-[#E00020]/50 z-10" vid="281"></div>
+    </div>
+
+    
+    <section class="relative w-full bg-black text-white py-16 lg:py-24 z-20" vid="282">
+        <div class="noise-overlay" vid="283"></div>
+        <div class="hud-crosshair hud-tl" vid="284"></div>
+        <div class="hud-crosshair hud-tr" vid="285"></div>
+        <div class="hud-crosshair hud-bl" vid="286"></div>
+        <div class="hud-crosshair hud-br" vid="287"></div>
+
+        <div class="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24 xl:px-32 relative z-10" vid="288">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mb-12" vid="289">
+                
+                <div class="relative w-full aspect-[16/9] glass-panel group overflow-hidden flex items-center justify-center cursor-pointer reveal-up" vid="290">
+                    <div class="absolute top-3 left-3 w-3 h-3 border-t-2 border-l-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="291"></div>
+                    <div class="absolute top-3 right-3 w-3 h-3 border-t-2 border-r-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="292"></div>
+                    <div class="absolute bottom-3 left-3 w-3 h-3 border-b-2 border-l-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="293"></div>
+                    <div class="absolute bottom-3 right-3 w-3 h-3 border-b-2 border-r-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="294"></div>
+                </div>
+                <div class="relative w-full aspect-[16/9] glass-panel group overflow-hidden flex items-center justify-center cursor-pointer reveal-up delay-100" vid="295">
+                    <div class="absolute top-3 left-3 w-3 h-3 border-t-2 border-l-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="296"></div>
+                    <div class="absolute top-3 right-3 w-3 h-3 border-t-2 border-r-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="297"></div>
+                    <div class="absolute bottom-3 left-3 w-3 h-3 border-b-2 border-l-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="298"></div>
+                    <div class="absolute bottom-3 right-3 w-3 h-3 border-b-2 border-r-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="299"></div>
+                </div>
+                <div class="relative w-full aspect-[16/9] glass-panel group overflow-hidden flex items-center justify-center cursor-pointer reveal-up delay-200" vid="300">
+                    <div class="absolute top-3 left-3 w-3 h-3 border-t-2 border-l-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="301"></div>
+                    <div class="absolute top-3 right-3 w-3 h-3 border-t-2 border-r-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="302"></div>
+                    <div class="absolute bottom-3 left-3 w-3 h-3 border-b-2 border-l-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="303"></div>
+                    <div class="absolute bottom-3 right-3 w-3 h-3 border-b-2 border-r-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="304"></div>
+                </div>
+                <div class="relative w-full aspect-[16/9] glass-panel group overflow-hidden flex items-center justify-center cursor-pointer reveal-up delay-100" vid="305">
+                    <div class="absolute top-3 left-3 w-3 h-3 border-t-2 border-l-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="306"></div>
+                    <div class="absolute top-3 right-3 w-3 h-3 border-t-2 border-r-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="307"></div>
+                    <div class="absolute bottom-3 left-3 w-3 h-3 border-b-2 border-l-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="308"></div>
+                    <div class="absolute bottom-3 right-3 w-3 h-3 border-b-2 border-r-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="309"></div>
+                </div>
+                <div class="relative w-full aspect-[16/9] glass-panel group overflow-hidden flex items-center justify-center cursor-pointer reveal-up delay-200" vid="310">
+                    <div class="absolute top-3 left-3 w-3 h-3 border-t-2 border-l-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="311"></div>
+                    <div class="absolute top-3 right-3 w-3 h-3 border-t-2 border-r-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="312"></div>
+                    <div class="absolute bottom-3 left-3 w-3 h-3 border-b-2 border-l-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="313"></div>
+                    <div class="absolute bottom-3 right-3 w-3 h-3 border-b-2 border-r-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="314"></div>
+                </div>
+                <div class="relative w-full aspect-[16/9] glass-panel group overflow-hidden flex items-center justify-center cursor-pointer reveal-up delay-300" vid="315">
+                    <div class="absolute top-3 left-3 w-3 h-3 border-t-2 border-l-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="316"></div>
+                    <div class="absolute top-3 right-3 w-3 h-3 border-t-2 border-r-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="317"></div>
+                    <div class="absolute bottom-3 left-3 w-3 h-3 border-b-2 border-l-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="318"></div>
+                    <div class="absolute bottom-3 right-3 w-3 h-3 border-b-2 border-r-2 border-accent/30 transition-all duration-300 group-hover:border-accent" vid="319"></div>
+                </div>
+            </div>
+
+            <div class="flex justify-start reveal-up delay-400" vid="320">
+                <a href="#section-faq" class="group relative inline-flex items-center py-3 px-6 bg-transparent border border-accent transition-colors duration-300 overflow-hidden font-mono text-xs tracking-[0.15em] uppercase hover:bg-accent/10" vid="321">
+                    <span class="relative z-10 text-white" vid="322">Nezávazně poptat</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="section-faq" class="relative w-full min-h-screen bg-black pt-20 pb-8 flex flex-col z-20" vid="323">
+        <div class="noise-overlay" vid="324"></div>
+        <div class="hud-crosshair hud-tl" vid="325"></div>
+        <div class="hud-crosshair hud-tr" vid="326"></div>
+        <div class="hud-crosshair hud-bl" vid="327"></div>
+        <div class="hud-crosshair hud-br" vid="328"></div>
+        
+        <div class="absolute top-0 right-[-10%] w-[50vw] h-[50vh] bg-[radial-gradient(circle,rgba(224,0,32,0.03)_0%,transparent_70%)] blur-[60px] pointer-events-none z-0" vid="329"></div>
+
+        <div class="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24 xl:px-32 relative z-10 w-full flex-grow flex flex-col justify-between" vid="330">
+            <div class="mb-12 max-w-3xl reveal-up" vid="331">
+                <div class="flex items-center gap-3 mb-6" vid="332">
+                    <div class="flex items-center gap-2 font-mono text-[10px] text-accent font-bold tracking-[0.15em] uppercase" vid="333">
+                        <div class="w-2 h-2 bg-accent rounded-full status-pulse" vid="334"></div>
+                        SYS.FAQ // 10.00
+                    </div>
+                    <div class="h-[1px] flex-grow max-w-[200px] bg-gradient-to-r from-glassBorder to-transparent" vid="335"></div>
+                </div>
+                <h2 class="text-4xl md:text-[2.75rem] font-normal tracking-[-0.03em] leading-none text-pure drop-shadow-lg" vid="336">
+                    Často kladené dotazy
+                </h2>
+            </div>
+
+            
+            <div class="grid grid-cols-1 overflow-hidden pb-8 max-w-3xl reveal-up delay-100" vid="337">
+                
+                
+                <div class="faq-item border-b border-glassBorder group" vid="338">
+                    <button class="faq-toggle w-full flex justify-between items-center py-4 text-left outline-none cursor-pointer bg-transparent" vid="339">
+                        <span class="text-[15px] text-pure font-normal tracking-wide transition-colors duration-300 pr-6 group-hover:text-accent" vid="340">1. Kolik stojí firemní video a co všechno je v ceně?</span>
+                        <svg class="plus-icon w-[18px] h-[18px] text-muted flex-shrink-0 transition-transform duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="341"><line x1="12" y1="5" x2="12" y2="19" vid="342"></line><line x1="5" y1="12" x2="19" y2="12" vid="343"></line></svg>
+                    </button>
+                    <div class="faq-content-wrapper grid grid-rows-[0fr] transition-[grid-template-rows] duration-500" vid="344">
+                        <div class="overflow-hidden" vid="345">
+                            <div class="faq-glass-panel bg-glass border border-glassBorder backdrop-blur-md p-5 mb-4 text-[14px] text-muted leading-[1.6] opacity-0 -translate-y-2 transition-all duration-500" vid="346">
+                                <p vid="347">Cena se nejčastěji pohybuje mezi 50–250 tisíci Kč podle rozsahu projektu. Záleží na délce videa, počtu natáčecích dní, lokacích, počtu kamer, náročnosti postprodukce nebo animací. Vždy připravujeme rozpočet na míru – bez skrytých položek. Součástí bývá scénář, natáčení, střih, hudba, barevné korekce i výstupy pro sociální sítě.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="faq-item border-b border-glassBorder group" vid="348">
+                    <button class="faq-toggle w-full flex justify-between items-center py-4 text-left outline-none cursor-pointer bg-transparent" vid="349">
+                        <span class="text-[15px] text-pure font-normal tracking-wide transition-colors duration-300 pr-6 group-hover:text-accent" vid="350">2. Jak dlouho trvá výroba videa?</span>
+                        <svg class="plus-icon w-[18px] h-[18px] text-muted flex-shrink-0 transition-transform duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="351"><line x1="12" y1="5" x2="12" y2="19" vid="352"></line><line x1="5" y1="12" x2="19" y2="12" vid="353"></line></svg>
+                    </button>
+                    <div class="faq-content-wrapper grid grid-rows-[0fr] transition-[grid-template-rows] duration-500" vid="354">
+                        <div class="overflow-hidden" vid="355">
+                            <div class="faq-glass-panel bg-glass border border-glassBorder backdrop-blur-md p-5 mb-4 text-[14px] text-muted leading-[1.6] opacity-0 -translate-y-2 transition-all duration-500" vid="356">
+                                <p vid="357">Standardní firemní video obvykle vzniká během 3–6 týdnů. Kratší formáty (rozhovory, eventové video) mohou být hotové rychleji. Záleží hlavně na schvalovacím procesu a rozsahu příprav. Termín vždy nastavujeme realisticky a držíme ho.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="faq-item border-b border-glassBorder group" vid="358">
+                    <button class="faq-toggle w-full flex justify-between items-center py-4 text-left outline-none cursor-pointer bg-transparent" vid="359">
+                        <span class="text-[15px] text-pure font-normal tracking-wide transition-colors duration-300 pr-6 group-hover:text-accent" vid="360">3. Pomůžete nám i s nápadem a scénářem?</span>
+                        <svg class="plus-icon w-[18px] h-[18px] text-muted flex-shrink-0 transition-transform duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="361"><line x1="12" y1="5" x2="12" y2="19" vid="362"></line><line x1="5" y1="12" x2="19" y2="12" vid="363"></line></svg>
+                    </button>
+                    <div class="faq-content-wrapper grid grid-rows-[0fr] transition-[grid-template-rows] duration-500" vid="364">
+                        <div class="overflow-hidden" vid="365">
+                            <div class="faq-glass-panel bg-glass border border-glassBorder backdrop-blur-md p-5 mb-4 text-[14px] text-muted leading-[1.6] opacity-0 -translate-y-2 transition-all duration-500" vid="366">
+                                <p vid="367">Ano. Většina klientů nepřichází s hotovým scénářem – a to je v pořádku. Nejprve si ujasníme cíl videa (brand, nábor, obchod, onboarding…) a podle něj navrhneme koncept i strukturu. Umíme převést složité informace do srozumitelného příběhu.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="faq-item border-b border-glassBorder group" vid="368">
+                    <button class="faq-toggle w-full flex justify-between items-center py-4 text-left outline-none cursor-pointer bg-transparent" vid="369">
+                        <span class="text-[15px] text-pure font-normal tracking-wide transition-colors duration-300 pr-6 group-hover:text-accent" vid="370">4. Co když nemáme zkušenosti s natáčením?</span>
+                        <svg class="plus-icon w-[18px] h-[18px] text-muted flex-shrink-0 transition-transform duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="371"><line x1="12" y1="5" x2="12" y2="19" vid="372"></line><line x1="5" y1="12" x2="19" y2="12" vid="373"></line></svg>
+                    </button>
+                    <div class="faq-content-wrapper grid grid-rows-[0fr] transition-[grid-template-rows] duration-500" vid="374">
+                        <div class="overflow-hidden" vid="375">
+                            <div class="faq-glass-panel bg-glass border border-glassBorder backdrop-blur-md p-5 mb-4 text-[14px] text-muted leading-[1.6] opacity-0 -translate-y-2 transition-all duration-500" vid="376">
+                                <p vid="377">To je běžná situace. Provedeme vás celým procesem krok za krokem – od přípravy až po finální výstup. Řekneme vám, jak se připravit, co si nachystat a během natáčení vás budeme přirozeně vést, aby výsledek působil profesionálně a zároveň autenticky.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="faq-item border-b border-glassBorder group" vid="378">
+                    <button class="faq-toggle w-full flex justify-between items-center py-4 text-left outline-none cursor-pointer bg-transparent" vid="379">
+                        <span class="text-[15px] text-pure font-normal tracking-wide transition-colors duration-300 pr-6 group-hover:text-accent" vid="380">5. Kolik revizí je možné udělat?</span>
+                        <svg class="plus-icon w-[18px] h-[18px] text-muted flex-shrink-0 transition-transform duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="381"><line x1="12" y1="5" x2="12" y2="19" vid="382"></line><line x1="5" y1="12" x2="19" y2="12" vid="383"></line></svg>
+                    </button>
+                    <div class="faq-content-wrapper grid grid-rows-[0fr] transition-[grid-template-rows] duration-500" vid="384">
+                        <div class="overflow-hidden" vid="385">
+                            <div class="faq-glass-panel bg-glass border border-glassBorder backdrop-blur-md p-5 mb-4 text-[14px] text-muted leading-[1.6] opacity-0 -translate-y-2 transition-all duration-500" vid="386">
+                                <p vid="387">Standardně počítáme s několika koly úprav v rámci domluveného rozsahu. Naším cílem není „rychle odevzdat", ale vytvořit video, se kterým budete opravdu spokojeni. Zároveň držíme proces efektivní, aby se projekt zbytečně neprotahoval.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="faq-item border-b border-glassBorder group" vid="388">
+                    <button class="faq-toggle w-full flex justify-between items-center py-4 text-left outline-none cursor-pointer bg-transparent" vid="389">
+                        <span class="text-[15px] text-pure font-normal tracking-wide transition-colors duration-300 pr-6 group-hover:text-accent" vid="390">6. Natáčíte jen v Praze, nebo po celé ČR?</span>
+                        <svg class="plus-icon w-[18px] h-[18px] text-muted flex-shrink-0 transition-transform duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="391"><line x1="12" y1="5" x2="12" y2="19" vid="392"></line><line x1="5" y1="12" x2="19" y2="12" vid="393"></line></svg>
+                    </button>
+                    <div class="faq-content-wrapper grid grid-rows-[0fr] transition-[grid-template-rows] duration-500" vid="394">
+                        <div class="overflow-hidden" vid="395">
+                            <div class="faq-glass-panel bg-glass border border-glassBorder backdrop-blur-md p-5 mb-4 text-[14px] text-muted leading-[1.6] opacity-0 -translate-y-2 transition-all duration-500" vid="396">
+                                <p vid="397">Sídlíme v Praze, ale realizujeme projekty po celé České republice. U větších zakázek není problém ani zahraničí. Dopravu a logistiku řešíme jako součást produkce.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="faq-item border-b border-glassBorder group" vid="398">
+                    <button class="faq-toggle w-full flex justify-between items-center py-4 text-left outline-none cursor-pointer bg-transparent" vid="399">
+                        <span class="text-[15px] text-pure font-normal tracking-wide transition-colors duration-300 pr-6 group-hover:text-accent" vid="400">7. Jaké typy videí pro firmy nejčastěji tvoříte?</span>
+                        <svg class="plus-icon w-[18px] h-[18px] text-muted flex-shrink-0 transition-transform duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="401"><line x1="12" y1="5" x2="12" y2="19" vid="402"></line><line x1="5" y1="12" x2="19" y2="12" vid="403"></line></svg>
+                    </button>
+                    <div class="faq-content-wrapper grid grid-rows-[0fr] transition-[grid-template-rows] duration-500" vid="404">
+                        <div class="overflow-hidden" vid="405">
+                            <div class="faq-glass-panel bg-glass border border-glassBorder backdrop-blur-md p-5 mb-4 text-[14px] text-muted leading-[1.6] opacity-0 -translate-y-2 transition-all duration-500" vid="406">
+                                <p vid="407">Nejčastěji jde o: firemní a brandová videa, náborová videa a employer branding, eventová videa a záznamy konferencí, rozhovory a podcasty, produktová a technologická videa. Pracujeme s jednotlivci a firmami z oblasti technologií, IT, farmacie, developmentu, financí nebo vzdělávání.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="faq-item border-b border-glassBorder group" vid="408">
+                    <button class="faq-toggle w-full flex justify-between items-center py-4 text-left outline-none cursor-pointer bg-transparent" vid="409">
+                        <span class="text-[15px] text-pure font-normal tracking-wide transition-colors duration-300 pr-6 group-hover:text-accent" vid="410">8. Dokáže video opravdu zvýšit konverze nebo pomoci obchodu?</span>
+                        <svg class="plus-icon w-[18px] h-[18px] text-muted flex-shrink-0 transition-transform duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="411"><line x1="12" y1="5" x2="12" y2="19" vid="412"></line><line x1="5" y1="12" x2="19" y2="12" vid="413"></line></svg>
+                    </button>
+                    <div class="faq-content-wrapper grid grid-rows-[0fr] transition-[grid-template-rows] duration-500" vid="414">
+                        <div class="overflow-hidden" vid="415">
+                            <div class="faq-glass-panel bg-glass border border-glassBorder backdrop-blur-md p-5 mb-4 text-[14px] text-muted leading-[1.6] opacity-0 -translate-y-2 transition-all duration-500" vid="416">
+                                <p vid="417">Video samo o sobě není zázrak – ale správně navržené video dokáže výrazně zjednodušit vysvětlení produktu, zvýšit důvěru a zkrátit rozhodovací proces. V B2B prostředí často nahrazuje desítky slidů prezentací a pomáhá obchodníkům rychleji uzavírat zakázky.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="faq-item border-b border-glassBorder group" vid="418">
+                    <button class="faq-toggle w-full flex justify-between items-center py-4 text-left outline-none cursor-pointer bg-transparent" vid="419">
+                        <span class="text-[15px] text-pure font-normal tracking-wide transition-colors duration-300 pr-6 group-hover:text-accent" vid="420">9. Co všechno zajišťujete v rámci produkce?</span>
+                        <svg class="plus-icon w-[18px] h-[18px] text-muted flex-shrink-0 transition-transform duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="421"><line x1="12" y1="5" x2="12" y2="19" vid="422"></line><line x1="5" y1="12" x2="19" y2="12" vid="423"></line></svg>
+                    </button>
+                    <div class="faq-content-wrapper grid grid-rows-[0fr] transition-[grid-template-rows] duration-500" vid="424">
+                        <div class="overflow-hidden" vid="425">
+                            <div class="faq-glass-panel bg-glass border border-glassBorder backdrop-blur-md p-5 mb-4 text-[14px] text-muted leading-[1.6] opacity-0 -translate-y-2 transition-all duration-500" vid="426">
+                                <p vid="427">Zajišťujeme kompletní servis: návrh konceptu a scénáře, harmonogram a plán natáčení, výběr lokací, techniku a štáb, případný casting, střih, hudbu, barevné korekce, animace, titulky a formátování pro sociální sítě.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="faq-item border-b border-glassBorder group" vid="428">
+                    <button class="faq-toggle w-full flex justify-between items-center py-4 text-left outline-none cursor-pointer bg-transparent" vid="429">
+                        <span class="text-[15px] text-pure font-normal tracking-wide transition-colors duration-300 pr-6 group-hover:text-accent" vid="430">10. Jak poznáme, že jste pro nás ten správný partner?</span>
+                        <svg class="plus-icon w-[18px] h-[18px] text-muted flex-shrink-0 transition-transform duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="431"><line x1="12" y1="5" x2="12" y2="19" vid="432"></line><line x1="5" y1="12" x2="19" y2="12" vid="433"></line></svg>
+                    </button>
+                    <div class="faq-content-wrapper grid grid-rows-[0fr] transition-[grid-template-rows] duration-500" vid="434">
+                        <div class="overflow-hidden" vid="435">
+                            <div class="faq-glass-panel bg-glass border border-glassBorder backdrop-blur-md p-5 mb-4 text-[14px] text-muted leading-[1.6] opacity-0 -translate-y-2 transition-all duration-500" vid="436">
+                                <p vid="437">Pokud hledáte spolehlivý tým, který dodrží termín, komunikuje otevřeně a přemýšlí nad výsledkem, ne jen nad hezkým obrazem, pravděpodobně si budeme rozumět. Nejlepší je krátká úvodní konzultace – během ní zjistíme, jestli dává spolupráce smysl pro obě strany.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 mb-16 flex justify-start reveal-up delay-200" vid="438">
+                <button class="bg-black border border-[#4A0008] px-8 py-3 font-mono text-[12px] text-pure uppercase tracking-[0.15em] hover:border-accent transition-all duration-300 cursor-pointer" vid="439">
+                    Nezávazně poptat
+                </button>
+            </div>
+
+            
+            <div class="mt-auto pt-8 z-10 w-full reveal-up delay-300" vid="440">
+                <div class="relative flex items-center mb-8" vid="441">
+                    <div class="absolute left-0 bg-black pr-4 font-mono text-[10px] text-accent tracking-[0.15em] uppercase z-10" vid="442">SYS. Footer</div>
+                    <div class="w-full h-[1px] bg-gradient-to-r from-glassBorder via-glassBorder to-transparent opacity-70" vid="443"></div>
+                </div>
+
+                <footer class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 pb-4" vid="444">
+                    <a href="#section-hero" class="text-[1.25rem] font-bold tracking-[-0.05em] text-pure flex items-center gap-[0.15rem]" vid="445">
+                        <span class="text-accent" vid="446">[REC]</span><span vid="447">PIC</span>
+                    </a>
+
+                    <div class="flex flex-col sm:flex-row gap-6 sm:gap-12 w-full md:w-auto" vid="448">
+                        <div class="flex gap-6" vid="449">
+                            <a href="#" class="flex items-center gap-2 text-muted hover:text-accent transition-colors duration-300 font-mono text-[10px] uppercase tracking-[0.1em] group" vid="450">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" vid="451"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" vid="452"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" vid="453"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" vid="454"></line></svg>
+                                <span vid="455">Instagram</span>
+                            </a>
+                            <a href="#" class="flex items-center gap-2 text-muted hover:text-accent transition-colors duration-300 font-mono text-[10px] uppercase tracking-[0.1em] group" vid="456">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" vid="457"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" vid="458"></path><rect x="2" y="9" width="4" height="12" vid="459"></rect><circle cx="4" cy="4" r="2" vid="460"></circle></svg>
+                                <span vid="461">LinkedIn</span>
+                            </a>
+                            <a href="#" class="flex items-center gap-2 text-muted hover:text-accent transition-colors duration-300 font-mono text-[10px] uppercase tracking-[0.1em] group" vid="462">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" vid="463"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" vid="464"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" vid="465"></polygon></svg>
+                                <span vid="466">YouTube</span>
+                            </a>
+                        </div>
+                        <div class="flex gap-6" vid="467">
+                            <a href="mailto:hello@recpic.cz" class="flex items-center gap-2 text-muted hover:text-accent transition-colors duration-300 font-mono text-[10px] uppercase tracking-[0.1em] group" vid="468">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" vid="469"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" vid="470"></path><polyline points="22,6 12,13 2,6" vid="471"></polyline></svg>
+                                <span style="text-transform: none;" vid="472">hello@recpic.cz</span>
+                            </a>
+                            <a href="tel:+420123456789" class="flex items-center gap-2 text-muted hover:text-accent transition-colors duration-300 font-mono text-[10px] uppercase tracking-[0.1em] group" vid="473">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" vid="474"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" vid="475"></path></svg>
+                                <span vid="476">+420 123 456 789</span>
+                            </a>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </section>
+
+    
+    <script vid="477">
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const toggles = document.querySelectorAll('.faq-toggle');
+            toggles.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const currentItem = this.parentElement;
+                    const isActive = currentItem.classList.contains('active');
+                    document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
+                    if (!isActive) currentItem.classList.add('active');
+                });
+            });
+
+            
+            const tcElements = document.querySelectorAll('.timecode-ticker');
+            let frames = 0, seconds = 0, minutes = 0;
+            const pad = num => num.toString().padStart(2, '0');
+            
+            setInterval(() => {
+                frames++;
+                if(frames >= 24) { frames = 0; seconds++; }
+                if(seconds >= 60) { seconds = 0; minutes++; }
+                const tcStr = `TCR 00:${pad(minutes)}:${pad(seconds)}:${pad(frames)}`;
+                tcElements.forEach(el => el.innerText = tcStr);
+            }, 1000 / 24);
+
+            
+            const header = document.getElementById('main-header');
+            const progressBar = document.getElementById('scroll-progress');
+            
+            window.addEventListener('scroll', () => {
+                
+                if (window.scrollY > 50) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+                
+                
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                progressBar.style.width = scrolled + "%";
+            });
+
+            
+            window.addEventListener('scroll', () => {
+                document.querySelectorAll('.parallax').forEach(el => {
+                    const speed = el.getAttribute('data-speed') || 0.1;
+                    const rect = el.getBoundingClientRect();
+                    
+                    if(rect.top < window.innerHeight && rect.bottom > 0) {
+                        const yPos = (rect.top - window.innerHeight/2) * speed;
+                        el.style.transform = `translateY(${yPos}px)`;
+                    }
+                });
+            });
+
+            
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+            
+            
+            
+            
+            window.showPage = function(pageId) {
+                const target = document.getElementById(pageId);
+                if(target) target.scrollIntoView({ behavior: 'smooth' });
+            };
+        });
+    </script>
+
+
+</body></html>

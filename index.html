@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[REC]PIC — Cinematic Video Production</title>
+    <meta name="description"
+        content="RECPIC je kreativní video produkce. Tvoříme videa, která budují důvěru, značku a nové klienty. 16 let na trhu, 300+ projektů.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- ====== 1. HEADER ====== -->
+    <header id="main-header">
+        <a href="#section-hero" class="logo-link">
+            <span class="text-accent">[REC]</span><span class="text-pure">PIC</span>
+        </a>
+
+        <nav class="main-nav" id="mainNav">
+            <ul class="nav-links-list">
+                <li><a href="#section-hero" class="nav-link">O nás</a></li>
+                <li><a href="#section-portfolio" class="nav-link">Portfolio</a></li>
+                <li><a href="#section-problem" class="nav-link">Proč video</a></li>
+                <li><a href="#section-services" class="nav-link">Ai video</a></li>
+                <li><a href="#section-faq" class="nav-link">Kontakt</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <div class="lang-switch">
+                <span class="active">CZ</span> / <span>EN</span>
+            </div>
+            <a href="#section-faq" class="btn-outline header-cta">NEZÁVAZNĚ POPTAT</a>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ====== 2. HERO ====== -->
+    <section id="section-hero" class="hero">
+        <div class="hero-bg">
+            <video autoplay muted loop playsinline class="hero-video">
+                <source src="assets/video/hero-bg.webm" type="video/webm">
+            </video>
+            <div class="hero-gradient"></div>
+            <div class="hero-big-number parallax" data-speed="0.2">4</div>
+        </div>
+
+        <div class="hud-crosshair hud-tl"></div>
+        <div class="hud-crosshair hud-tr"></div>
+        <div class="hud-crosshair hud-bl"></div>
+        <div class="hud-crosshair hud-br"></div>
+
+        <div class="hero-content">
+            <div class="hero-inner reveal-up is-visible">
+                <div class="hero-eyebrow">
+                    <div class="flex items-center gap-2">
+                        <div class="status-dot"></div>
+                        <span class="rec-label">REC</span>
+                    </div>
+                    <div class="eyebrow-cycle">
+                        <div class="eyebrow-text">
+                            <span>Vyprávíme Vaše příběhy</span>
+                            <span>Buďte středem zájmu</span>
+                            <span>Emoce v pohybu</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h1>Video, které buduje důvěru, značku a nové klienty.</h1>
+
+                <p class="hero-sub">
+                    Nápad, scénář, produkce a postprodukce až po finální video. Jsme <span
+                        class="brand-highlight">[REC]</span>PIC videoprodukce — nástroj pro váš vizuální růst.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#section-faq" class="btn-primary">
+                        NEZÁVAZNĚ POPTAT
+                        <svg viewBox="0 0 24 24">
+                            <path d="M5 12h14M12 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                    <div class="flex flex-col gap-2">
+                        <div class="hero-stars">★★★★★</div>
+                        <div class="hero-stats">16 let na trhu / 300 dokončených projektů</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SYS Pillars -->
+        <div class="hero-pillars reveal-up delay-400">
+            <div class="hero-pillars-inner">
+                <div class="pillars-row">
+                    <div class="pillar">
+                        <span class="pillar-label">SYS.01</span>
+                        <span class="pillar-text">Vaše značka bude skutečně vidět</span>
+                    </div>
+                    <div class="pillar">
+                        <span class="pillar-label">SYS.02</span>
+                        <span class="pillar-text">Přirozený zájem o vaše služby</span>
+                    </div>
+                    <div class="pillar">
+                        <span class="pillar-label">SYS.03</span>
+                        <span class="pillar-text">Kvalitní video produkce za rozumnou cenu</span>
+                    </div>
+                </div>
+                <div class="pillar-divider"></div>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="scroll-indicator reveal-up delay-500 is-visible">
+            <div class="scroll-mouse">
+                <div class="scroll-dot"></div>
+            </div>
+            <span class="scroll-text">Scroll</span>
+        </div>
+    </section>
+
+    <!-- ====== 3. PROBLEM ====== -->
+    <section id="section-problem" class="section-problem">
+        <div class="noise-overlay"></div>
+        <div class="hud-crosshair hud-tl"></div>
+        <div class="hud-crosshair hud-tr"></div>
+        <div class="hud-crosshair hud-bl"></div>
+        <div class="hud-crosshair hud-br"></div>
+        <div class="timecode-ticker"></div>
+
+        <div class="problem-left">
+            <div class="problem-left-bg">
+                <img src="assets/images/problem-bg.jpg" alt="Problem Section Background" class="parallax"
+                    data-speed="0.1">
+                <div class="cinematic-overlay"></div>
+            </div>
+            <div class="problem-left-content reveal-up">
+                <div class="section-label">
+                    <div class="status-dot"></div>
+                    <span class="section-label-text">recording : problem</span>
+                </div>
+                <h1 class="problem-heading">Máte co říct jen to dnes nikdo</h1>
+                <div class="problem-subtext">
+                    <span>neposlouchá / nechápe / nepamatuje si</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-right">
+            <div class="problem-right-line"></div>
+            <div class="problem-bg-text parallax" data-speed="0.15">ERR</div>
+            <div class="err-items">
+                <div class="err-item reveal-up delay-100">
+                    <div class="err-line"></div>
+                    <div class="err-label">ERR 01</div>
+                    <p class="err-text">Lidé Váš obsah ignorují. Ne proto, že by nebyl důležitý, ale protože je
+                        nezaujme.</p>
+                </div>
+                <div class="err-item reveal-up delay-200">
+                    <div class="err-line"></div>
+                    <div class="err-label">ERR 02</div>
+                    <p class="err-text">Vysvětlujete složité věci pořád dokola. A stejně jim málokdo opravdu rozumí.</p>
+                </div>
+                <div class="err-item reveal-up delay-300">
+                    <div class="err-line"></div>
+                    <div class="err-label">ERR 03</div>
+                    <p class="err-text">Vaše komunikace nefunguje. Lidé si ji nepamatují a nerozhodují se podle ní.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== 4. SOLUTION ====== -->
+    <section class="section-solution">
+        <div class="noise-overlay"></div>
+        <div class="hud-crosshair hud-tl"></div>
+        <div class="hud-crosshair hud-tr"></div>
+        <div class="hud-crosshair hud-bl"></div>
+        <div class="hud-crosshair hud-br"></div>
+        <div class="timecode-ticker"></div>
+
+        <div class="solution-left">
+            <div class="solution-left-bg">
+                <img src="assets/images/solution-bg.jpg" alt="Solution Section Background">
+            </div>
+            <div class="solution-left-glow"></div>
+            <div class="solution-bg-number parallax" data-speed="0.1">01</div>
+            <div class="solution-content reveal-up">
+                <div class="section-label">
+                    <div class="status-dot"></div>
+                    <span class="section-label-text">recording: solution</span>
+                </div>
+                <h2 class="solution-heading">Video jako řešení</h2>
+                <div class="solution-subhead">Rozumíme tomu, protože to zažíváme s klienty v praxi.</div>
+            </div>
+        </div>
+
+        <div class="solution-right">
+            <div class="solution-right-line"></div>
+            <div class="solution-bg-brand parallax" data-speed="0.15">[REC]PIC</div>
+            <div class="solution-paragraphs">
+                <div class="sol-para reveal-up delay-100">
+                    <div class="sol-line"></div>
+                    <p class="sol-text">Vidíme, jak důležité informace zapadají v dlouhých textech, složité nabídky se
+                        špatně vysvětlují a obsah lidi jednoduše nebaví. A také víme, jak frustrující je, když
+                        komunikace bere čas i energii, ale výsledek se nedostavuje.</p>
+                </div>
+                <div class="sol-para reveal-up delay-200">
+                    <div class="sol-line"></div>
+                    <p class="sol-text">Právě proto naše kreativní video produkce <span
+                            class="text-accent font-medium">[REC]</span><span class="text-muted font-medium">PIC</span>
+                        dělá videa, která věci zjednoduší, zpřehlední a konečně rozfungují.</p>
+                </div>
+                <div class="sol-para reveal-up delay-300">
+                    <div class="sol-line"></div>
+                    <p class="sol-text">Na trhu působíme už 16 let. Ať už potřebujete natáčení rozhovoru, korporátní
+                        video nebo video pro sociální sítě, vždy vám dodáme funkční řešení.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== 5. STRATEGY ====== -->
+    <section id="section-strategy" class="section-strategy">
+        <div class="noise-overlay"></div>
+        <div class="hud-crosshair hud-dark hud-tl"></div>
+        <div class="hud-crosshair hud-dark hud-tr"></div>
+        <div class="hud-crosshair hud-dark hud-bl"></div>
+        <div class="hud-crosshair hud-dark hud-br"></div>
+
+        <div class="container relative z-10">
+            <div class="section-label" style="margin-bottom: 2.5rem;">
+                <div class="status-dot"></div>
+                <span class="section-label-text">Approach : Strategy</span>
+            </div>
+
+            <div class="strategy-grid">
+                <div class="strategy-col reveal-up delay-100">
+                    <div class="strategy-line"></div>
+                    <div class="strategy-label">01 // Execution</div>
+                    <h3>Jistota bez starostí</h3>
+                    <p>Nemusíte řešit techniku, štáb ani detaily. Produkci řešíme od nápadu po finální výstup. Rychle, v
+                        termínu a za dobrou cenu.</p>
+                </div>
+                <div class="strategy-col reveal-up delay-200">
+                    <div class="strategy-line"></div>
+                    <div class="strategy-label">02 // Purpose</div>
+                    <h3>Video, které funguje</h3>
+                    <p>Vždy řešíme, co má video skutečně splnit: vysvětlit složitou věc, podpořit důvěru, zaujmout na
+                        sítích nebo pomoci s náborem.</p>
+                </div>
+                <div class="strategy-col reveal-up delay-300">
+                    <div class="strategy-line"></div>
+                    <div class="strategy-label">03 // Impact</div>
+                    <h3>Srozumitelně a lidsky</h3>
+                    <p>Ať už reklamní video nebo promo video pro sociální sítě, produkty, služby i sdělení měníme na
+                        videa, kterým lidé lehce porozumí a reagují na ně.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="sys-divider">
+        <div class="sys-divider-label">SYS.DIV // 892.4</div>
+        <div class="sys-divider-dot"></div>
+        <div class="sys-divider-line"></div>
+    </div>
+
+    <!-- ====== 6. TESTIMONIALS ====== -->
+    <section class="section-testimonials">
+        <div class="noise-overlay"></div>
+        <div class="hud-crosshair hud-tl"></div>
+        <div class="hud-crosshair hud-tr"></div>
+        <div class="hud-crosshair hud-bl"></div>
+        <div class="hud-crosshair hud-br"></div>
+        <div class="parallax absolute pointer-events-none select-none"
+            style="top:50%;left:50%;transform:translate(-50%,-50%);font-size:25vw;font-weight:700;line-height:1;color:var(--accent-red);opacity:0.02;letter-spacing:-0.05em;z-index:0;"
+            data-speed="0.05">PROOF</div>
+
+        <div class="container relative z-10">
+            <div class="testimonials-grid">
+                <!-- Card 1 -->
+                <div class="testimonial-card glass-panel reveal-up delay-100">
+                    <div class="testimonial-top-avatar">
+                        <img src="assets/images/H_Nebeska_CAG.png" alt="Hana Nebeska">
+                    </div>
+                    <div class="testimonial-corner corner-tl"></div>
+                    <div class="testimonial-corner corner-br"></div>
+                    <svg class="testimonial-quote-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z">
+                        </path>
+                    </svg>
+                    <p class="testimonial-text">Potřebovali jsme jednoduše ukázat, že výroba CAG dveří je z velké části
+                        proces nejen pomocí strojů, ale také ruční práce. Video od RECPIC naši vizi převedlo do
+                        srozumitelného příběhu, který zákazníkovi tento proces jednoduchou formou představí. Děkujeme.
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">HN</div>
+                        <div>
+                            <div class="author-name">Hana Nebeska</div>
+                            <div class="author-company">CAG Dveře</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="testimonial-card glass-panel reveal-up delay-200">
+                    <div class="testimonial-top-avatar">
+                        <img src="assets/images/M_Vala_Muzeum.png" alt="Michal Vala">
+                    </div>
+                    <div class="testimonial-corner corner-tl"></div>
+                    <div class="testimonial-corner corner-br"></div>
+                    <svg class="testimonial-quote-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z">
+                        </path>
+                    </svg>
+                    <p class="testimonial-text">Jsme interaktivní muzeum v centru Prahy. Chtěli jsme přilákat víc
+                        návštěvníků. Byla to naše první spolupráce s Ivanem z RECPIC. Jeho tým dokázal skvěle přenést
+                        atmosféru muzea do kampaní, díky kterým lidé přesně vědí, proč k nám přijít.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MV</div>
+                        <div>
+                            <div class="author-name">Michal Vala</div>
+                            <div class="author-company">Interaktivní Muzeum</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="testimonial-card glass-panel reveal-up delay-300">
+                    <div class="testimonial-top-avatar">
+                        <img src="assets/images/Prema_Nutraq.png" alt="Přemysl Douša">
+                    </div>
+                    <div class="testimonial-corner corner-tl"></div>
+                    <div class="testimonial-corner corner-br"></div>
+                    <svg class="testimonial-quote-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z">
+                        </path>
+                    </svg>
+                    <p class="testimonial-text">Jako prodejci potravinových doplňků jsme spolupracovali s Ivanem na
+                        videích pro značku Maxulen. Všechno šlo hladce, videa pomohla rozptýlit pochybnosti kolem důvěry
+                        i účinků a výrazně zjednodušila online komunikaci — mohu doporučit.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">PD</div>
+                        <div>
+                            <div class="author-name">Přemysl Douša</div>
+                            <div class="author-company">Maxulen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="sys-divider">
+        <div class="sys-divider-label">SYS.CLIENTS // 892.4</div>
+        <div class="sys-divider-dot"></div>
+        <div class="sys-divider-line"></div>
+    </div>
+
+    <!-- ====== 7. CLIENT MARQUEE ====== -->
+    <section class="section-clients">
+        <div class="noise-overlay"></div>
+        <div class="relative z-10">
+            <div class="clients-label-row reveal-up">
+                <div class="clients-dot status-dot" style="width:6px;height:6px;"></div>
+                <span class="clients-label">Trusted Partners // 01</span>
+            </div>
+            <div class="marquee-wrapper reveal-up delay-100">
+                <div class="marquee-track">
+                    <div class="marquee-content">
+                        <img src="assets/logos/01_Arriello%20copy.png" alt="Arriello" class="client-logo">
+                        <img src="assets/logos/02_ceska_Spor.png" alt="Ceska Sporitelna" class="client-logo">
+                        <img src="assets/logos/03_Doosan_Logo%20copy.png" alt="Doosan" class="client-logo">
+                        <img src="assets/logos/04_Jagr.png" alt="Jagr" class="client-logo">
+                        <img src="assets/logos/05_logo_NutraQ.png" alt="NutraQ" class="client-logo">
+                        <img src="assets/logos/06_Milos-lg-bw-RGB.png" alt="Milos" class="client-logo">
+                        <img src="assets/logos/07_Notiono.png" alt="Notiono" class="client-logo">
+                        <img src="assets/logos/08_skoda%20auto.png" alt="Skoda Auto" class="client-logo">
+                        <img src="assets/logos/09_vodafone-logo-horiz-rgb-black.png" alt="Vodafone" class="client-logo">
+                    </div>
+                    <div class="marquee-content">
+                        <img src="assets/logos/01_Arriello%20copy.png" alt="Arriello" class="client-logo">
+                        <img src="assets/logos/02_ceska_Spor.png" alt="Ceska Sporitelna" class="client-logo">
+                        <img src="assets/logos/03_Doosan_Logo%20copy.png" alt="Doosan" class="client-logo">
+                        <img src="assets/logos/04_Jagr.png" alt="Jagr" class="client-logo">
+                        <img src="assets/logos/05_logo_NutraQ.png" alt="NutraQ" class="client-logo">
+                        <img src="assets/logos/06_Milos-lg-bw-RGB.png" alt="Milos" class="client-logo">
+                        <img src="assets/logos/07_Notiono.png" alt="Notiono" class="client-logo">
+                        <img src="assets/logos/08_skoda%20auto.png" alt="Skoda Auto" class="client-logo">
+                        <img src="assets/logos/09_vodafone-logo-horiz-rgb-black.png" alt="Vodafone" class="client-logo">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== 8. SERVICES (White) ====== -->
+    <section id="section-services" class="section-services">
+        <div class="noise-overlay"></div>
+        <div class="hud-crosshair hud-dark hud-tl"></div>
+        <div class="hud-crosshair hud-dark hud-tr"></div>
+        <div class="hud-crosshair hud-dark hud-bl"></div>
+        <div class="hud-crosshair hud-dark hud-br"></div>
+
+        <div class="container relative z-10">
+            <div class="services-grid">
+                <div class="service-card reveal-up">
+                    <div class="service-corner sc-tl"></div>
+                    <div class="service-corner sc-tr"></div>
+                    <div class="service-corner sc-bl"></div>
+                    <div class="service-corner sc-br"></div>
+                    <h3>Konzultace zdarma</h3>
+                    <p>Zoom call, mobil nebo email. Nevíte si rady a potřebujete poradit? Ozvěte se nám.</p>
+                </div>
+                <div class="service-card reveal-up delay-100">
+                    <div class="service-corner sc-tl"></div>
+                    <div class="service-corner sc-tr"></div>
+                    <div class="service-corner sc-bl"></div>
+                    <div class="service-corner sc-br"></div>
+                    <h3>Scénář</h3>
+                    <p>Bez toho to prostě nejde. Vytvoříme promyšlený scénář s jasným sdělením a silným příběhem.</p>
+                </div>
+                <div class="service-card reveal-up delay-200">
+                    <div class="service-corner sc-tl"></div>
+                    <div class="service-corner sc-tr"></div>
+                    <div class="service-corner sc-bl"></div>
+                    <div class="service-corner sc-br"></div>
+                    <h3>Rozpočet</h3>
+                    <p>Každý projekt je jiný, víme to. Dostanete přehlednou kalkulaci a řešení na míru vašim možnostem.
+                    </p>
+                </div>
+                <div class="service-card reveal-up delay-100">
+                    <div class="service-corner sc-tl"></div>
+                    <div class="service-corner sc-tr"></div>
+                    <div class="service-corner sc-bl"></div>
+                    <div class="service-corner sc-br"></div>
+                    <h3>Casting a lokace</h3>
+                    <p>Zajistíme vhodné herce i lokace tak, aby vše vizuálně i obsahově sedělo záměru videa.</p>
+                </div>
+                <div class="service-card reveal-up delay-200">
+                    <div class="service-corner sc-tl"></div>
+                    <div class="service-corner sc-tr"></div>
+                    <div class="service-corner sc-bl"></div>
+                    <div class="service-corner sc-br"></div>
+                    <h3>Filmování a technika</h3>
+                    <p>Profesionální vybavení, světla, dron i kvalitní audio technika – základ pro opravdu skvělé
+                        výsledky.</p>
+                </div>
+                <div class="service-card reveal-up delay-300">
+                    <div class="service-corner sc-tl"></div>
+                    <div class="service-corner sc-tr"></div>
+                    <div class="service-corner sc-bl"></div>
+                    <div class="service-corner sc-br"></div>
+                    <h3>Postprodukce</h3>
+                    <p>Kompletní střih, barvy, zvuk i grafika. Hotové video připravené k publikování.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Divider -->
+    <div id="section-portfolio" class="sys-divider">
+        <div class="sys-divider-label">SYS.PORTFOLIO // 892.6</div>
+        <div class="sys-divider-dot"></div>
+        <div class="sys-divider-line"></div>
+    </div>
+
+    <!-- ====== 9. PORTFOLIO ====== -->
+    <section class="section-portfolio">
+        <div class="noise-overlay"></div>
+        <div class="hud-crosshair hud-tl"></div>
+        <div class="hud-crosshair hud-tr"></div>
+        <div class="hud-crosshair hud-bl"></div>
+        <div class="hud-crosshair hud-br"></div>
+
+        <div class="container relative z-10">
+            <div class="portfolio-grid">
+                <div class="portfolio-card glass-panel reveal-up" data-portfolio-id="01">
+                    <div class="portfolio-corner pc-tl"></div>
+                    <div class="portfolio-corner pc-tr"></div>
+                    <div class="portfolio-corner pc-bl"></div>
+                    <div class="portfolio-corner pc-br"></div>
+                </div>
+                <div class="portfolio-card glass-panel reveal-up delay-100" data-portfolio-id="02">
+                    <div class="portfolio-corner pc-tl"></div>
+                    <div class="portfolio-corner pc-tr"></div>
+                    <div class="portfolio-corner pc-bl"></div>
+                    <div class="portfolio-corner pc-br"></div>
+                </div>
+                <div class="portfolio-card glass-panel reveal-up delay-200" data-portfolio-id="03">
+                    <div class="portfolio-corner pc-tl"></div>
+                    <div class="portfolio-corner pc-tr"></div>
+                    <div class="portfolio-corner pc-bl"></div>
+                    <div class="portfolio-corner pc-br"></div>
+                </div>
+                <div class="portfolio-card glass-panel reveal-up delay-100" data-portfolio-id="04">
+                    <div class="portfolio-corner pc-tl"></div>
+                    <div class="portfolio-corner pc-tr"></div>
+                    <div class="portfolio-corner pc-bl"></div>
+                    <div class="portfolio-corner pc-br"></div>
+                </div>
+                <div class="portfolio-card glass-panel reveal-up delay-200" data-portfolio-id="05">
+                    <div class="portfolio-corner pc-tl"></div>
+                    <div class="portfolio-corner pc-tr"></div>
+                    <div class="portfolio-corner pc-bl"></div>
+                    <div class="portfolio-corner pc-br"></div>
+                </div>
+                <div class="portfolio-card glass-panel reveal-up delay-300" data-portfolio-id="06">
+                    <div class="portfolio-corner pc-tl"></div>
+                    <div class="portfolio-corner pc-tr"></div>
+                    <div class="portfolio-corner pc-bl"></div>
+                    <div class="portfolio-corner pc-br"></div>
+                </div>
+            </div>
+            <div class="flex justify-start reveal-up delay-400">
+                <a href="#section-faq" class="btn-ghost">Nezávazně poptat</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== 10. FAQ + FOOTER ====== -->
+    <section id="section-faq" class="section-faq">
+        <div class="noise-overlay"></div>
+        <div class="hud-crosshair hud-tl"></div>
+        <div class="hud-crosshair hud-tr"></div>
+        <div class="hud-crosshair hud-bl"></div>
+        <div class="hud-crosshair hud-br"></div>
+        <div class="faq-glow"></div>
+
+        <div class="container relative z-10 flex-grow flex flex-col justify-between"
+            style="display:flex;flex-direction:column;justify-content:space-between;flex-grow:1;">
+            <div>
+                <div class="faq-header reveal-up">
+                    <div class="faq-header-label">
+                        <div class="faq-header-label-inner">
+                            <div class="status-dot"></div>
+                            SYS.FAQ // 10.00
+                        </div>
+                        <div class="faq-header-line"></div>
+                    </div>
+                    <h2>Často kladené dotazy</h2>
+                </div>
+
+                <div class="faq-list reveal-up delay-100">
+                    <div class="faq-item">
+                        <button class="faq-toggle">
+                            <span>1. Kolik stojí firemní video a co všechno je v ceně?</span>
+                            <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                        <div class="faq-content-wrapper">
+                            <div class="faq-content-inner">
+                                <div class="faq-answer-panel">
+                                    <p>Cena se nejčastěji pohybuje mezi 50–250 tisíci Kč podle rozsahu projektu. Záleží
+                                        na délce videa, počtu natáčecích dní, lokacích, počtu kamer, náročnosti
+                                        postprodukce nebo animací. Vždy připravujeme rozpočet na míru – bez skrytých
+                                        položek. Součástí bývá scénář, natáčení, střih, hudba, barevné korekce i výstupy
+                                        pro sociální sítě.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-toggle">
+                            <span>2. Jak dlouho trvá výroba videa?</span>
+                            <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                        <div class="faq-content-wrapper">
+                            <div class="faq-content-inner">
+                                <div class="faq-answer-panel">
+                                    <p>Standardní firemní video obvykle vzniká během 3–6 týdnů. Kratší formáty
+                                        (rozhovory, eventové video) mohou být hotové rychleji. Záleží hlavně na
+                                        schvalovacím procesu a rozsahu příprav. Termín vždy nastavujeme realisticky a
+                                        držíme ho.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-toggle">
+                            <span>3. Pomůžete nám i s nápadem a scénářem?</span>
+                            <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                        <div class="faq-content-wrapper">
+                            <div class="faq-content-inner">
+                                <div class="faq-answer-panel">
+                                    <p>Ano. Většina klientů nepřichází s hotovým scénářem – a to je v pořádku. Nejprve
+                                        si ujasníme cíl videa (brand, nábor, obchod, onboarding…) a podle něj navrhneme
+                                        koncept i strukturu. Umíme převést složité informace do srozumitelného příběhu.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-toggle">
+                            <span>4. Co když nemáme zkušenosti s natáčením?</span>
+                            <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                        <div class="faq-content-wrapper">
+                            <div class="faq-content-inner">
+                                <div class="faq-answer-panel">
+                                    <p>To je běžná situace. Provedeme vás celým procesem krok za krokem – od přípravy až
+                                        po finální výstup. Řekneme vám, jak se připravit, co si nachystat a během
+                                        natáčení vás budeme přirozeně vést, aby výsledek působil profesionálně a zároveň
+                                        autenticky.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-toggle">
+                            <span>5. Kolik revizí je možné udělat?</span>
+                            <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                        <div class="faq-content-wrapper">
+                            <div class="faq-content-inner">
+                                <div class="faq-answer-panel">
+                                    <p>Standardně počítáme s několika koly úprav v rámci domluveného rozsahu. Naším
+                                        cílem není „rychle odevzdat", ale vytvořit video, se kterým budete opravdu
+                                        spokojeni. Zároveň držíme proces efektivní, aby se projekt zbytečně
+                                        neprotahoval.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-toggle">
+                            <span>6. Natáčíte jen v Praze, nebo po celé ČR?</span>
+                            <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                        <div class="faq-content-wrapper">
+                            <div class="faq-content-inner">
+                                <div class="faq-answer-panel">
+                                    <p>Sídlíme v Praze, ale realizujeme projekty po celé České republice. U větších
+                                        zakázek není problém ani zahraničí. Dopravu a logistiku řešíme jako součást
+                                        produkce.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-toggle">
+                            <span>7. Jaké typy videí pro firmy nejčastěji tvoříte?</span>
+                            <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                        <div class="faq-content-wrapper">
+                            <div class="faq-content-inner">
+                                <div class="faq-answer-panel">
+                                    <p>Nejčastěji jde o: firemní a brandová videa, náborová videa a employer branding,
+                                        eventová videa a záznamy konferencí, rozhovory a podcasty, produktová a
+                                        technologická videa. Pracujeme s jednotlivci a firmami z oblasti technologií,
+                                        IT, farmacie, developmentu, financí nebo vzdělávání.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-toggle">
+                            <span>8. Dokáže video opravdu zvýšit konverze nebo pomoci obchodu?</span>
+                            <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                        <div class="faq-content-wrapper">
+                            <div class="faq-content-inner">
+                                <div class="faq-answer-panel">
+                                    <p>Video samo o sobě není zázrak – ale správně navržené video dokáže výrazně
+                                        zjednodušit vysvětlení produktu, zvýšit důvěru a zkrátit rozhodovací proces. V
+                                        B2B prostředí často nahrazuje desítky slidů prezentací a pomáhá obchodníkům
+                                        rychleji uzavírat zakázky.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-toggle">
+                            <span>9. Co všechno zajišťujete v rámci produkce?</span>
+                            <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                        <div class="faq-content-wrapper">
+                            <div class="faq-content-inner">
+                                <div class="faq-answer-panel">
+                                    <p>Zajišťujeme kompletní servis: návrh konceptu a scénáře, harmonogram a plán
+                                        natáčení, výběr lokací, techniku a štáb, případný casting, střih, hudbu, barevné
+                                        korekce, animace, titulky a formátování pro sociální sítě.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-toggle">
+                            <span>10. Jak poznáme, že jste pro nás ten správný partner?</span>
+                            <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                        <div class="faq-content-wrapper">
+                            <div class="faq-content-inner">
+                                <div class="faq-answer-panel">
+                                    <p>Pokud hledáte spolehlivý tým, který dodrží termín, komunikuje otevřeně a přemýšlí
+                                        nad výsledkem, ne jen nad hezkým obrazem, pravděpodobně si budeme rozumět.
+                                        Nejlepší je krátká úvodní konzultace – během ní zjistíme, jestli dává spolupráce
+                                        smysl pro obě strany.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:2rem;margin-bottom:4rem;" class="reveal-up delay-200">
+                    <button class="btn-ghost">Nezávazně poptat</button>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="site-footer reveal-up delay-300">
+                <div class="footer-divider-row">
+                    <div class="footer-divider-label">SYS. Footer</div>
+                    <div class="footer-divider-line"></div>
+                </div>
+
+                <footer class="footer-inner">
+                    <a href="#section-hero" class="logo-link">
+                        <span class="text-accent">[REC]</span><span class="text-pure">PIC</span>
+                    </a>
+
+                    <div class="footer-links-wrap">
+                        <div class="footer-links-row">
+                            <a href="#" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                </svg>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="https://www.linkedin.com/in/ivan-zbiral-5b900617" target="_blank" rel="noopener noreferrer" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
+                                    </path>
+                                    <rect x="2" y="9" width="4" height="12"></rect>
+                                    <circle cx="4" cy="4" r="2"></circle>
+                                </svg>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="https://www.facebook.com/RecPic" target="_blank" rel="noopener noreferrer" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                                </svg>
+                                <span>Facebook</span>
+                            </a>
+                            <a href="https://www.youtube.com/@recpic_001" target="_blank" rel="noopener noreferrer" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z">
+                                    </path>
+                                    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                                </svg>
+                                <span>YouTube</span>
+                            </a>
+                        </div>
+                        <div class="footer-links-row">
+                            <a href="mailto:ivan@recpic.cz" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                    </path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                <span class="email-text">ivan@recpic.cz</span>
+                            </a>
+                            <a href="tel:+420774339303" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                    </path>
+                                </svg>
+                                <span>+420 774 339 303</span>
+                            </a>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== VIDEO MODAL ====== -->
+    <div id="video-modal" class="video-modal" aria-hidden="true">
+        <div class="video-modal-backdrop" id="video-modal-close-bg"></div>
+        <div class="video-modal-content">
+            <button class="video-modal-close" id="video-modal-close-btn" aria-label="Close modal">&times;</button>
+            <div class="video-responsive-wrapper">
+                <iframe id="video-modal-iframe" src="" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

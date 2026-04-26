@@ -1,0 +1,31 @@
+How to Add New Client Logos to the Carousel
+===========================================
+
+1. PREPARE THE LOGO
+-------------------
+Ideally, use an image format like .png or .svg with a transparent background. 
+Try to match the naming convention for consistency, for example: `10_new_company.png`.
+
+2. UPLOAD THE LOGO
+------------------
+Drop your new logo file into the following directory inside your project folder:
+`assets/logos/`
+
+3. UPDATE THE HTML FILE
+-----------------------
+Open `index.html` in your code editor and scroll down to the "Client Marquee" section (roughly around line 370). 
+Look for the two HTML div blocks labeled: `<div class="marquee-content">`
+
+You will see the list of existing logo image tags. To add a new logo, add a new `<img>` tag to the list. 
+
+IMPORTANT: You must add the exact same line of code to *BOTH* `<div class="marquee-content">` sections, otherwise the carousel loop will look broken when scrolling.
+
+Example:
+If your new logo is named `10_new_company.png`, the line you add to both sections should look like this:
+
+    <img src="assets/logos/10_new_company.png" alt="New Company Name" class="client-logo">
+
+4. SAVE AND TEST
+----------------
+Save `index.html` and refresh your browser. You will see the new logo embedded in the carousel!
+The images will automatically turn slightly transparent and gray, but will show true colors when hovered over.
