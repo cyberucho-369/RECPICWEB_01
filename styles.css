@@ -920,7 +920,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
   .process-page-grid { grid-template-columns: repeat(2, 1fr); }
   .page-transition-label, .page-transition-label-dark { left: 2rem; }
   .page-transition-accent-line, .page-transition-accent-line-dark { right: 2rem; }
-  .phases-grid { grid-template-columns: repeat(3, 1fr); }
+  .phases-grid { grid-template-columns: 1fr; gap: 3rem; }
   .whychoose-layout { grid-template-columns: 1fr 1fr; gap: 3rem; }
 }
 
@@ -951,9 +951,10 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
   .collab-heading { font-size: 1.75rem; }
   .page-transition-label, .page-transition-label-dark { left: 1.5rem; font-size: 9px; }
   .page-transition-accent-line, .page-transition-accent-line-dark { right: 1.5rem; }
-  .phases-grid { grid-template-columns: 1fr; }
-  .whychoose-layout { grid-template-columns: 1fr; }
-  .whychoose-bg-right { position: relative; width: 100%; height: 350px; }
+  .phases-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .section-whychoose { padding-top: 0; display: flex; flex-direction: column; }
+  .whychoose-layout { grid-template-columns: 1fr; padding-top: 3rem; }
+  .whychoose-bg-right { position: relative; width: 100%; height: 350px; order: -1; }
   .whychoose-heading { font-size: 1.75rem; }
 }
 
