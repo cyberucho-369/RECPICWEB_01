@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[REC]PIC — O nás & Proces</title>
+    <meta name="description"
+        content="Poznáte tým RECPIC — kreativní video produkce z Prahy. 16 let zkušeností, spolehlivost, profesionální přístup a kreativita s AI technologiemi.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- ====== 1. HEADER ====== -->
+    <header id="main-header">
+        <a href="index.html" class="logo-link">
+            <span class="text-accent">[REC]</span><span class="text-pure">PIC</span>
+        </a>
+
+        <nav class="main-nav" id="mainNav">
+            <ul class="nav-links-list">
+                <li><a href="o-nas.html" class="nav-link active">O nás</a></li>
+                <li><a href="index.html#section-portfolio" class="nav-link">Portfolio</a></li>
+                <li><a href="index.html#section-problem" class="nav-link">Proč video</a></li>
+                <li><a href="index.html#section-services" class="nav-link">Ai video</a></li>
+                <li><a href="index.html#section-faq" class="nav-link">Kontakt</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <div class="lang-switch">
+                <span class="active">CZ</span> / <span>EN</span>
+            </div>
+            <a href="index.html#section-faq" class="btn-outline header-cta">NEZÁVAZNĚ POPTAT</a>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ====== 2. ABOUT HERO ====== -->
+    <section id="section-about" class="about-hero">
+        <div class="noise-overlay"></div>
+        <div class="hud-crosshair hud-tl"></div>
+        <div class="hud-crosshair hud-tr"></div>
+        <div class="hud-crosshair hud-bl"></div>
+        <div class="hud-crosshair hud-br"></div>
+
+        <div class="about-hero-inner">
+            <div class="about-content-left">
+                <div class="about-section-header reveal-up">
+                    <div class="status-dot"></div>
+                    <h1 class="about-heading">O nás</h1>
+                </div>
+
+                <div class="about-info-block reveal-up delay-100">
+                    <span class="about-subheadline">Spolehlivost</span>
+                    <p class="about-paragraph">
+                        Jsme reklamní video produkce z Prahy. Parta zkušených filmařů, kterou spojuje nadšení pro
+                        vizuální vyprávění příběhů. Už víc než 10 let tvoříme videa pro firmy, technologické
+                        společnosti, reklamní agentury i značky, které chtějí zaujmout nejen na sociálních sítích.
+                        Stojíme si za tím, co slíbíme, a vždy dodáváme kvalitní výsledek v domluveném termínu.
+                    </p>
+                </div>
+
+                <div class="about-info-block reveal-up delay-200">
+                    <span class="about-subheadline">Profesionální přístup</span>
+                    <p class="about-paragraph">
+                        Klademe důraz na individuální přístup ke každému projektu, detailní přípravu a profesionální
+                        realizaci. Spolehněte se na naše zkušenosti a udělejte z vašeho příběhu jedinečný zážitek bez
+                        ohledu na velikost zakázky.
+                    </p>
+                </div>
+
+                <div class="about-info-block reveal-up delay-300">
+                    <span class="about-subheadline">Kreativita</span>
+                    <p class="about-paragraph">
+                        Kombinujeme kreativitu s nejmodernějšími technologiemi, abychom tvořili videa, která skutečně
+                        zaujmou. Díky generativní AI do produkce vnášíme dříve nedosažitelné vizuální efekty a unikátní
+                        animace. Tato inovace nám umožňuje tvořit originální obsah rychleji a přesně na míru vaší vizi.
+                    </p>
+                </div>
+            </div>
+
+            <div class="about-content-right reveal-up delay-200">
+                <img src="assets/images/solution-bg.jpg" alt="RECPIC tým při práci" class="about-visual-img parallax"
+                    data-speed="0.06">
+                <div class="about-visual-overlay"></div>
+                <div class="about-visual-grid"></div>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="scroll-indicator reveal-up delay-500">
+            <div class="scroll-mouse">
+                <div class="scroll-dot"></div>
+            </div>
+            <span class="scroll-text">Scroll</span>
+        </div>
+
+        <div class="timecode-ticker about-timecode"></div>
+    </section>
+
+    <!-- ====== TRANSITION: Black → White ====== -->
+    <div class="page-transition">
+        <div class="page-transition-spacer-dark"></div>
+        <div class="page-transition-line">
+            <div class="page-transition-label">SYS.TRANSITION // 1.0</div>
+            <div class="page-transition-diamond"></div>
+            <div class="page-transition-accent-line"></div>
+        </div>
+        <div class="page-transition-spacer-light"></div>
+    </div>
+
+    <!-- ====== 3. PROCESS / WORKFLOW (White) ====== -->
+    <section id="section-process" class="section-process-page">
+        <div class="noise-overlay" style="opacity: 0.05;"></div>
+        <div class="hud-crosshair hud-dark hud-tl"></div>
+        <div class="hud-crosshair hud-dark hud-tr"></div>
+        <div class="hud-crosshair hud-dark hud-bl"></div>
+        <div class="hud-crosshair hud-dark hud-br"></div>
+
+        <div class="container relative z-10">
+            <div class="process-page-label reveal-up">
+                <span class="process-label-text">PROCESS // WORKFLOW</span>
+            </div>
+
+            <div class="process-page-grid">
+                <!-- Card 1 -->
+                <div class="process-card reveal-up delay-100">
+                    <div class="process-corner pc-tl"></div>
+                    <div class="process-corner pc-tr"></div>
+                    <div class="process-corner pc-bl"></div>
+                    <div class="process-corner pc-br"></div>
+                    <h3>Idea a scénář</h3>
+                    <p>Společně promyslíme, co má video sdělit. Pomůžeme s nápadem, napíšeme scénář a vytvoříme jasný
+                        plán, který bude ladit s vaší značkou i cílovou skupinou.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="process-card reveal-up delay-200">
+                    <div class="process-corner pc-tl"></div>
+                    <div class="process-corner pc-tr"></div>
+                    <div class="process-corner pc-bl"></div>
+                    <div class="process-corner pc-br"></div>
+                    <h3>Filmování</h3>
+                    <p>Zajistíme štáb, techniku i lokaci. Během natáčení klademe důraz na kvalitu obrazu i zvuku –
+                        víme, že detaily tvoří celek.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="process-card reveal-up delay-300">
+                    <div class="process-corner pc-tl"></div>
+                    <div class="process-corner pc-tr"></div>
+                    <div class="process-corner pc-bl"></div>
+                    <div class="process-corner pc-br"></div>
+                    <h3>Postprodukce</h3>
+                    <p>Vybereme nejlepší záběry, přidáme hudbu, titulky, grafiku a pokud je potřeba tak i VoiceOver.
+                        Výsledné video doladíme podle účelu a výstupů (web, sociální sítě, tv reklama).</p>
+                </div>
+                <!-- Card 4 -->
+                <div class="process-card reveal-up delay-400">
+                    <div class="process-corner pc-tl"></div>
+                    <div class="process-corner pc-tr"></div>
+                    <div class="process-corner pc-bl"></div>
+                    <div class="process-corner pc-br"></div>
+                    <h3>Připomínky a schválení</h3>
+                    <p>Hotové video vám pošleme ke schválení. Drobné úpravy zapracujeme podle vašich připomínek – až
+                        budete spokojeni, projekt uzavřeme.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== TRANSITION: White → Black ====== -->
+    <div class="page-transition">
+        <div class="page-transition-spacer-light"></div>
+        <div class="page-transition-line-dark">
+            <div class="page-transition-label-dark">SYS.DIV // 892.5</div>
+            <div class="page-transition-diamond"></div>
+            <div class="page-transition-accent-line-dark"></div>
+        </div>
+        <div class="page-transition-spacer-dark"></div>
+    </div>
+
+    <!-- ====== 4. COLLABORATION GUIDE ====== -->
+    <section id="section-collab" class="section-collab">
+        <div class="noise-overlay"></div>
+        <div class="hud-crosshair hud-tl"></div>
+        <div class="hud-crosshair hud-tr"></div>
+
+        <div class="container relative z-10">
+            <div class="collab-header reveal-up">
+                <h2 class="collab-heading">Jak spolupracovat s video produkcí</h2>
+                <div class="collab-label">Průvodce pro klienty</div>
+                <p class="collab-intro">
+                    Věříme, že nejlepší videa vznikají díky skvělé spolupráci. Ať už plánujete korporátní video, školení
+                    nebo představení produktu, tady je náš průvodce krok za krokem, jak vytěžit maximum ze spolupráce
+                    s profesionální agenturou, jako jsme my.
+                </p>
+            </div>
+
+            <div class="collab-accordion">
+                <!-- Accordion 1 -->
+                <div class="collab-accordion-item reveal-up delay-100">
+                    <button class="collab-accordion-toggle" aria-expanded="false">
+                        <h4>1. Ujasněte si cíle a cílovou skupinu</h4>
+                        <div class="collab-toggle-icon">
+                            <div class="collab-icon-h"></div>
+                            <div class="collab-icon-v"></div>
+                        </div>
+                    </button>
+                    <div class="collab-accordion-content">
+                        <div class="collab-accordion-inner">
+                            <p>
+                                <span class="collab-highlight">Co můžete udělat vy:</span>
+                                Ujasněte si účel videa: je to propagační video pro budování povědomí, výukové video pro
+                                školení, generování leadů nebo interní komunikace?<br><br>
+                                Definujte cílovou skupinu: obor, pozice, lokalita nebo interní tým. Je to korporátní
+                                video nebo spíše video pro malé firmy?<br><br>
+                                Stanovte si klíčové ukazatele úspěchu: např. míra zapojení, konverze,
+                                sledovanost.<br><br>
+                                <span class="collab-highlight">Tip:</span> Zamyslete se, kde bude video použito –
+                                LinkedIn, web, interní síť – a zda se hodí např. jako promo video pro sociální sítě.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion 2 -->
+                <div class="collab-accordion-item reveal-up delay-200">
+                    <button class="collab-accordion-toggle" aria-expanded="false">
+                        <h4>2. Připravte krátké zadání (brief)</h4>
+                        <div class="collab-toggle-icon">
+                            <div class="collab-icon-h"></div>
+                            <div class="collab-icon-v"></div>
+                        </div>
+                    </button>
+                    <div class="collab-accordion-content">
+                        <div class="collab-accordion-inner">
+                            <p>
+                                <span class="collab-highlight">Co můžete udělat vy:</span>
+                                Napište stručný brief obsahující: klíčové sdělení, tón značky, vizuální styl, rozpočet a
+                                časový rámec.<br><br>
+                                Specifikujte obsah, který musí být ve videu: např. produkt, vedení
+                                společnosti.<br><br>
+                                <span class="collab-highlight">Tip:</span> Rádi vám s briefem pomůžeme – vaše reklamní
+                                video nemusí mít dokonalé zadání hned na začátku!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion 3 -->
+                <div class="collab-accordion-item reveal-up delay-300">
+                    <button class="collab-accordion-toggle" aria-expanded="false">
+                        <h4>3. Úvodní schůzka a návrh konceptu</h4>
+                        <div class="collab-toggle-icon">
+                            <div class="collab-icon-h"></div>
+                            <div class="collab-icon-v"></div>
+                        </div>
+                    </button>
+                    <div class="collab-accordion-content">
+                        <div class="collab-accordion-inner">
+                            <p>
+                                <span class="collab-highlight">Co dělá RECPIC:</span>
+                                Vedeme úvodní schůzku, kde sladíme strategii, tón a termíny.<br>
+                                Připravíme návrh konceptu, kde je klíčová tvorba scénáře nebo storyboardu.<br><br>
+                                <span class="collab-highlight">Co můžete udělat vy:</span>
+                                Přineste si podklady, předešlé ukázky nebo vnitřní know-how.<br>
+                                Dejte včasnou zpětnou vazbu, co se vám líbí a čemu se vyhnout.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion 4 -->
+                <div class="collab-accordion-item reveal-up delay-100">
+                    <button class="collab-accordion-toggle" aria-expanded="false">
+                        <h4>4. Předprodukce</h4>
+                        <div class="collab-toggle-icon">
+                            <div class="collab-icon-h"></div>
+                            <div class="collab-icon-v"></div>
+                        </div>
+                    </button>
+                    <div class="collab-accordion-content">
+                        <div class="collab-accordion-inner">
+                            <p>
+                                <span class="collab-highlight">Co se děje:</span>
+                                Výběr lokací, obsazení, plánování, povolení, seznamy záběrů a logistika.<br><br>
+                                <span class="collab-highlight">Co můžete udělat vy:</span>
+                                Zajistěte interní schválení pro natáčení firemního videa, svolení od účinkujících nebo
+                                dodržení interních pravidel.<br>
+                                Pokuste se rychle schválit scénář a harmonogramy, aby vše běželo podle plánu.<br><br>
+                                <span class="collab-highlight">Tip:</span> Určete jednu kontaktní osobu pro hladkou
+                                komunikaci.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion 5 -->
+                <div class="collab-accordion-item reveal-up delay-200">
+                    <button class="collab-accordion-toggle" aria-expanded="false">
+                        <h4>5. Natáčení (produkce)</h4>
+                        <div class="collab-toggle-icon">
+                            <div class="collab-icon-h"></div>
+                            <div class="collab-icon-v"></div>
+                        </div>
+                    </button>
+                    <div class="collab-accordion-content">
+                        <div class="collab-accordion-inner">
+                            <p>
+                                <span class="collab-highlight">Co dělá RECPIC:</span>
+                                Náš tým se postará o vše – kameru, světla, zvuk, režii i koordinaci účinkujících.
+                                Zajistíme profesionální reklamní natáčení v Praze nebo po celé České republice.<br><br>
+                                <span class="collab-highlight">Co můžete udělat vy:</span>
+                                Buďte na place osobně, nebo pověřte někoho z týmu, kdo vás zastoupí.<br>
+                                Pokud dojde k nečekaným změnám, pokuste se je rychle schválit.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion 6 -->
+                <div class="collab-accordion-item reveal-up delay-300">
+                    <button class="collab-accordion-toggle" aria-expanded="false">
+                        <h4>6. Postprodukce</h4>
+                        <div class="collab-toggle-icon">
+                            <div class="collab-icon-h"></div>
+                            <div class="collab-icon-v"></div>
+                        </div>
+                    </button>
+                    <div class="collab-accordion-content">
+                        <div class="collab-accordion-inner">
+                            <p>
+                                <span class="collab-highlight">Co se děje:</span>
+                                Střih, grafika, barevné korekce, zvukový design a hudba.<br><br>
+                                <span class="collab-highlight">Co můžete udělat vy:</span>
+                                Zkontrolujte první verze videa a dejte konkrétní a souhrnnou zpětnou vazbu.<br>
+                                Držte se domluveného počtu revizí. Šetří to čas i náklady.<br><br>
+                                <span class="collab-highlight">Tip:</span> Zapojte rozhodující osoby včas, aby se
+                                předešlo pozdním změnám.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion 7 -->
+                <div class="collab-accordion-item reveal-up delay-100">
+                    <button class="collab-accordion-toggle" aria-expanded="false">
+                        <h4>7. Dodání a publikace</h4>
+                        <div class="collab-toggle-icon">
+                            <div class="collab-icon-h"></div>
+                            <div class="collab-icon-v"></div>
+                        </div>
+                    </button>
+                    <div class="collab-accordion-content">
+                        <div class="collab-accordion-inner">
+                            <p>
+                                <span class="collab-highlight">Co dělá RECPIC:</span>
+                                Finální verze, například video pro web nebo video pro sociální sítě v patřičných
+                                formátech.<br>
+                                Dle domluvy: teaser klipy, náhledové obrázky, titulky nebo krátké verze.<br><br>
+                                <span class="collab-highlight">Co můžete udělat vy:</span>
+                                Sdílejte s námi, jak a kdy plánujete video zveřejnit.<br>
+                                Označte RECPIC při sdílení na sociálních sítích. Rádi šíříme společné úspěchy s našimi
+                                klienty!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary quote -->
+            <div class="collab-summary reveal-up delay-200">
+                <p>Skvělé video vzniká díky spolupráci. Když máte jasné cíle, rychle reagujete a dáváte kvalitní
+                    zpětnou vazbu, pomáháte nám odvést tu nejlepší práci.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== FOOTER ====== -->
+    <section class="section-footer-wrap">
+        <div class="noise-overlay"></div>
+        <div class="container relative z-10 flex-col" style="display:flex;flex-direction:column;">
+            <div class="site-footer reveal-up delay-300">
+                <div class="footer-divider-row">
+                    <div class="footer-divider-label">SYS. Footer</div>
+                    <div class="footer-divider-line"></div>
+                </div>
+
+                <footer class="footer-inner">
+                    <a href="index.html" class="logo-link">
+                        <span class="text-accent">[REC]</span><span class="text-pure">PIC</span>
+                    </a>
+
+                    <div class="footer-links-wrap">
+                        <div class="footer-links-row">
+                            <a href="#" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                </svg>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="https://www.linkedin.com/in/ivan-zbiral-5b900617" target="_blank"
+                                rel="noopener noreferrer" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
+                                    </path>
+                                    <rect x="2" y="9" width="4" height="12"></rect>
+                                    <circle cx="4" cy="4" r="2"></circle>
+                                </svg>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="https://www.facebook.com/RecPic" target="_blank" rel="noopener noreferrer"
+                                class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z">
+                                    </path>
+                                </svg>
+                                <span>Facebook</span>
+                            </a>
+                            <a href="https://www.youtube.com/@recpic_001" target="_blank" rel="noopener noreferrer"
+                                class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z">
+                                    </path>
+                                    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                                </svg>
+                                <span>YouTube</span>
+                            </a>
+                        </div>
+                        <div class="footer-links-row">
+                            <a href="mailto:ivan@recpic.cz" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                    </path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                <span class="email-text">ivan@recpic.cz</span>
+                            </a>
+                            <a href="tel:+420774339303" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                    </path>
+                                </svg>
+                                <span>+420 774 339 303</span>
+                            </a>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,860 @@
+<html lang="cs" vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">[REC]PIC | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
+    
+    <style vid="7">
+        :root {
+            --bg-void: #000000;
+            --text-pure: #FFFFFF;
+            --text-muted: rgba(255, 255, 255, 0.65);
+            --text-dark: rgba(255, 0, 0, 0.4);
+            --accent-gold: #E00020; 
+            --accent-red: #E00020;
+            
+            --glass-bg: rgba(224, 0, 32, 0.05);
+            --glass-border: rgba(224, 0, 32, 0.2);
+            --glass-border-hover: rgba(224, 0, 32, 0.5);
+            
+            --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            --font-mono: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            
+            --safe-zone: clamp(1.5rem, 4vw, 3rem);
+            --grid-max: 1440px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-pure);
+            font-family: var(--font-sans);
+            overflow: hidden; 
+            line-height: 1.5;
+        }
+
+        .cinematic-stage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            background: var(--bg-void);
+            pointer-events: none;
+        }
+
+        .vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 1) 100%),
+                        linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, transparent 20%, transparent 80%, rgba(0, 0, 0, 0.8) 100%);
+            z-index: 1;
+        }
+
+        .ui-layer {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: var(--safe-zone);
+            max-width: var(--grid-max);
+            margin: 0 auto;
+        }
+
+        .hud-crosshair {
+            position: fixed; 
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+            z-index: 50;
+        }
+        .hud-tl { top: var(--safe-zone); left: var(--safe-zone); border-top: 1px solid var(--text-dark); border-left: 1px solid var(--text-dark); }
+        .hud-tr { top: var(--safe-zone); right: var(--safe-zone); border-top: 1px solid var(--text-dark); border-right: 1px solid var(--text-dark); }
+        .hud-bl { bottom: var(--safe-zone); left: var(--safe-zone); border-bottom: 1px solid var(--text-dark); border-left: 1px solid var(--text-dark); }
+        .hud-br { bottom: var(--safe-zone); right: var(--safe-zone); border-bottom: 1px solid var(--text-dark); border-right: 1px solid var(--text-dark); }
+
+        header {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 4rem;
+            width: 100%;
+            position: relative;
+            flex-shrink: 0;
+            margin-bottom: 2rem;
+            z-index: 30;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -1.5rem;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, var(--glass-border) 0%, rgba(224,0,32,0) 100%);
+        }
+
+        .brand-logo {
+            font-family: var(--font-sans);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            text-decoration: none;
+            color: var(--text-pure);
+            display: flex;
+            align-items: center;
+            gap: 0.15rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent-red);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 1px;
+            background-color: var(--accent-red);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        nav a:hover::after, nav a.active::after {
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .lang-switch {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .lang-switch span.active {
+            color: var(--accent-red);
+        }
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1.2rem;
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-pure);
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-red);
+            background: rgba(224, 0, 32, 0.1);
+        }
+
+        
+        
+        .content-wrapper {
+            flex-grow: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .scroll-area {
+            flex-grow: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 1rem;
+            padding-bottom: 140px; 
+            scrollbar-width: none; 
+            -ms-overflow-style: none;  
+            mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+        }
+        
+        .scroll-area::-webkit-scrollbar {
+            display: none;
+        }
+
+        
+
+        .portfolio-header {
+            margin-bottom: 3rem;
+            max-width: 800px;
+        }
+
+        .eyebrow-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .rec-dot-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--accent-red);
+            letter-spacing: 0.1em;
+            font-weight: bold;
+        }
+
+        .rec-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent-red);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; box-shadow: 0 0 0 0 rgba(224, 0, 32, 0.7); transform: scale(1); }
+            70% { opacity: 0.8; box-shadow: 0 0 0 10px rgba(224, 0, 32, 0); transform: scale(1.2); }
+            100% { opacity: 1; box-shadow: 0 0 0 0 rgba(224, 0, 32, 0); transform: scale(1); }
+        }
+
+        .eyebrow-text {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-pure);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 400; 
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+        }
+
+        .subhead {
+            font-size: clamp(1rem, 1.2vw, 1.15rem);
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .video-card {
+            position: relative;
+            display: block;
+            aspect-ratio: 16 / 9;
+            background-color: #0a0a0a;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+            text-decoration: none;
+            transition: border-color 0.4s ease, transform 0.4s ease;
+        }
+
+        .video-card:hover {
+            border-color: var(--accent-red);
+            transform: translateY(-4px);
+            z-index: 2;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .thumbnail-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+            filter: grayscale(80%) contrast(1.1);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .video-card:hover .thumbnail-img {
+            opacity: 0.85;
+            filter: grayscale(0%) contrast(1.05);
+            transform: scale(1.05);
+        }
+
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+            opacity: 0.8;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .video-card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .card-tag {
+            align-self: flex-start;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-pure);
+            background: var(--accent-red);
+            padding: 0.2rem 0.6rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: bold;
+            transform: translateY(-10px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition-delay: 0.1s;
+        }
+
+        .video-card:hover .card-tag {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .card-info {
+            transform: translateY(10px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .video-card:hover .card-info {
+            transform: translateY(0);
+        }
+
+        .card-title {
+            color: var(--text-pure);
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .card-meta {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-dark);
+            letter-spacing: 0.05em;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(224, 0, 32, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(4px);
+            pointer-events: none;
+        }
+
+        .play-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-pure);
+            margin-left: 0;
+        }
+
+        .video-card:hover .play-btn {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            box-shadow: 0 0 30px rgba(224, 0, 32, 0.5);
+        }
+
+        
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border-top: 1px solid var(--glass-border);
+            padding: 2rem 0 1.5rem;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 20;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .footer-label {
+            position: absolute;
+            top: -0.6rem;
+            left: 0;
+            background: var(--bg-void);
+            padding: 0 0.5rem 0 0;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--accent-red);
+            letter-spacing: 0.1em;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+        }
+
+        .footer-logo {
+            font-family: var(--font-sans);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            text-decoration: none;
+            color: var(--text-pure);
+            display: flex;
+            align-items: center;
+            gap: 0.15rem;
+        }
+
+        .footer-cta {
+            margin-left: 2rem;
+            margin-right: auto;
+            font-size: 0.7rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1.5rem;
+            margin-right: 3rem;
+        }
+
+        .social-link {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--accent-red);
+        }
+
+        .social-link svg {
+            opacity: 0.7;
+        }
+
+        .footer-contact {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .contact-link {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: var(--accent-red);
+        }
+
+        
+        
+        @media (max-width: 1200px) {
+            .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 1024px) {
+            header { grid-template-columns: auto 1fr; gap: 2rem; }
+            nav { display: none; } 
+            footer { grid-template-columns: 1fr; gap: 1rem; padding-bottom: 1rem; }
+            .scroll-area { padding-bottom: 180px; } 
+        }
+        
+        @media (max-width: 768px) {
+            .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+            h1 { font-size: 2.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .portfolio-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body vid="8">
+
+    <div class="cinematic-stage" vid="9">
+        <div class="vignette" vid="10"></div>
+    </div>
+
+    <div class="ui-layer" vid="11">
+        
+        <div class="hud-crosshair hud-tl" vid="12"></div>
+        <div class="hud-crosshair hud-tr" vid="13"></div>
+        <div class="hud-crosshair hud-bl" vid="14"></div>
+        <div class="hud-crosshair hud-br" vid="15"></div>
+
+        <header vid="16">
+            <a href="#" class="brand-logo" vid="17">
+                <span style="color: var(--accent-red); font-weight: 700;" vid="18">[REC]</span><span style="color: var(--text-pure); font-weight: 700;" vid="19">PIC</span>
+            </a>
+            
+            <nav vid="20">
+                <ul vid="21">
+                    <li vid="22"><a href="#" vid="23">O nás</a></li>
+                    <li vid="24"><a href="#" class="active" vid="25">Portfolio</a></li>
+                    <li vid="26"><a href="#" vid="27">Proč video</a></li>
+                    <li vid="28"><a href="#" vid="29">Ai video</a></li>
+                    <li vid="30"><a href="#" vid="31">Kontakt</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions" vid="32">
+                <div class="lang-switch" vid="33">
+                    <span class="active" vid="34">CZ</span> / <span vid="35">EN</span>
+                </div>
+                <a href="#" class="btn-outline" vid="36">NEZÁVAZNĚ POPTAT</a>
+            </div>
+        </header>
+
+        <div class="content-wrapper" vid="37">
+            
+            <main class="scroll-area" vid="38">
+                <div class="portfolio-header" vid="39">
+                    <div class="eyebrow-wrapper" vid="40">
+                        <div class="rec-dot-container" vid="41">
+                            <div class="rec-dot" vid="42"></div>
+                            REC
+                        </div>
+                        <div class="eyebrow-text" vid="43">
+                            <span vid="44">Naše Práce</span>
+                        </div>
+                    </div>
+
+                    <h1 vid="45">Portfolio</h1>
+                    <p class="subhead" vid="46">
+                        Výběr našich nejnovějších a nejlepších projektů. Televizní reklama, produktové video nebo video z akce? Jsme tu pro vás.  Kliknutím na náhled spustíte video.
+                    </p>
+                </div>
+
+                <div class="portfolio-grid" vid="47">
+                    
+                    
+                    <a href="#" class="video-card" vid="48">
+                        <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&amp;q=80" alt="Urban Edge Campaign" class="thumbnail-img" vid="49">
+                        <div class="card-overlay" vid="50">
+                            
+                            <div class="card-info" vid="51">
+                                <h3 class="card-title" vid="52">Urban Edge Campaign</h3>
+                            </div>
+                        </div>
+                        <div class="play-btn" vid="53">
+                            <svg viewBox="0 0 24 24" vid="54"><path d="M8 5v14l11-7z" vid="55"></path></svg>
+                        </div>
+                    </a>
+
+                    
+                    <a href="#" class="video-card" vid="56">
+                        <img src="https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?w=800&amp;q=80" alt="Sonic Waves" class="thumbnail-img" vid="57">
+                        <div class="card-overlay" vid="58">
+                            
+                            <div class="card-info" vid="59">
+                                <h3 class="card-title" vid="60">Sonic Waves ft. LUNA</h3>
+                            </div>
+                        </div>
+                        <div class="play-btn" vid="61">
+                            <svg viewBox="0 0 24 24" vid="62"><path d="M8 5v14l11-7z" vid="63"></path></svg>
+                        </div>
+                    </a>
+
+                    
+                    <a href="#" class="video-card" vid="64">
+                        <img src="https://images.unsplash.com/photo-1601506521937-0121a7fc2a6b?w=800&amp;q=80" alt="Night Drive Series" class="thumbnail-img" vid="65">
+                        <div class="card-overlay" vid="66">
+                            
+                            <div class="card-info" vid="67">
+                                <h3 class="card-title" vid="68">Night Drive Series</h3>
+                            </div>
+                        </div>
+                        <div class="play-btn" vid="69">
+                            <svg viewBox="0 0 24 24" vid="70"><path d="M8 5v14l11-7z" vid="71"></path></svg>
+                        </div>
+                    </a>
+
+                    
+                    <a href="#" class="video-card" vid="72">
+                        <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&amp;q=80" alt="The Last Echo" class="thumbnail-img" vid="73">
+                        <div class="card-overlay" vid="74">
+                            
+                            <div class="card-info" vid="75">
+                                <h3 class="card-title" vid="76">The Last Echo</h3>
+                            </div>
+                        </div>
+                        <div class="play-btn" vid="77">
+                            <svg viewBox="0 0 24 24" vid="78"><path d="M8 5v14l11-7z" vid="79"></path></svg>
+                        </div>
+                    </a>
+
+                    
+                    <a href="#" class="video-card" vid="80">
+                        <img src="https://images.unsplash.com/photo-1518131672697-611eb14ebce5?w=800&amp;q=80" alt="Vogue Spring '24" class="thumbnail-img" vid="81">
+                        <div class="card-overlay" vid="82">
+                            
+                            <div class="card-info" vid="83">
+                                <h3 class="card-title" vid="84">Vogue Spring '24</h3>
+                            </div>
+                        </div>
+                        <div class="play-btn" vid="85">
+                            <svg viewBox="0 0 24 24" vid="86"><path d="M8 5v14l11-7z" vid="87"></path></svg>
+                        </div>
+                    </a>
+
+                    
+                    <a href="#" class="video-card" vid="88">
+                        <img src="https://images.unsplash.com/photo-1540656024970-1ea1a6a578a1?w=800&amp;q=80" alt="Alpine Origins" class="thumbnail-img" vid="89">
+                        <div class="card-overlay" vid="90">
+                            
+                            <div class="card-info" vid="91">
+                                <h3 class="card-title" vid="92">Alpine Origins</h3>
+                            </div>
+                        </div>
+                        <div class="play-btn" vid="93">
+                            <svg viewBox="0 0 24 24" vid="94"><path d="M8 5v14l11-7z" vid="95"></path></svg>
+                        </div>
+                    </a>
+
+                    
+                    <a href="#" class="video-card" vid="96">
+                        <img src="https://images.unsplash.com/photo-1505686994434-e3cc5abf1330?w=800&amp;q=80" alt="Lumen Skincare" class="thumbnail-img" vid="97">
+                        <div class="card-overlay" vid="98">
+                            
+                            <div class="card-info" vid="99">
+                                <h3 class="card-title" vid="100">Lumen Skincare</h3>
+                            </div>
+                        </div>
+                        <div class="play-btn" vid="101">
+                            <svg viewBox="0 0 24 24" vid="102"><path d="M8 5v14l11-7z" vid="103"></path></svg>
+                        </div>
+                    </a>
+
+                    
+                    <a href="#" class="video-card" vid="104">
+                        <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&amp;q=80" alt="Nexus Tech Conference" class="thumbnail-img" vid="105">
+                        <div class="card-overlay" vid="106">
+                            
+                            <div class="card-info" vid="107">
+                                <h3 class="card-title" vid="108">Nexus Tech Conference</h3>
+                            </div>
+                        </div>
+                        <div class="play-btn" vid="109">
+                            <svg viewBox="0 0 24 24" vid="110"><path d="M8 5v14l11-7z" vid="111"></path></svg>
+                        </div>
+                    </a>
+
+                    
+                    <a href="#" class="video-card" vid="112">
+                        <img src="https://images.unsplash.com/photo-1620062751515-385a08db142a?w=800&amp;q=80" alt="Apex Athletics" class="thumbnail-img" vid="113">
+                        <div class="card-overlay" vid="114">
+                            
+                            <div class="card-info" vid="115">
+                                <h3 class="card-title" vid="116">Apex Athletics</h3>
+                            </div>
+                        </div>
+                        <div class="play-btn" vid="117">
+                            <svg viewBox="0 0 24 24" vid="118"><path d="M8 5v14l11-7z" vid="119"></path></svg>
+                        </div>
+                    </a>
+
+                    
+                    <a href="#" class="video-card" vid="120">
+                        <img src="https://images.unsplash.com/photo-1554050857-c84a8abdb5e5?w=800&amp;q=80" alt="Horizon Bank Rebrand" class="thumbnail-img" vid="121">
+                        <div class="card-overlay" vid="122">
+                            
+                            <div class="card-info" vid="123">
+                                <h3 class="card-title" vid="124">Horizon Bank Rebrand</h3>
+                            </div>
+                        </div>
+                        <div class="play-btn" vid="125">
+                            <svg viewBox="0 0 24 24" vid="126"><path d="M8 5v14l11-7z" vid="127"></path></svg>
+                        </div>
+                    </a>
+
+                    
+                    <a href="#" class="video-card" vid="128">
+                        <img src="https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=800&amp;q=80" alt="The Pinnacle Residence" class="thumbnail-img" vid="129">
+                        <div class="card-overlay" vid="130">
+                            
+                            <div class="card-info" vid="131">
+                                <h3 class="card-title" vid="132">The Pinnacle Residence</h3>
+                            </div>
+                        </div>
+                        <div class="play-btn" vid="133">
+                            <svg viewBox="0 0 24 24" vid="134"><path d="M8 5v14l11-7z" vid="135"></path></svg>
+                        </div>
+                    </a>
+
+                    
+                    <a href="#" class="video-card" vid="136">
+                        <img src="https://images.unsplash.com/photo-1580227230495-2ba0f1c30b2c?w=800&amp;q=80" alt="Sizzle Burger Promo" class="thumbnail-img" vid="137">
+                        <div class="card-overlay" vid="138">
+                            
+                            <div class="card-info" vid="139">
+                                <h3 class="card-title" vid="140">Sizzle Promo</h3>
+                            </div>
+                        </div>
+                        <div class="play-btn" vid="141">
+                            <svg viewBox="0 0 24 24" vid="142"><path d="M8 5v14l11-7z" vid="143"></path></svg>
+                        </div>
+                    </a>
+
+                </div>
+            </main>
+
+            <footer vid="144">
+                <div class="footer-label" vid="145">SYS. FOOTER</div>
+                
+                <div class="footer-content" vid="146">
+                    <a href="#" class="footer-logo" vid="147">
+                        <span style="color: var(--accent-red); font-weight: 700;" vid="148">[REC]</span><span style="color: var(--text-pure); font-weight: 700;" vid="149">PIC</span>
+                    </a>
+                    <a href="#" class="btn-outline footer-cta" vid="150">NEZÁVAZNĚ POPTAT</a>
+                    
+                    <div class="footer-socials" vid="151">
+                        <a href="#" class="social-link" vid="152">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" vid="153"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" vid="154"></path></svg>
+                            INSTAGRAM
+                        </a>
+                        <a href="#" class="social-link" vid="155">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" vid="156"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" vid="157"></path></svg>
+                            LINKEDIN
+                        </a>
+                        <a href="#" class="social-link" vid="158">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" vid="159"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" vid="160"></path></svg>
+                            YOUTUBE
+                        </a>
+                    </div>
+                    
+                    <div class="footer-contact" vid="161">
+                        <a href="mailto:hello@recpic.cz" class="contact-link" vid="162">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="163">
+                                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" vid="164"></path>
+                            </svg>
+                            hello@recpic.cz
+                        </a>
+                        <a href="tel:+420774339303" class="contact-link" vid="165">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="166">
+                                <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" vid="167"></path>
+                            </svg>
+                            +420 774 339 303
+                        </a>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+
+    <script vid="168">
+        const tcElement = document.getElementById('timecode');
+        let frames = 0;
+        let seconds = 0;
+        let minutes = 0;
+
+        function pad(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        setInterval(() => {
+            frames++;
+            if(frames >= 24) { frames = 0; seconds++; }
+            if(seconds >= 60) { seconds = 0; minutes++; }
+            if(tcElement) {
+                tcElement.innerText = `TCR 00:${pad(minutes)}:${pad(seconds)}:${pad(frames)}`;
+            }
+        }, 1000 / 24); 
+    </script>
+
+
+</body></html>

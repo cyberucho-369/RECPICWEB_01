@@ -15,6 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // ---------- Collab Accordion ----------
+  document.querySelectorAll('.collab-accordion-toggle').forEach(toggle => {
+    toggle.addEventListener('click', function() {
+      const currentItem = this.closest('.collab-accordion-item');
+      const isActive = currentItem.classList.contains('active');
+      document.querySelectorAll('.collab-accordion-item').forEach(item => item.classList.remove('active'));
+      if (!isActive) currentItem.classList.add('active');
+    });
+  });
+
   // ---------- Timecode Ticker ----------
   const tcElements = document.querySelectorAll('.timecode-ticker');
   let frames = 0, seconds = 0, minutes = 0;

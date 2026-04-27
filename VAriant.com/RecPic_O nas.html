@@ -1,0 +1,712 @@
+<html lang="cs" vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">[REC]PIC | O nás &amp; Proces</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17" vid="5"></script>
+    <style vid="6">
+        
+        :root {
+            --bg-void: #000000;
+            --text-pure: #FFFFFF;
+            --text-muted: rgba(255, 255, 255, 0.65);
+            --text-dark-red: rgba(255, 0, 0, 0.4);
+            --text-dark-black: rgba(0, 0, 0, 0.4);
+            --accent-red: #E00020;
+            --glass-bg: rgba(224, 0, 32, 0.03);
+            --glass-border: rgba(224, 0, 32, 0.2);
+            --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            --safe-zone: clamp(1.5rem, 5vw, 4rem);
+            --grid-max: 1440px;
+        }
+
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-pure);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        
+        .page { display: none; }
+        .page.active { display: block; }
+
+        
+        .hud-crosshair {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+            z-index: 20;
+            transition: transform 0.1s ease-out; 
+        }
+        
+        
+        .hud-red.hud-tl { top: var(--safe-zone); left: var(--safe-zone); border-top: 1px solid var(--text-dark-red); border-left: 1px solid var(--text-dark-red); }
+        .hud-red.hud-tr { top: var(--safe-zone); right: var(--safe-zone); border-top: 1px solid var(--text-dark-red); border-right: 1px solid var(--text-dark-red); }
+        .hud-red.hud-bl { bottom: var(--safe-zone); left: var(--safe-zone); border-bottom: 1px solid var(--text-dark-red); border-left: 1px solid var(--text-dark-red); }
+        .hud-red.hud-br { bottom: var(--safe-zone); right: var(--safe-zone); border-bottom: 1px solid var(--text-dark-red); border-right: 1px solid var(--text-dark-red); }
+
+        
+        .hud-black.hud-tl { top: var(--safe-zone); left: var(--safe-zone); border-top: 1px solid var(--text-dark-black); border-left: 1px solid var(--text-dark-black); }
+        .hud-black.hud-tr { top: var(--safe-zone); right: var(--safe-zone); border-top: 1px solid var(--text-dark-black); border-right: 1px solid var(--text-dark-black); }
+        .hud-black.hud-bl { bottom: var(--safe-zone); left: var(--safe-zone); border-bottom: 1px solid var(--text-dark-black); border-left: 1px solid var(--text-dark-black); }
+        .hud-black.hud-br { bottom: var(--safe-zone); right: var(--safe-zone); border-bottom: 1px solid var(--text-dark-black); border-right: 1px solid var(--text-dark-black); }
+
+        .noise-overlay {
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.5rem;
+            width: 100%;
+            position: relative;
+            padding-bottom: 1.5rem;
+            z-index: 50;
+        }
+        @media (min-width: 1024px) {
+            header {
+                display: grid;
+                grid-template-columns: auto 1fr auto;
+                align-items: center;
+                gap: 4rem;
+            }
+        }
+        header::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px;
+            background: linear-gradient(90deg, var(--glass-border) 0%, rgba(224,0,32,0) 100%);
+        }
+        .brand-logo { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.05em; text-decoration: none; display: flex; align-items: center; }
+        nav ul { display: flex; flex-wrap: wrap; list-style: none; gap: 1.5rem; }
+        @media (min-width: 1024px) { nav ul { gap: 2.5rem; } }
+        nav a { text-decoration: none; color: var(--text-muted); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.02em; transition: color 0.3s ease; position: relative; padding-bottom: 4px; cursor: pointer; }
+        nav a:hover { color: var(--accent-red); }
+        nav a:hover::after, nav a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background-color: var(--accent-red); }
+        nav a.active { color: var(--accent-red); }
+        .header-actions { display: flex; align-items: center; gap: 2rem; }
+        .lang-switch { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
+        .btn-outline { padding: 0.6rem 1.2rem; border: 1px solid var(--glass-border); color: var(--text-pure); font-size: 0.75rem; font-family: var(--font-mono); text-decoration: none; transition: all 0.4s ease; cursor: pointer; }
+        .btn-outline:hover { border-color: var(--accent-red); }
+
+        
+        .ui-layer {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: var(--safe-zone);
+            max-width: var(--grid-max);
+            margin: 0 auto;
+        }
+        .about-main {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 2rem;
+            margin-bottom: 4rem;
+        }
+        @media (min-width: 1024px) { .about-main { grid-template-columns: 1fr 1fr; } }
+        .content-left { display: flex; flex-direction: column; gap: 2rem; padding-right: 2rem; }
+        .section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+        .rec-dot { width: 8px; height: 8px; background-color: var(--accent-red); border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
+        h1 { font-size: clamp(3rem, 5vw, 4rem); font-weight: 400; letter-spacing: -0.03em; margin-bottom: 1rem; color: var(--text-pure); }
+        .info-block { margin-bottom: 2.5rem; }
+        .subheadline { font-size: 1rem; font-family: var(--font-sans); color: var(--text-pure); letter-spacing: 0.05em; margin-bottom: 0.75rem; display: block; font-weight: 500; }
+        .paragraph { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; max-width: 520px; }
+        
+        .content-right {
+            position: relative;
+            height: 60vh;
+            min-height: 400px;
+            border: 1px solid var(--glass-border);
+            background: linear-gradient(135deg, rgba(224, 0, 32, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .content-right::before { content: 'VISUAL ASSET AREA'; font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dark-red); letter-spacing: 0.3em; }
+        .content-right::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to right, var(--glass-border) 1px, transparent 1px) 0 0 / 40px 100%,
+                        linear-gradient(to bottom, var(--glass-border) 1px, transparent 1px) 0 0 / 100% 40px;
+            opacity: 0.1;
+        }
+
+        .scroll-container {
+            position: absolute;
+            bottom: var(--safe-zone);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 20;
+        }
+        .mouse-icon { width: 20px; height: 32px; border: 1.5px solid rgba(255, 255, 255, 0.4); border-radius: 10px; position: relative; }
+        .mouse-wheel { width: 2px; height: 6px; background: rgba(255, 255, 255, 0.4); position: absolute; top: 6px; left: 50%; transform: translateX(-50%); animation: scrollMove 1.5s ease-in-out infinite; }
+        @keyframes scrollMove { 0% { transform: translate(-50%, 0); opacity: 1; } 100% { transform: translate(-50%, 10px); opacity: 0; } }
+        .scroll-text { font-family: var(--font-mono); font-size: 0.6rem; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 0.2em; }
+        
+        .timecode { position: absolute; right: var(--safe-zone); bottom: var(--safe-zone); font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-red); letter-spacing: 0.1em; }
+
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease;
+            background: rgba(0, 0, 0, 0.95);
+            border-left: 1px solid rgba(224, 0, 32, 0.2);
+            border-right: 1px solid rgba(224, 0, 32, 0.2);
+            border-bottom: 1px solid rgba(224, 0, 32, 0.2);
+        }
+        .accordion-content.open { max-height: 800px; opacity: 1; }
+        .p-text { font-size: 15px; line-height: 1.65; }
+
+        
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .reveal-up.in-view { opacity: 1; transform: translateY(0); }
+        
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+    </style>
+</head>
+<body class="w-full overflow-x-hidden" vid="7">
+
+    
+    <div id="page-main" class="page active" vid="8">
+
+        
+        <section id="section-about" class="relative w-full bg-[#000000]" vid="9">
+            <div class="noise-overlay" vid="10"></div>
+            <div class="ui-layer" vid="11">
+                
+                
+                <div class="hud-crosshair hud-red hud-tl parallax-el" data-speed="-0.04" vid="12"></div>
+                <div class="hud-crosshair hud-red hud-tr parallax-el" data-speed="0.04" vid="13"></div>
+                <div class="hud-crosshair hud-red hud-bl parallax-el" data-speed="-0.04" vid="14"></div>
+                <div class="hud-crosshair hud-red hud-br parallax-el" data-speed="0.04" vid="15"></div>
+
+                <header class="reveal-up" vid="16">
+                    <a href="#section-about" class="brand-logo" onclick="showPage('page-main')" vid="17">
+                        <span style="color: var(--accent-red);" vid="18">[REC]</span><span style="color: var(--text-pure);" vid="19">PIC</span>
+                    </a>
+                    <nav vid="20">
+                        <ul vid="21">
+                            <li vid="22"><a href="#section-about" class="active" onclick="showPage('page-main')" vid="23">O nás</a></li>
+                            <li vid="24"><a href="#section-process" onclick="showPage('page-main')" vid="25">Portfolio</a></li>
+                            <li vid="26"><a href="#section-process" onclick="showPage('page-main')" vid="27">Proč video</a></li>
+                            <li vid="28"><a href="#section-collab" onclick="showPage('page-main')" vid="29">Ai video</a></li>
+                            <li vid="30"><a href="#footer-final" onclick="showPage('page-main')" vid="31">Kontakt</a></li>
+                        </ul>
+                    </nav>
+                    <div class="header-actions" vid="32">
+                        <div class="lang-switch" vid="33"><span style="color: var(--accent-red);" vid="34">CZ</span> / EN</div>
+                        <a href="#footer-final" class="btn-outline" onclick="showPage('page-main')" vid="35">NEZÁVAZNĚ POPTAT</a>
+                    </div>
+                </header>
+
+                <div class="about-main" vid="36">
+                    <div class="content-left" vid="37">
+                        <div class="section-header reveal-up" vid="38">
+                            <div class="rec-dot" vid="39"></div>
+                            <h1 vid="40">O nás</h1>
+                        </div>
+
+                        <div class="info-block reveal-up stagger-1" vid="41">
+                            <span class="subheadline" vid="42">Spolehlivost</span>
+                            <p class="paragraph" vid="43">
+                                Jsme reklamní video produkce z Prahy. Parta zkušených filmařů, kterou spojuje nadšení pro vizuální vyprávění příběhů. Už víc než 10 let tvoříme videa pro firmy, technologické společnosti, reklamní agentury i značky, které chtějí zaujmout nejen na sociálních sítích. Stojíme si za tím, co slíbíme, a vždy dodáváme kvalitní výsledek v domluveném termínu.
+                            </p>
+                        </div>
+
+                        <div class="info-block reveal-up stagger-2" vid="44">
+                            <span class="subheadline" vid="45">Profesionální přístup</span>
+                            <p class="paragraph" vid="46">
+                                Klademe důraz na individuální přístup ke každému projektu, detailní přípravu a profesionální realizaci. Spolehněte se na naše zkušenosti a udělejte z vašeho příběhu jedinečný zážitek bez ohledu na velikost zakázky.
+                            </p>
+                        </div>
+
+                        <div class="info-block reveal-up stagger-3" vid="47">
+                            <span class="subheadline" vid="48">Kreativita</span>
+                            <p class="paragraph" vid="49">
+                                Kombinujeme kreativitu s nejmodernějšími technologiemi, abychom tvořili videa, která skutečně zaujmou. Díky generativní AI do produkce vnášíme dříve nedosažitelné vizuální efekty a unikátní animace. Tato inovace nám umožňuje tvořit originální obsah rychleji a přesně na míru vaší vizi.
+                            </p>
+                        </div>
+                    </div>
+
+                    
+                    <div class="content-right reveal-up stagger-2 parallax-el" data-speed="0.06" vid="50"></div>
+                </div>
+
+                <div class="scroll-container reveal-up stagger-4 parallax-el" data-speed="0.1" vid="51">
+                    <div class="mouse-icon" vid="52">
+                        <div class="mouse-wheel" vid="53"></div>
+                    </div>
+                    <span class="scroll-text" vid="54">Scroll</span>
+                </div>
+
+                <div class="timecode reveal-up stagger-4" id="tc" vid="55">TCR 00:04:12:08</div>
+            </div>
+        </section>
+
+        
+        <footer class="relative z-30 w-full bg-[#000000] border-t border-white/5 py-8" id="footer-about" vid="56">
+            <div class="max-w-[1440px] mx-auto px-16 lg:px-24 xl:px-32" vid="57">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6 tracking-wide" vid="58">
+                    <div class="text-xl font-bold tracking-wide uppercase reveal-up" vid="59">
+                        <span class="text-[#E00020]" vid="60">[</span><span class="text-[#E00020]" vid="61">REC</span><span class="text-[#E00020]" vid="62">]</span><span class="text-white" vid="63">PIC</span>
+                    </div>
+                    <div class="font-mono text-[10px] tracking-[0.2em] text-white/40 uppercase reveal-up stagger-1" vid="64">
+                        SCROLL FOR PROCESS &amp; WORKFLOW
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        
+        <div class="w-full relative z-40 flex flex-col" vid="65">
+            <div class="h-16 w-full bg-[#000000]" vid="66"></div>
+            
+            
+            <div class="w-full h-px bg-gradient-to-r from-transparent via-[#E00020]/80 to-transparent relative flex items-center justify-center z-50" vid="67">
+                <div class="absolute left-16 lg:left-24 font-mono text-[10px] text-[#E00020] tracking-[0.2em] bg-black px-4 py-1 -translate-y-1/2 border border-[#E00020]/40 uppercase shadow-[0_0_20px_rgba(0,0,0,1)] parallax-el" data-speed="0.08" vid="68">
+                    SYS.TRANSITION // 1.0
+                </div>
+                <div class="w-2 h-2 bg-[#E00020] rotate-45 shadow-[0_0_15px_rgba(224,0,32,1)]" vid="69"></div>
+                <div class="absolute right-16 lg:right-24 w-24 h-px bg-[#E00020] shadow-[0_0_15px_rgba(224,0,32,0.8)]" vid="70"></div>
+            </div>
+
+            <div class="h-16 w-full bg-white" vid="71"></div>
+        </div>
+
+        
+        <section id="section-process" class="relative w-full bg-white text-black py-16 lg:py-24 flex-shrink-0 z-20" vid="72">
+            <div class="noise-overlay" style="opacity: 0.05;" vid="73"></div>
+            
+            <div class="hud-crosshair hud-black hud-tl parallax-el" data-speed="-0.03" vid="74"></div>
+            <div class="hud-crosshair hud-black hud-tr parallax-el" data-speed="0.03" vid="75"></div>
+            <div class="hud-crosshair hud-black hud-bl parallax-el" data-speed="-0.03" vid="76"></div>
+            <div class="hud-crosshair hud-black hud-br parallax-el" data-speed="0.03" vid="77"></div>
+
+            <div class="max-w-[1440px] mx-auto px-16 lg:px-24 xl:px-32 relative z-10 w-full" vid="78">
+                
+                <div class="mb-12 reveal-up" vid="79">
+                    <span class="font-mono text-[11px] tracking-[0.25em] text-[#E00020] uppercase border-b border-[#E00020]/30 pb-2 inline-block" vid="80">PROCESS // WORKFLOW</span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 relative items-stretch" vid="81">
+                    
+                    <div class="reveal-up stagger-1 flex flex-col p-6 lg:p-8 border border-black/10 hover:border-black/40 transition-all duration-300 cursor-pointer relative group h-full bg-white hover:-translate-y-1" vid="82">
+                        <div class="absolute top-3 left-3 w-4 h-4 border-t border-l border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="83"></div>
+                        <div class="absolute top-3 right-3 w-4 h-4 border-t border-r border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="84"></div>
+                        <div class="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="85"></div>
+                        <div class="absolute bottom-3 right-3 w-4 h-4 border-b border-r border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="86"></div>
+                        
+                        <h3 class="text-xl font-medium tracking-tight text-black leading-tight mb-4" vid="87">Idea a scénář</h3>
+                        <p class="p-text text-black/70 font-normal" vid="88">Společně promyslíme, co má video sdělit. Pomůžeme s nápadem, napíšeme scénář a vytvoříme jasný plán, který bude ladit s vaší značkou i cílovou skupinou.</p>
+                    </div>
+
+                    <div class="reveal-up stagger-2 flex flex-col p-6 lg:p-8 border border-black/10 hover:border-black/40 transition-all duration-300 cursor-pointer relative group h-full bg-white hover:-translate-y-1" vid="89">
+                        <div class="absolute top-3 left-3 w-4 h-4 border-t border-l border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="90"></div>
+                        <div class="absolute top-3 right-3 w-4 h-4 border-t border-r border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="91"></div>
+                        <div class="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="92"></div>
+                        <div class="absolute bottom-3 right-3 w-4 h-4 border-b border-r border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="93"></div>
+                        
+                        <h3 class="text-xl font-medium tracking-tight text-black leading-tight mb-4" vid="94">Filmování</h3>
+                        <p class="p-text text-black/70 font-normal" vid="95">Zajistíme štáb, techniku i lokaci. Během natáčení klademe důraz na kvalitu obrazu i zvuku – víme, že detaily tvoří celek.</p>
+                    </div>
+
+                    <div class="reveal-up stagger-3 flex flex-col p-6 lg:p-8 border border-black/10 hover:border-black/40 transition-all duration-300 cursor-pointer relative group h-full bg-white hover:-translate-y-1" vid="96">
+                        <div class="absolute top-3 left-3 w-4 h-4 border-t border-l border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="97"></div>
+                        <div class="absolute top-3 right-3 w-4 h-4 border-t border-r border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="98"></div>
+                        <div class="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="99"></div>
+                        <div class="absolute bottom-3 right-3 w-4 h-4 border-b border-r border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="100"></div>
+                        
+                        <h3 class="text-xl font-medium tracking-tight text-black leading-tight mb-4" vid="101">Postprodukce</h3>
+                        <p class="p-text text-black/70 font-normal" vid="102">Vybereme nejlepší záběry, přidáme hudbu, titulky, grafiku a pokud je potřeba tak i VoiceOver. Výsledné video doladíme podle účelu a výstupů (web, sociální sítě, tv reklama).</p>
+                    </div>
+
+                    <div class="reveal-up stagger-4 flex flex-col p-6 lg:p-8 border border-black/10 hover:border-black/40 transition-all duration-300 cursor-pointer relative group h-full bg-white hover:-translate-y-1" vid="103">
+                        <div class="absolute top-3 left-3 w-4 h-4 border-t border-l border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="104"></div>
+                        <div class="absolute top-3 right-3 w-4 h-4 border-t border-r border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="105"></div>
+                        <div class="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="106"></div>
+                        <div class="absolute bottom-3 right-3 w-4 h-4 border-b border-r border-black/20 group-hover:border-[#E00020] group-hover:w-5 group-hover:h-5 transition-all duration-300" vid="107"></div>
+                        
+                        <h3 class="text-xl font-medium tracking-tight text-black leading-tight mb-4" vid="108">Připomínky a schválení</h3>
+                        <p class="p-text text-black/70 font-normal" vid="109">Hotové video vám pošleme ke schválení. Drobné úpravy zapracujeme podle vašich připomínek – až budete spokojeni, projekt uzavřeme.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        
+        <div class="w-full relative z-30 flex flex-col" vid="110">
+            <div class="h-16 w-full bg-white" vid="111"></div>
+            
+            <div class="w-full h-px bg-gradient-to-r from-transparent via-[#E00020]/50 to-transparent relative flex items-center justify-center z-40 parallax-el" data-speed="-0.05" vid="112">
+                <div class="absolute left-16 lg:left-24 font-mono text-[10px] text-[#E00020] tracking-[0.2em] bg-[#000000] px-4 py-1 -translate-y-1/2 border border-[#E00020]/40 text-opacity-80" vid="113">
+                    SYS.DIV // 892.5
+                </div>
+                <div class="w-1.5 h-1.5 bg-[#E00020] rotate-45 shadow-[0_0_10px_rgba(224,0,32,0.8)]" vid="114"></div>
+                <div class="absolute right-16 lg:right-24 w-12 h-px bg-[#E00020]/60" vid="115"></div>
+            </div>
+
+            <div class="h-16 w-full bg-[#000000]" vid="116"></div>
+        </div>
+
+        
+        <section id="section-collab" class="relative w-full flex-grow bg-[#000000] text-white pt-8 pb-16 flex flex-col overflow-hidden z-20" vid="117">
+            <div class="noise-overlay" vid="118"></div>
+            
+            <div class="hud-crosshair hud-red hud-tl parallax-el" data-speed="-0.04" vid="119"></div>
+            <div class="hud-crosshair hud-red hud-tr parallax-el" data-speed="0.04" vid="120"></div>
+            
+            <div class="max-w-[1440px] mx-auto px-16 lg:px-24 xl:px-32 relative z-10 w-full h-full flex flex-col" vid="121">
+                
+                <div class="mb-12 max-w-3xl reveal-up" vid="122">
+                    <h2 class="text-4xl lg:text-5xl font-medium tracking-tight text-white leading-tight mb-6" vid="123">
+                        Jak spolupracovat s video produkcí
+                    </h2>
+                    <div class="font-mono text-[11px] tracking-[0.25em] text-[#E00020] uppercase mb-4 inline-block" vid="124">
+                        Průvodce pro klienty
+                    </div>
+                    <p class="p-text text-white/70" vid="125">
+                        Věříme, že nejlepší videa vznikají díky skvělé spolupráci. Ať už plánujete korporátní video, školení nebo představení produktu, tady je náš průvodce krok za krokem, jak vytěžit maximum ze spolupráce s profesionální agenturou, jako jsme my.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-y-0 relative z-10 mb-12 max-w-2xl" vid="126">
+                    
+                    <div class="accordion-item border-b border-white/10 group relative reveal-up stagger-1" vid="127">
+                        <button class="w-full text-left py-4 flex items-center justify-between z-20 relative cursor-pointer bg-black" onclick="toggleAccordion(this)" vid="128">
+                            <h4 class="text-lg font-medium text-white group-hover:text-[#E00020] transition-colors pr-8" vid="129">1. Ujasněte si cíle a cílovou skupinu</h4>
+                            <div class="w-4 h-4 relative flex-shrink-0" vid="130">
+                                <div class="absolute top-1/2 left-0 w-full h-[1.5px] bg-white group-hover:bg-[#E00020] -translate-y-1/2 transition-colors" vid="131"></div>
+                                <div class="absolute top-0 left-1/2 w-[1.5px] h-full bg-white group-hover:bg-[#E00020] -translate-x-1/2 transition-transform duration-400 vertical-line" vid="132"></div>
+                            </div>
+                        </button>
+                        <div class="accordion-content" vid="133">
+                            <div class="accordion-inner p-5 pb-8" vid="134">
+                                <p class="p-text text-white/80" vid="135">
+                                    <span class="block text-[#E00020] font-medium mb-2" vid="136">Co můžete udělat vy:</span>
+                                    Ujasněte si účel videa: je to propagační video pro budování povědomí, výukové video pro školení, generování leadů nebo interní komunikace?<br vid="137"><br vid="138">
+                                    Definujte cílovou skupinu: obor, pozice, lokalita nebo interní tým. Je to korporátní video nebo spíše video pro malé firmy?<br vid="139"><br vid="140">
+                                    Stanovte si klíčové ukazatele úspěchu: např. míra zapojení, konverze, sledovanost.<br vid="141"><br vid="142">
+                                    <span class="text-[#E00020] font-medium" vid="143">Tip:</span> Zamyslete se, kde bude video použito – LinkedIn, web, interní síť – a zda se hodí např. jako promo video pro sociální sítě.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border-b border-white/10 group relative reveal-up stagger-2" vid="144">
+                        <button class="w-full text-left py-4 flex items-center justify-between z-20 relative cursor-pointer bg-black" onclick="toggleAccordion(this)" vid="145">
+                            <h4 class="text-lg font-medium text-white group-hover:text-[#E00020] transition-colors pr-8" vid="146">2. Připravte krátké zadání (brief)</h4>
+                            <div class="w-4 h-4 relative flex-shrink-0" vid="147">
+                                <div class="absolute top-1/2 left-0 w-full h-[1.5px] bg-white group-hover:bg-[#E00020] -translate-y-1/2 transition-colors" vid="148"></div>
+                                <div class="absolute top-0 left-1/2 w-[1.5px] h-full bg-white group-hover:bg-[#E00020] -translate-x-1/2 transition-transform duration-400 vertical-line" vid="149"></div>
+                            </div>
+                        </button>
+                        <div class="accordion-content" vid="150">
+                            <div class="accordion-inner p-5 pb-8" vid="151">
+                                <p class="p-text text-white/80" vid="152">
+                                    <span class="block text-[#E00020] font-medium mb-2" vid="153">Co můžete udělat vy:</span>
+                                    Napište stručný brief obsahující: klíčové sdělení, tón značky, vizuální styl, rozpočet a časový rámec.<br vid="154"><br vid="155">
+                                    Specifikujte obsah, který musí být ve videu: např. produkt, vedení společnosti.<br vid="156"><br vid="157">
+                                    <span class="text-[#E00020] font-medium" vid="158">Tip:</span> Rádi vám s briefem pomůžeme – vaše reklamní video nemusí mít dokonalé zadání hned na začátku!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border-b border-white/10 group relative reveal-up stagger-3" vid="159">
+                        <button class="w-full text-left py-4 flex items-center justify-between z-20 relative cursor-pointer bg-black" onclick="toggleAccordion(this)" vid="160">
+                            <h4 class="text-lg font-medium text-white group-hover:text-[#E00020] transition-colors pr-8" vid="161">3. Úvodní schůzka a návrh konceptu</h4>
+                            <div class="w-4 h-4 relative flex-shrink-0" vid="162">
+                                <div class="absolute top-1/2 left-0 w-full h-[1.5px] bg-white group-hover:bg-[#E00020] -translate-y-1/2 transition-colors" vid="163"></div>
+                                <div class="absolute top-0 left-1/2 w-[1.5px] h-full bg-white group-hover:bg-[#E00020] -translate-x-1/2 transition-transform duration-400 vertical-line" vid="164"></div>
+                            </div>
+                        </button>
+                        <div class="accordion-content" vid="165">
+                            <div class="accordion-inner p-5 pb-8" vid="166">
+                                <p class="p-text text-white/80" vid="167">
+                                    <span class="block text-[#E00020] font-medium mb-2" vid="168">Co dělá RECPIC:</span>
+                                    Vedeme úvodní schůzku, kde sladíme strategii, tón a termíny.<br vid="169">
+                                    Připravíme návrh konceptu, kde je klíčová tvorba scénáře nebo storyboardu.<br vid="170"><br vid="171">
+                                    <span class="block text-[#E00020] font-medium mb-2" vid="172">Co můžete udělat vy:</span>
+                                    Přineste si podklady, předešlé ukázky nebo vnitřní know-how.<br vid="173">
+                                    Dejte včasnou zpětnou vazbu, co se vám líbí a čemu se vyhnout.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border-b border-white/10 group relative reveal-up stagger-1" vid="174">
+                        <button class="w-full text-left py-4 flex items-center justify-between z-20 relative cursor-pointer bg-black" onclick="toggleAccordion(this)" vid="175">
+                            <h4 class="text-lg font-medium text-white group-hover:text-[#E00020] transition-colors pr-8" vid="176">4. Předprodukce</h4>
+                            <div class="w-4 h-4 relative flex-shrink-0" vid="177">
+                                <div class="absolute top-1/2 left-0 w-full h-[1.5px] bg-white group-hover:bg-[#E00020] -translate-y-1/2 transition-colors" vid="178"></div>
+                                <div class="absolute top-0 left-1/2 w-[1.5px] h-full bg-white group-hover:bg-[#E00020] -translate-x-1/2 transition-transform duration-400 vertical-line" vid="179"></div>
+                            </div>
+                        </button>
+                        <div class="accordion-content" vid="180">
+                            <div class="accordion-inner p-5 pb-8" vid="181">
+                                <p class="p-text text-white/80" vid="182">
+                                    <span class="block text-[#E00020] font-medium mb-2" vid="183">Co se děje:</span>
+                                    Výběr lokací, obsazení, plánování, povolení, seznamy záběrů a logistika.<br vid="184"><br vid="185">
+                                    <span class="block text-[#E00020] font-medium mb-2" vid="186">Co můžete udělat vy:</span>
+                                    Zajistěte interní schválení pro natáčení firemního videa, svolení od účinkujících nebo dodržení interních pravidel.<br vid="187">
+                                    Pokuste se rychle schválit scénář a harmonogramy, aby vše běželo podle plánu.<br vid="188"><br vid="189">
+                                    <span class="text-[#E00020] font-medium" vid="190">Tip:</span> Určete jednu kontaktní osobu pro hladkou komunikaci.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border-b border-white/10 group relative reveal-up stagger-2" vid="191">
+                        <button class="w-full text-left py-4 flex items-center justify-between z-20 relative cursor-pointer bg-black" onclick="toggleAccordion(this)" vid="192">
+                            <h4 class="text-lg font-medium text-white group-hover:text-[#E00020] transition-colors pr-8" vid="193">5. Natáčení (produkce)</h4>
+                            <div class="w-4 h-4 relative flex-shrink-0" vid="194">
+                                <div class="absolute top-1/2 left-0 w-full h-[1.5px] bg-white group-hover:bg-[#E00020] -translate-y-1/2 transition-colors" vid="195"></div>
+                                <div class="absolute top-0 left-1/2 w-[1.5px] h-full bg-white group-hover:bg-[#E00020] -translate-x-1/2 transition-transform duration-400 vertical-line" vid="196"></div>
+                            </div>
+                        </button>
+                        <div class="accordion-content" vid="197">
+                            <div class="accordion-inner p-5 pb-8" vid="198">
+                                <p class="p-text text-white/80" vid="199">
+                                    <span class="block text-[#E00020] font-medium mb-2" vid="200">Co dělá RECPIC:</span>
+                                    Náš tým se postará o vše – kameru, světla, zvuk, režii i koordinaci účinkujících. Zajistíme profesionální reklamní natáčení v Praze nebo po celé České republice.<br vid="201">
+                                    Připravíme návrh konceptu, kde je klíčová tvorba scénáře nebo storyboardu. (Pozn.: Tento bod se v textu opakuje z předchozí fáze).<br vid="202"><br vid="203">
+                                    <span class="block text-[#E00020] font-medium mb-2" vid="204">Co můžete udělat vy:</span>
+                                    Buďte na place osobně, nebo pověřte někoho z týmu, kdo vás zastoupí.<br vid="205">
+                                    Pokud dojde k nečekaným změnám, pokuste se je rychle schválit.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border-b border-white/10 group relative reveal-up stagger-3" vid="206">
+                        <button class="w-full text-left py-4 flex items-center justify-between z-20 relative cursor-pointer bg-black" onclick="toggleAccordion(this)" vid="207">
+                            <h4 class="text-lg font-medium text-white group-hover:text-[#E00020] transition-colors pr-8" vid="208">6. Postprodukce</h4>
+                            <div class="w-4 h-4 relative flex-shrink-0" vid="209">
+                                <div class="absolute top-1/2 left-0 w-full h-[1.5px] bg-white group-hover:bg-[#E00020] -translate-y-1/2 transition-colors" vid="210"></div>
+                                <div class="absolute top-0 left-1/2 w-[1.5px] h-full bg-white group-hover:bg-[#E00020] -translate-x-1/2 transition-transform duration-400 vertical-line" vid="211"></div>
+                            </div>
+                        </button>
+                        <div class="accordion-content" vid="212">
+                            <div class="accordion-inner p-5 pb-8" vid="213">
+                                <p class="p-text text-white/80" vid="214">
+                                    <span class="block text-[#E00020] font-medium mb-2" vid="215">Co se děje:</span>
+                                    Střih, grafika, barevné korekce, zvukový design a hudba.<br vid="216"><br vid="217">
+                                    <span class="block text-[#E00020] font-medium mb-2" vid="218">Co můžete udělat vy:</span>
+                                    Zkontrolujte první verze videa a dejte konkrétní a souhrnnou zpětnou vazbu.<br vid="219">
+                                    Držte se domluveného počtu revizí. Šetří to čas i náklady.<br vid="220"><br vid="221">
+                                    <span class="text-[#E00020] font-medium" vid="222">Tip:</span> Zapojte rozhodující osoby včas, aby se předešlo pozdním změnám.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border-b border-white/10 group relative reveal-up stagger-1" vid="223">
+                        <button class="w-full text-left py-4 flex items-center justify-between z-20 relative cursor-pointer bg-black" onclick="toggleAccordion(this)" vid="224">
+                            <h4 class="text-lg font-medium text-white group-hover:text-[#E00020] transition-colors pr-8" vid="225">7. Dodání a publikace</h4>
+                            <div class="w-4 h-4 relative flex-shrink-0" vid="226">
+                                <div class="absolute top-1/2 left-0 w-full h-[1.5px] bg-white group-hover:bg-[#E00020] -translate-y-1/2 transition-colors" vid="227"></div>
+                                <div class="absolute top-0 left-1/2 w-[1.5px] h-full bg-white group-hover:bg-[#E00020] -translate-x-1/2 transition-transform duration-400 vertical-line" vid="228"></div>
+                            </div>
+                        </button>
+                        <div class="accordion-content" vid="229">
+                            <div class="accordion-inner p-5 pb-8" vid="230">
+                                <p class="p-text text-white/80" vid="231">
+                                    <span class="block text-[#E00020] font-medium mb-2" vid="232">Co dělá RECPIC:</span>
+                                    Finální verze, například video pro web nebo video pro sociální sítě v patřičných formátech.<br vid="233">
+                                    Dle domluvy: teaser klipy, náhledové obrázky, titulky nebo krátké verze.<br vid="234"><br vid="235">
+                                    <span class="block text-[#E00020] font-medium mb-2" vid="236">Co můžete udělat vy:</span>
+                                    Sdílejte s námi, jak a kdy plánujete video zveřejnit.<br vid="237">
+                                    Označte RECPIC při sdílení na sociálních sítích. Rádi šíříme společné úspěchy s našimi klienty!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="max-w-2xl text-left border-l-[3px] border-[#E00020] pl-6 py-2 mt-4 mb-10 opacity-90 reveal-up stagger-2" vid="238">
+                    <p class="p-text text-white font-medium" vid="239">
+                        Skvělé video vzniká díky spolupráci. Když máte jasné cíle, rychle reagujete a dáváte kvalitní zpětnou vazbu, pomáháte nám odvést tu nejlepší práci.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        
+        <footer id="footer-final" class="relative z-30 w-full bg-[#000000] mt-auto border-t border-white/10" vid="240">
+            
+            <div class="w-full h-px bg-gradient-to-r from-transparent via-[#E00020]/30 to-transparent relative flex items-center justify-center -translate-y-[1px]" vid="241">
+                <div class="w-1.5 h-1.5 bg-[#E00020] rotate-45 shadow-[0_0_10px_rgba(224,0,32,0.8)]" vid="242"></div>
+            </div>
+
+            <div class="max-w-[1440px] mx-auto px-16 lg:px-24 xl:px-32 py-12 reveal-up" vid="243">
+                
+                <div class="font-mono text-[11px] tracking-[0.2em] text-[#E00020] uppercase mb-8" vid="244">SYS. FOOTER</div>
+                
+                <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10 text-[#E00020] tracking-wide" vid="245">
+                    
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6" vid="246">
+                        <div class="text-2xl font-bold tracking-wide uppercase cursor-pointer" onclick="window.scrollTo(0,0)" vid="247">
+                            <span class="text-[#E00020]" vid="248">[</span><span class="text-[#E00020]" vid="249">REC</span><span class="text-[#E00020]" vid="250">]</span><span class="text-white" vid="251">PIC</span>
+                        </div>
+                        <a href="#" class="px-5 py-2 border border-white/20 text-white text-xs font-mono tracking-wider hover:border-[#E00020] hover:text-[#E00020] transition-colors uppercase" vid="252">
+                            Nezávazně poptat
+                        </a>
+                    </div>
+                    
+                    <div class="flex flex-wrap items-center gap-8 text-xs font-mono tracking-wider text-white/70" vid="253">
+                        <a href="#" class="flex items-center gap-2 hover:text-[#E00020] transition-colors" vid="254">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="255">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" vid="256"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" vid="257"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" vid="258"></line>
+                            </svg>
+                            INSTAGRAM
+                        </a>
+                        <a href="#" class="flex items-center gap-2 hover:text-[#E00020] transition-colors" vid="259">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="260">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" vid="261"></path>
+                                <rect x="2" y="9" width="4" height="12" vid="262"></rect>
+                                <circle cx="4" cy="4" r="2" vid="263"></circle>
+                            </svg>
+                            LINKEDIN
+                        </a>
+                        <a href="#" class="flex items-center gap-2 hover:text-[#E00020] transition-colors" vid="264">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="265">
+                                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z" vid="266"></path>
+                                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" vid="267"></polygon>
+                            </svg>
+                            YOUTUBE
+                        </a>
+                    </div>
+                    
+                    <div class="flex flex-wrap items-center gap-8 text-xs font-mono tracking-wider text-white/70" vid="268">
+                        <a href="mailto:hello@recpic.cz" class="flex items-center gap-2 hover:text-[#E00020] transition-colors" vid="269">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="270">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" vid="271"></path>
+                                <polyline points="22,6 12,13 2,6" vid="272"></polyline>
+                            </svg>
+                            hello@recpic.cz
+                        </a>
+                        <a href="tel:+420774339303" class="flex items-center gap-2 hover:text-[#E00020] transition-colors" vid="273">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" vid="274">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" vid="275"></path>
+                            </svg>
+                            +420 774 339 303
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    
+    <script vid="276">
+        
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+            document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+
+            
+            window.addEventListener('scroll', () => {
+                const wh = window.innerHeight;
+                document.querySelectorAll('.parallax-el').forEach(el => {
+                    const speed = parseFloat(el.getAttribute('data-speed'));
+                    const parent = el.closest('section') || el.parentElement;
+                    if(parent) {
+                        const rect = parent.getBoundingClientRect();
+                        
+                        const centerOffset = (rect.top + rect.height / 2) - (wh / 2);
+                        const yPos = centerOffset * speed;
+                        el.style.transform = `translateY(${yPos}px)`;
+                    }
+                });
+            });
+
+            
+            const tc = document.getElementById('tc');
+            if (tc) {
+                let f = 8, s = 12, m = 4;
+                setInterval(() => {
+                    f++; if(f>23){f=0;s++;} if(s>59){s=0;m++;}
+                    tc.innerText = `TCR 00:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}:${f.toString().padStart(2,'0')}`;
+                }, 41);
+            }
+        });
+
+        
+        function toggleAccordion(btn) {
+            const item = btn.closest('.accordion-item');
+            const content = item.querySelector('.accordion-content');
+            const vLine = item.querySelector('.vertical-line');
+            const isExpanded = content.classList.contains('open');
+
+            
+            document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
+            document.querySelectorAll('.vertical-line').forEach(l => l.style.transform = 'translateX(-50%) rotate(0deg)');
+
+            
+            if (!isExpanded) {
+                content.classList.add('open');
+                vLine.style.transform = 'translateX(-50%) rotate(90deg)';
+            }
+        }
+    </script>
+
+</body></html>
