@@ -170,6 +170,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
 .logo-link {
   font-size: 1.25rem; font-weight: 700; letter-spacing: -0.05em;
   display: flex; align-items: center; gap: 0.15rem;
+  position: relative; z-index: 1001;
 }
 .nav-links-list { display: flex; gap: 2.5rem; }
 .nav-link {
@@ -185,7 +186,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
   transition: width 0.3s ease;
 }
 .nav-link:hover::after, .nav-link.active::after { width: 100%; }
-.header-right { display: flex; align-items: center; gap: 2rem; }
+.header-right { display: flex; align-items: center; gap: 2rem; position: relative; z-index: 1001; }
 .lang-switch { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; display: flex; gap: 0.5rem; }
 .lang-switch .active { color: var(--accent-red); }
 .lang-switch span { cursor: pointer; transition: color 0.3s ease; }
