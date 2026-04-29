@@ -271,6 +271,18 @@
 .btn-submit:active {
             transform: scale(0.98);
         }
+
+        .btn-row {
+            display: flex;
+            gap: var(--pad-md);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-back {
+            text-decoration: none;
+            color: var(--text-main);
+        }
         
         .timecode {
             font-family: var(--font-mono);
@@ -462,7 +474,10 @@
 
             
             <section class="form-section" vid="49">
-                <form action="#" method="POST" onsubmit="event.preventDefault();" vid="50">
+                <form action="https://api.web3forms.com/submit" method="POST">
+                    <input type="hidden" name="access_key" value="9bad58c9-b494-4af4-a17d-a75e5ef37f5a">
+                    <input type="hidden" name="subject" value="Nová zpráva z RECPIC webu">
+                    <input type="hidden" name="redirect" value="http://127.0.0.1:8090/kontakt.html">
                     
                     <div class="form-group" vid="51">
                         <label for="name" class="form-label" vid="52">
@@ -488,9 +503,14 @@
                         <textarea id="message" name="message" class="form-input" rows="8" required="" spellcheck="false" vid="65"></textarea>
                     </div>
 
-                    <button type="submit" class="btn-submit" vid="66">
-Odeslat data
-                    </button>
+                    <div class="btn-row">
+                        <a href="index.html" class="btn-submit btn-back">
+                            ← Zpět
+                        </a>
+                        <button type="submit" class="btn-submit">
+                            Odeslat data
+                        </button>
+                    </div>
                 </form>
                 <div class="timecode" id="timecode" vid="67">TC: 00:00:00:00</div>
             </section>
