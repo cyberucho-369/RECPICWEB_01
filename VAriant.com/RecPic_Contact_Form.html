@@ -1,0 +1,529 @@
+<html lang="cs" vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">SYS.CONTACT // RECPIC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;300;400;500;700&amp;family=Inter:wght@300;400;500&amp;display=swap" rel="stylesheet" vid="7">
+    <style vid="8">
+        
+
+        :root {
+            --bg: #000000;
+            --surface: #0a0a0a;
+            --accent: #E00020;
+            --text-main: #E5E7EB;
+            --text-muted: #71717a;
+            --border-color: #27272A;
+            --border-hover: #52525b;
+            
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            
+            --pad-sm: 0.5rem;
+            --pad-md: 1rem;
+            --pad-lg: 2rem;
+            --pad-xl: 4rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.04;
+        }
+
+        
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 49;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            opacity: 0.3;
+        }
+
+        
+        .hud-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            min-height: 80vh;
+            padding: var(--pad-xl);
+            margin: var(--pad-lg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        
+        .crosshair {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-color: var(--accent);
+            border-style: solid;
+            border-width: 0;
+            opacity: 0.8;
+            z-index: 10;
+        }
+        .crosshair.tl { top: 0; left: 0; border-top-width: 1px; border-left-width: 1px; }
+        .crosshair.tr { top: 0; right: 0; border-top-width: 1px; border-right-width: 1px; }
+        .crosshair.bl { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
+        .crosshair.br { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
+
+        
+        .sys-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: var(--pad-md);
+            margin-bottom: var(--pad-xl);
+        }
+
+        .sys-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .sys-label span {
+            color: var(--text-main);
+        }
+
+        .rec-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+        }
+
+        .rec-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--pad-xl);
+            flex-grow: 1;
+            position: relative;
+        }
+
+        
+.content-grid::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0;
+            left: 50%;
+            width: 0.3px;
+            background-color: var(--accent);
+            z-index: 1;
+        }
+        
+        .content-grid::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+            transform: translate(-50%, -50%) rotate(45deg);
+            z-index: 2;
+        }
+
+        
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--pad-lg);
+            padding-right: var(--pad-xl);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .form-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .form-label .req {
+            color: var(--accent);
+        }
+
+        .form-input {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 1rem;
+            padding: var(--pad-md);
+            width: 100%;
+            transition: all 0.2s ease;
+            resize: none;
+        }
+
+        .form-input:hover {
+            border-color: var(--border-hover);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background-color: rgba(224, 0, 32, 0.03);
+            
+            box-shadow: inset 3px 0 0 0 var(--accent);
+        }
+
+        
+        textarea::-webkit-scrollbar { width: 6px; }
+        textarea::-webkit-scrollbar-track { background: var(--bg); border-left: 1px solid var(--border-color); }
+        textarea::-webkit-scrollbar-thumb { background: var(--border-hover); }
+        textarea::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        .btn-submit {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: var(--pad-md) var(--pad-lg);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            align-self: flex-start;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 0; height: 100%;
+            background-color: var(--accent);
+            transition: width 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: -1;
+        }
+
+        .btn-submit:hover {
+            border-color: var(--accent);
+        }
+
+        .btn-submit:hover::before {
+            width: 100%;
+        }
+
+.btn-submit:active {
+            transform: scale(0.98);
+        }
+        
+        .timecode {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            margin-top: auto;
+            margin-left: auto;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        
+        .info-section {
+            padding-left: var(--pad-xl);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-section {
+            padding-left: var(--pad-xl);
+            padding-right: 0;
+        }
+        
+        .info-section {
+            padding-right: var(--pad-xl);
+            padding-left: 0;
+        }
+        
+        .info-section {
+            padding-right: var(--pad-xl);
+            padding-left: 0;
+        }
+
+        .form-section {
+            padding-left: var(--pad-xl);
+            padding-right: 0;
+        }
+        
+        .info-section {
+            padding-right: var(--pad-xl);
+            padding-left: 0;
+        }
+        
+        .info-section {
+            padding-right: var(--pad-xl);
+            padding-left: 0;
+        }
+
+        .section-heading {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-weight: 400;
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-bottom: var(--pad-xl);
+            letter-spacing: -0.02em;
+        }
+
+        .data-table {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .data-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        
+        .data-row:last-child {
+            border-bottom: none;
+        }
+
+        .data-key {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .data-val {
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+        
+        .data-val.highlight {
+            color: var(--accent);
+        }
+
+        .data-val a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .data-val a:hover {
+            color: var(--accent);
+        }
+
+        
+        /* Removed tech-decor bars */
+
+        
+        @media (max-width: 900px) {
+            .hud-wrapper { padding: var(--pad-lg); margin: var(--pad-sm); }
+            .content-grid { grid-template-columns: 1fr; gap: var(--pad-xl); }
+            .content-grid::after { display: none; }
+            .form-section { padding-right: 0; }
+            .info-section { padding-left: 0; border-top: 1px solid var(--border-color); padding-top: var(--pad-xl); }
+            .section-heading { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body vid="9">
+
+    
+    <svg class="noise-overlay" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" vid="10">
+        <filter id="noiseFilter" vid="11">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch" vid="12"></feTurbulence>
+        </filter>
+        <rect width="100%" height="100%" filter="url(#noiseFilter)" vid="13"></rect>
+    </svg>
+
+    <div class="scanlines" vid="14"></div>
+
+    <main class="hud-wrapper" vid="15">
+        
+        <div class="crosshair tl" vid="16"></div>
+        <div class="crosshair tr" vid="17"></div>
+        <div class="crosshair bl" vid="18"></div>
+        <div class="crosshair br" vid="19"></div>
+
+        
+        <header class="sys-header" vid="20">
+            <div class="sys-label" vid="21">SYS.<span vid="22">CONTACT</span> // V.1.0</div>
+            <div class="rec-indicator" vid="23">
+                <div class="rec-dot" vid="24"></div>
+                REC
+            </div>
+        </header>
+
+        
+        <div class="content-grid" vid="25">
+            
+            
+            <section class="info-section" vid="26">
+                <h1 class="section-heading" vid="27">Kontaktujte nás:</h1>
+                
+                <div class="data-table" vid="28">
+                    
+                    <div class="data-row" vid="29">
+                        <div class="data-key" vid="30">Entity.HQ</div>
+                        <div class="data-val" vid="31">
+                            RECPIC s.r.o.<br vid="32">
+                            K Matěji 2359/20<br vid="33">
+                            Praha 6, 160 00
+                        </div>
+                    </div>
+
+                    <div class="data-row" vid="34">
+                        <div class="data-key" vid="35">Sys.Registry</div>
+                        <div class="data-val" vid="36">
+                            IČO: <span class="highlight" vid="37">25761510</span><br vid="38">
+                            DIČ: CZ25761510
+                        </div>
+                    </div>
+
+                    <div class="data-row" vid="39">
+                        <div class="data-key" vid="40">Comm.Voice</div>
+                        <div class="data-val" vid="41">
+                            <a href="tel:+420774339303" vid="42">+420 774 339 303</a>
+                        </div>
+                    </div>
+
+                    <div class="data-row" vid="43">
+                        <div class="data-key" vid="44">Comm.Net</div>
+                        <div class="data-val" vid="45">
+                            <a href="mailto:Ivan@recpic.cz" vid="46">Ivan@recpic.cz</a><br vid="47">
+                            <a href="mailto:cyberucho@gmail.com" class="highlight" vid="48">cyberucho@gmail.com</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                </section>
+
+            
+            <section class="form-section" vid="49">
+                <form action="#" method="POST" onsubmit="event.preventDefault();" vid="50">
+                    
+                    <div class="form-group" vid="51">
+                        <label for="name" class="form-label" vid="52">
+                            <span vid="53">Input.Jméno</span>
+                            <span class="req" vid="54">*REQ</span>
+                        </label>
+                        <input type="text" id="name" name="name" class="form-input" required="" autocomplete="off" spellcheck="false" vid="55">
+                    </div>
+
+                    <div class="form-group" vid="56">
+                        <label for="email" class="form-label" vid="57">
+                            <span vid="58">Input.Email</span>
+                            <span class="req" vid="59">*REQ</span>
+                        </label>
+                        <input type="email" id="email" name="email" class="form-input" required="" autocomplete="off" spellcheck="false" vid="60">
+                    </div>
+
+                    <div class="form-group" style="flex-grow: 1;" vid="61">
+                        <label for="message" class="form-label" vid="62">
+                            <span vid="63">Input.Zpráva</span>
+                            <span class="req" vid="64">*REQ</span>
+                        </label>
+                        <textarea id="message" name="message" class="form-input" rows="8" required="" spellcheck="false" vid="65"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit" vid="66">
+Odeslat data
+                    </button>
+                </form>
+                <div class="timecode" id="timecode" vid="67">TC: 00:00:00:00</div>
+            </section>
+        </div>
+    </main>
+
+
+    <script vid="68">
+        // Timecode generator
+        const timecodeEl = document.getElementById('timecode');
+        let frames = 0;
+        let seconds = 0;
+        let minutes = 0;
+        let hours = 0;
+        
+        setInterval(() => {
+            frames++;
+            if (frames >= 30) {
+                frames = 0;
+                seconds++;
+                if (seconds >= 60) {
+                    seconds = 0;
+                    minutes++;
+                    if (minutes >= 60) {
+                        minutes = 0;
+                        hours++;
+                        if (hours >= 100) hours = 0;
+                    }
+                }
+            }
+            const pad = (n, len = 2) => String(n).padStart(len, '0');
+            timecodeEl.textContent = `TC: ${pad(hours)}:${pad(minutes)}:${pad(seconds)}:${pad(frames)}`;
+        }, 33); // ~30fps
+    </script>
+
+</body></html>
