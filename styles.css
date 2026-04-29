@@ -167,6 +167,12 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
   backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--glass-border);
 }
+#main-header.menu-open {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: transparent !important;
+  border-bottom-color: transparent !important;
+}
 .logo-link {
   font-size: 1.25rem; font-weight: 700; letter-spacing: -0.05em;
   display: flex; align-items: center; gap: 0.15rem;

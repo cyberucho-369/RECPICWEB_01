@@ -85,7 +85,13 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileToggle.addEventListener('click', () => {
       mobileToggle.classList.toggle('active');
       mainNav.classList.toggle('active');
-      document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+      const isActive = mainNav.classList.contains('active');
+      document.body.style.overflow = isActive ? 'hidden' : '';
+      if (isActive) {
+        header.classList.add('menu-open');
+      } else {
+        header.classList.remove('menu-open');
+      }
     });
 
     mainNav.querySelectorAll('a').forEach(link => {
@@ -93,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileToggle.classList.remove('active');
         mainNav.classList.remove('active');
         document.body.style.overflow = '';
+        header.classList.remove('menu-open');
       });
     });
   }
