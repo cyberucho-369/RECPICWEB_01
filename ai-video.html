@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[REC]PIC | AI video</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        :root {
+            --bg-void: #000000;
+            --text-pure: #FFFFFF;
+            --text-muted: rgba(255, 255, 255, 0.65);
+            --text-dark: rgba(255, 0, 0, 0.4);
+            --accent-red: #E00020;
+            --glass-bg: rgba(224, 0, 32, 0.05);
+            --glass-border: rgba(224, 0, 32, 0.2);
+            --glass-border-hover: rgba(224, 0, 32, 0.5);
+            --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            --font-mono: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            --safe-zone: clamp(2rem, 4vw, 3rem);
+            --grid-max: 1440px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-pure);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* ---- Header ---- */
+        header {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 4rem;
+            width: 100%;
+            max-width: var(--grid-max);
+            margin: 0 auto;
+            padding: var(--safe-zone) var(--safe-zone) 1.5rem;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: var(--safe-zone);
+            right: var(--safe-zone);
+            height: 1px;
+            background: linear-gradient(90deg, var(--glass-border) 0%, rgba(224,0,32,0) 100%);
+        }
+
+        .brand-logo {
+            font-family: var(--font-sans);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            text-decoration: none;
+            color: var(--text-pure);
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0%;
+            height: 1px;
+            background-color: var(--accent-red);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        nav a:hover { color: var(--accent-red); }
+        nav a:hover::after { width: 100%; }
+        nav a.active { color: var(--accent-red); }
+        nav a.active::after { width: 100%; }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .lang-switch {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .lang-switch span.active { color: var(--accent-red); }
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1.2rem;
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-pure);
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            transition: all 0.4s ease;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-red);
+            background: rgba(224, 0, 32, 0.1);
+        }
+
+        /* ---- Main layout ---- */
+        .page-inner {
+            max-width: var(--grid-max);
+            margin: 0 auto;
+            padding: 3rem var(--safe-zone) 4rem;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 5rem;
+            align-items: start;
+        }
+
+        /* ---- Left: text ---- */
+        .content-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .rec-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent-red);
+            border-radius: 50%;
+            flex-shrink: 0;
+            animation: dot-pulse 1.5s infinite;
+        }
+
+        @keyframes dot-pulse {
+            0%   { opacity: 1; box-shadow: 0 0 0 0 rgba(224,0,32,0.7); transform: scale(1); }
+            70%  { opacity: 0.8; box-shadow: 0 0 0 10px rgba(224,0,32,0); transform: scale(1.2); }
+            100% { opacity: 1; box-shadow: 0 0 0 0 rgba(224,0,32,0); transform: scale(1); }
+        }
+
+        h1 {
+            font-size: clamp(3rem, 5vw, 4rem);
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            color: var(--text-pure);
+            margin-bottom: 2rem;
+        }
+
+        .info-block {
+            margin-bottom: 2.5rem;
+        }
+
+        .subheadline {
+            font-size: clamp(1.125rem, 1.5vw, 1.25rem);
+            font-family: var(--font-sans);
+            color: var(--text-pure);
+            letter-spacing: -0.025em;
+            margin-bottom: 0.75rem;
+            display: block;
+            font-weight: 500;
+            line-height: 1.25;
+        }
+
+        .paragraph {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 520px;
+        }
+
+        /* ---- Right: animated SVG frame ---- */
+        .content-right {
+            position: relative;
+            border: 1px solid var(--glass-border);
+            background: linear-gradient(135deg, rgba(224,0,32,0.05) 0%, rgba(0,0,0,0) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            aspect-ratio: 1 / 1;
+        }
+
+        .content-right::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to right, var(--glass-border) 1px, transparent 1px) 0 0 / 40px 100%,
+                linear-gradient(to bottom, var(--glass-border) 1px, transparent 1px) 0 0 / 100% 40px;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .ai-network {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0; left: 0;
+        }
+
+        /* SVG animations */
+        .chip-core {
+            animation: core-pulse 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes core-pulse {
+            0%   { fill: rgba(224,0,32,0.05); filter: drop-shadow(0 0 5px rgba(224,0,32,0.2)); }
+            100% { fill: rgba(224,0,32,0.2);  filter: drop-shadow(0 0 20px rgba(224,0,32,0.6)); }
+        }
+
+        .chip-glow {
+            animation: glow-pulse 3s infinite alternate ease-in-out;
+            transform-origin: 200px 200px;
+        }
+
+        @keyframes glow-pulse {
+            0%   { opacity: 0.2; transform: scale(0.9); }
+            100% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        .node { animation: node-pulse 1.5s infinite alternate ease-in-out; }
+        .node:nth-child(even) { animation-delay: 0.75s; }
+
+        @keyframes node-pulse {
+            0%   { opacity: 0.4; filter: drop-shadow(0 0 2px rgba(224,0,32,0.3)); }
+            100% { opacity: 1;   filter: drop-shadow(0 0 10px rgba(224,0,32,0.9)); }
+        }
+
+        .particle { filter: drop-shadow(0 0 4px #FFFFFF); }
+
+        /* ---- Timecode ---- */
+        .timecode {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--accent-red);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* ---- Mobile ---- */
+        @media (max-width: 768px) {
+            header {
+                grid-template-columns: auto 1fr;
+                gap: 1rem;
+                padding: 1.25rem 1.25rem 1.25rem;
+            }
+
+            header::after { left: 1.25rem; right: 1.25rem; }
+
+            nav { display: none; }
+
+            .page-inner {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 2rem 1.25rem 3rem;
+            }
+
+            .content-right {
+                order: -1;
+                aspect-ratio: 4 / 3;
+            }
+
+            .content-left { order: 1; }
+
+            h1 { font-size: clamp(2rem, 8vw, 2.8rem); }
+
+            .paragraph { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="brand-logo">
+            <span style="color: var(--accent-red);">[REC]</span><span>PIC</span>
+        </a>
+
+        <nav>
+            <ul>
+                <li><a href="o-nas.html">O nás</a></li>
+                <li><a href="index.html#section-portfolio">Portfolio</a></li>
+                <li><a href="proc-video.html">Proč video</a></li>
+                <li><a href="ai-video.html" class="active">Ai video</a></li>
+                <li><a href="kontakt.html">Kontakt</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <div class="lang-switch">
+                <span class="active">CZ</span> / <span>EN</span>
+            </div>
+            <a href="kontakt.html" class="btn-outline">NEZÁVAZNĚ POPTAT</a>
+        </div>
+    </header>
+
+    <div class="page-inner">
+
+        <div class="content-left">
+            <div class="section-header">
+                <div class="rec-dot"></div>
+                <h1>AI video</h1>
+            </div>
+
+            <div class="info-block">
+                <span class="subheadline">Tvorba AI videa pro váš business</span>
+                <p class="paragraph">
+                    Tvorba videa pomocí AI dnes patří do výbavy každé produkce, která chce pracovat chytře. My v RECPIC ji používáme tam, kde to má reálný smysl — při vizualizaci nápadů ještě před natáčením, při tvorbě storyboardů, moodových referencí nebo testování různých kreativních směrů.
+                </p>
+            </div>
+
+            <div class="info-block">
+                <span class="subheadline">Proč zvolit AI video místo klasické produkce?</span>
+                <p class="paragraph">
+                    Pokud kampaň potřebuje více formátů nebo verzí pro různé platformy, AI ušetří čas i peníze, aniž by se celá produkce musela stavět znovu od nuly. Pokud je vše dobře naplánované, můžete například své kampaně okamžitě aktualizovat nebo personalizovat pro různé cílové skupiny — z AI videa pro marketing se tak stává nejefektivnější nástroj současnosti.
+                </p>
+            </div>
+
+            <div class="info-block">
+                <span class="subheadline">Strategie a kreativita zůstávají klíčové</span>
+                <p class="paragraph">
+                    Žádná technologie však nenahradí to, co rozhoduje o tom, jestli video skutečně funguje — tedy strategii, příběh a kreativní vedení. AI nám pomáhá pracovat rychleji a jasněji. Přemýšlení za tím vším je pořád na nás. Ať už potřebujete AI instruktážní video pro onboarding nebo automatické generování produktových videí pro váš e-shop, neváhejte se nám ozvat.
+                </p>
+            </div>
+        </div>
+
+        <div class="content-right">
+            <svg class="ai-network" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                <!-- Circuit lines -->
+                <g stroke="rgba(224, 0, 32, 0.3)" stroke-width="1.5" fill="none">
+                    <path d="M -100,100 L 120,100 L 150,150 L 170,150"></path>
+                    <path d="M 50,-100 L 50,80 L 120,150 L 170,150"></path>
+                    <path d="M 500,80 L 300,80 L 250,150 L 230,150"></path>
+                    <path d="M 350,-100 L 350,60 L 280,130 L 230,130"></path>
+                    <path d="M -100,300 L 100,300 L 150,250 L 170,250"></path>
+                    <path d="M 80,500 L 80,320 L 140,260 L 170,260"></path>
+                    <path d="M 500,320 L 280,320 L 250,280 L 230,280"></path>
+                    <path d="M 320,500 L 320,340 L 260,270 L 230,270"></path>
+                </g>
+                <!-- Nodes -->
+                <g fill="#E00020">
+                    <circle cx="120" cy="100" r="3" class="node"></circle>
+                    <circle cx="50"  cy="80"  r="3" class="node"></circle>
+                    <circle cx="300" cy="80"  r="3" class="node"></circle>
+                    <circle cx="280" cy="130" r="3" class="node"></circle>
+                    <circle cx="100" cy="300" r="3" class="node"></circle>
+                    <circle cx="140" cy="260" r="3" class="node"></circle>
+                    <circle cx="280" cy="320" r="3" class="node"></circle>
+                    <circle cx="260" cy="270" r="3" class="node"></circle>
+                    <circle cx="-20" cy="100" r="3" class="node"></circle>
+                    <circle cx="420" cy="80"  r="3" class="node"></circle>
+                    <circle cx="-50" cy="300" r="3" class="node"></circle>
+                    <circle cx="450" cy="320" r="3" class="node"></circle>
+                </g>
+                <!-- Travelling particles -->
+                <circle r="2" fill="#FFFFFF" class="particle">
+                    <animateMotion dur="3s" repeatCount="indefinite" path="M -100,100 L 120,100 L 150,150 L 170,150"></animateMotion>
+                </circle>
+                <circle r="2" fill="#FFFFFF" class="particle">
+                    <animateMotion dur="4s" repeatCount="indefinite" path="M 500,80 L 300,80 L 250,150 L 230,150"></animateMotion>
+                </circle>
+                <circle r="2" fill="#FFFFFF" class="particle">
+                    <animateMotion dur="3.5s" repeatCount="indefinite" path="M -100,300 L 100,300 L 150,250 L 170,250"></animateMotion>
+                </circle>
+                <circle r="2" fill="#FFFFFF" class="particle">
+                    <animateMotion dur="4.2s" repeatCount="indefinite" path="M 500,320 L 280,320 L 250,280 L 230,280"></animateMotion>
+                </circle>
+                <circle r="2" fill="#FFFFFF" class="particle">
+                    <animateMotion dur="2.8s" repeatCount="indefinite" path="M 50,-100 L 50,80 L 120,150 L 170,150"></animateMotion>
+                </circle>
+                <!-- Chip package -->
+                <rect x="150" y="150" width="100" height="100" rx="12"
+                      fill="rgba(0,0,0,0.8)" stroke="rgba(224,0,32,0.5)" stroke-width="1"></rect>
+                <rect x="165" y="165" width="70" height="70" rx="8"
+                      class="chip-core" fill="rgba(224,0,32,0.1)" stroke="#E00020" stroke-width="2"></rect>
+                <!-- Chip pins -->
+                <g stroke="#E00020" stroke-width="2" opacity="0.8">
+                    <line x1="175" y1="140" x2="175" y2="150"></line>
+                    <line x1="190" y1="140" x2="190" y2="150"></line>
+                    <line x1="205" y1="140" x2="205" y2="150"></line>
+                    <line x1="220" y1="140" x2="220" y2="150"></line>
+                    <line x1="175" y1="250" x2="175" y2="260"></line>
+                    <line x1="190" y1="250" x2="190" y2="260"></line>
+                    <line x1="205" y1="250" x2="205" y2="260"></line>
+                    <line x1="220" y1="250" x2="220" y2="260"></line>
+                    <line x1="140" y1="175" x2="150" y2="175"></line>
+                    <line x1="140" y1="190" x2="150" y2="190"></line>
+                    <line x1="140" y1="205" x2="150" y2="205"></line>
+                    <line x1="140" y1="220" x2="150" y2="220"></line>
+                    <line x1="250" y1="175" x2="260" y2="175"></line>
+                    <line x1="250" y1="190" x2="260" y2="190"></line>
+                    <line x1="250" y1="205" x2="260" y2="205"></line>
+                    <line x1="250" y1="220" x2="260" y2="220"></line>
+                </g>
+                <!-- Glow halo -->
+                <circle cx="200" cy="200" r="35" fill="url(#glowGradient)" class="chip-glow"></circle>
+                <!-- AI label -->
+                <text x="200" y="206" fill="#E00020"
+                      font-family="'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace"
+                      font-size="20" font-weight="bold" text-anchor="middle" letter-spacing="2">AI</text>
+                <defs>
+                    <radialGradient id="glowGradient" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%"   stop-color="rgba(224,0,32,0.5)"></stop>
+                        <stop offset="100%" stop-color="rgba(224,0,32,0)"></stop>
+                    </radialGradient>
+                </defs>
+            </svg>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <section class="section-footer-wrap">
+        <div class="noise-overlay"></div>
+        <div class="container relative z-10 flex-col" style="display:flex;flex-direction:column;">
+            <div class="site-footer">
+                <div class="footer-divider-row">
+                    <div class="footer-divider-label">SYS. Footer</div>
+                    <div class="footer-divider-line"></div>
+                </div>
+
+                <footer class="footer-inner">
+                    <a href="index.html" class="logo-link">
+                        <span class="text-accent">[REC]</span><span class="text-pure">PIC</span>
+                    </a>
+
+                    <div class="footer-links-wrap">
+                        <div class="footer-links-row">
+                            <a href="#" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                </svg>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="https://www.linkedin.com/in/ivan-zbiral-5b900617" target="_blank"
+                                rel="noopener noreferrer" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                    <rect x="2" y="9" width="4" height="12"></rect>
+                                    <circle cx="4" cy="4" r="2"></circle>
+                                </svg>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="https://www.facebook.com/RecPic" target="_blank" rel="noopener noreferrer"
+                                class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                                </svg>
+                                <span>Facebook</span>
+                            </a>
+                            <a href="https://www.youtube.com/@recpic_001" target="_blank" rel="noopener noreferrer"
+                                class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                                    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                                </svg>
+                                <span>YouTube</span>
+                            </a>
+                        </div>
+                        <div class="footer-links-row">
+                            <a href="mailto:ivan@recpic.cz" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                <span class="email-text">ivan@recpic.cz</span>
+                            </a>
+                            <a href="tel:+420774339303" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                                <span>+420 774 339 303</span>
+                            </a>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </section>
+
+    <div class="timecode" id="tc">TCR 00:00:00:00</div>
+
+    <script>
+        const tc = document.getElementById('tc');
+        let f = 8, s = 12, m = 4;
+        setInterval(() => {
+            f++; if (f > 23) { f = 0; s++; } if (s > 59) { s = 0; m++; }
+            tc.innerText = `TCR 00:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}:${f.toString().padStart(2,'0')}`;
+        }, 41);
+    </script>
+
+</body>
+</html>

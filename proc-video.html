@@ -353,6 +353,20 @@
             filter: grayscale(80%) contrast(1.1) brightness(0.8);
         }
 
+        .timecode {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--accent-red);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: 100;
+        }
+
         @media (max-width: 768px) {
             .ui-layer {
                 padding: 1.25rem;
@@ -403,7 +417,7 @@
                     <li><a href="o-nas.html">O nás</a></li>
                     <li><a href="index.html#section-portfolio">Portfolio</a></li>
                     <li><a href="proc-video.html" class="active">Proč video</a></li>
-                    <li><a href="index.html#section-services">Ai video</a></li>
+                    <li><a href="ai-video.html">Ai video</a></li>
                     <li><a href="kontakt.html">Kontakt</a></li>
                 </ul>
             </nav>
@@ -545,5 +559,16 @@
         </div>
     </section>
 
+
+    <div class="timecode" id="tc">TCR 00:00:00:00</div>
+
+    <script>
+        const tc = document.getElementById('tc');
+        let f = 8, s = 12, m = 4;
+        setInterval(() => {
+            f++; if (f > 23) { f = 0; s++; } if (s > 59) { s = 0; m++; }
+            tc.innerText = `TCR 00:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}:${f.toString().padStart(2,'0')}`;
+        }, 41);
+    </script>
 
 </body></html>
