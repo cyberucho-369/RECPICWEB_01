@@ -39,109 +39,6 @@
             min-height: 100vh;
         }
 
-        /* ---- Header ---- */
-        header {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            align-items: center;
-            gap: 4rem;
-            width: 100%;
-            max-width: var(--grid-max);
-            margin: 0 auto;
-            padding: var(--safe-zone) var(--safe-zone) 1.5rem;
-            position: relative;
-        }
-
-        header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: var(--safe-zone);
-            right: var(--safe-zone);
-            height: 1px;
-            background: linear-gradient(90deg, var(--glass-border) 0%, rgba(224,0,32,0) 100%);
-        }
-
-        .brand-logo {
-            font-family: var(--font-sans);
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.05em;
-            text-decoration: none;
-            color: var(--text-pure);
-            display: flex;
-            align-items: center;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2.5rem;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-            transition: color 0.3s ease;
-            position: relative;
-            padding-bottom: 4px;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 0%;
-            height: 1px;
-            background-color: var(--accent-red);
-            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        nav a:hover { color: var(--accent-red); }
-        nav a:hover::after { width: 100%; }
-        nav a.active { color: var(--accent-red); }
-        nav a.active::after { width: 100%; }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .lang-switch {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            display: flex;
-            gap: 0.5rem;
-            text-transform: uppercase;
-        }
-
-        .lang-switch span.active { color: var(--accent-red); }
-
-        .btn-outline {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.6rem 1.2rem;
-            background: transparent;
-            border: 1px solid var(--glass-border);
-            color: var(--text-pure);
-            font-size: 0.75rem;
-            font-family: var(--font-mono);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            text-decoration: none;
-            transition: all 0.4s ease;
-        }
-
-        .btn-outline:hover {
-            border-color: var(--accent-red);
-            background: rgba(224, 0, 32, 0.1);
-        }
 
         /* ---- Main layout ---- */
         .page-inner {
@@ -290,16 +187,6 @@
 
         /* ---- Mobile ---- */
         @media (max-width: 768px) {
-            header {
-                grid-template-columns: auto 1fr;
-                gap: 1rem;
-                padding: 1.25rem 1.25rem 1.25rem;
-            }
-
-            header::after { left: 1.25rem; right: 1.25rem; }
-
-            nav { display: none; }
-
             .page-inner {
                 grid-template-columns: 1fr;
                 gap: 2rem;
@@ -321,26 +208,29 @@
 </head>
 <body>
 
-    <header>
-        <a href="index.html" class="brand-logo">
-            <span style="color: var(--accent-red);">[REC]</span><span>PIC</span>
+    <header id="main-header">
+        <a href="index.html" class="logo-link">
+            <span class="text-accent">[REC]</span><span class="text-pure">PIC</span>
         </a>
 
-        <nav>
-            <ul>
-                <li><a href="o-nas.html">O nás</a></li>
-                <li><a href="index.html#section-portfolio">Portfolio</a></li>
-                <li><a href="proc-video.html">Proč video</a></li>
-                <li><a href="ai-video.html" class="active">Ai video</a></li>
-                <li><a href="kontakt.html">Kontakt</a></li>
+        <nav class="main-nav" id="mainNav">
+            <ul class="nav-links-list">
+                <li><a href="o-nas.html" class="nav-link">O nás</a></li>
+                <li><a href="index.html#section-portfolio" class="nav-link">Portfolio</a></li>
+                <li><a href="proc-video.html" class="nav-link">Proč video</a></li>
+                <li><a href="ai-video.html" class="nav-link active">Ai video</a></li>
+                <li><a href="kontakt.html" class="nav-link">Kontakt</a></li>
             </ul>
         </nav>
 
-        <div class="header-actions">
+        <div class="header-right">
             <div class="lang-switch">
                 <span class="active">CZ</span> / <span>EN</span>
             </div>
-            <a href="kontakt.html" class="btn-outline">NEZÁVAZNĚ POPTAT</a>
+            <a href="kontakt.html" class="btn-outline header-cta">NEZÁVAZNĚ POPTAT</a>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
         </div>
     </header>
 
@@ -538,6 +428,7 @@
 
     <div class="timecode" id="tc">TCR 00:00:00:00</div>
 
+    <script src="script.js"></script>
     <script>
         const tc = document.getElementById('tc');
         let f = 8, s = 12, m = 4;
