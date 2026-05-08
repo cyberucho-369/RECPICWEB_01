@@ -416,12 +416,12 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
   line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 1.5rem;
 }
 .problem-subtext {
-  font-size: clamp(1rem, 1.8vw, 1.5rem); font-weight: 100;
+  font-size: clamp(1.25rem, 2vw, 2.5rem); font-weight: 300;
   letter-spacing: 0.05em; margin-top: 0.5rem;
 }
 .problem-subtext span {
   font-family: inherit;
-  color: var(--accent-red); font-weight: 100;
+  color: var(--accent-red); font-weight: 300;
 }
 
 .problem-right {

@@ -1,0 +1,481 @@
+<html lang="cs" vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">[REC]PIC | Ai video</title>
+    <style vid="5">
+        :root {
+            --bg-void: #000000;
+            --text-pure: #FFFFFF;
+            --text-muted: rgba(255, 255, 255, 0.65);
+            --text-dark: rgba(255, 0, 0, 0.4);
+            --accent-red: #E00020;
+            --glass-border: rgba(224, 0, 32, 0.2);
+            --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            --font-mono: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            --safe-zone: clamp(2rem, 5vw, 4rem);
+            --grid-max: 1440px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-pure);
+            font-family: var(--font-sans);
+            overflow: hidden;
+            line-height: 1.5;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .ui-layer {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: var(--safe-zone);
+            max-width: var(--grid-max);
+            margin: 0 auto;
+        }
+
+        .hud-crosshair {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .hud-tl { top: var(--safe-zone); left: var(--safe-zone); border-top: 1px solid var(--text-dark); border-left: 1px solid var(--text-dark); }
+        .hud-tr { top: var(--safe-zone); right: var(--safe-zone); border-top: 1px solid var(--text-dark); border-right: 1px solid var(--text-dark); }
+        .hud-bl { bottom: var(--safe-zone); left: var(--safe-zone); border-bottom: 1px solid var(--text-dark); border-left: 1px solid var(--text-dark); }
+        .hud-br { bottom: var(--safe-zone); right: var(--safe-zone); border-bottom: 1px solid var(--text-dark); border-right: 1px solid var(--text-dark); }
+
+        header {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 4rem;
+            width: 100%;
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, var(--glass-border) 0%, rgba(224,0,32,0) 100%);
+        }
+
+        .brand-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        nav a:hover {
+            color: var(--accent-red);
+        }
+
+        nav a:hover::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--accent-red);
+        }
+
+        nav a.active { color: var(--accent-red); }
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--accent-red);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .lang-switch {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .btn-outline {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--glass-border);
+            color: var(--text-pure);
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            text-decoration: none;
+            transition: all 0.4s ease;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-red);
+        }
+
+        main {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .content-left {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            overflow-y: auto;
+            padding-right: 2rem;
+            max-height: 60vh;
+        }
+
+        .content-left::-webkit-scrollbar { width: 2px; }
+        .content-left::-webkit-scrollbar-track { background: transparent; }
+        .content-left::-webkit-scrollbar-thumb { background: var(--text-dark); }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .rec-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-red);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        h1 {
+            font-size: clamp(3rem, 5vw, 4rem);
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+            color: var(--text-pure);
+        }
+
+        .info-block {
+            margin-bottom: 2.5rem;
+        }
+
+        .subheadline {
+            font-size: 1rem;
+            font-family: var(--font-sans);
+            color: var(--text-pure);
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            display: block;
+            font-weight: 500;
+        }
+
+        .paragraph {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 520px;
+        }
+
+        .content-right {
+            position: relative;
+            height: 60vh;
+            border: 1px solid var(--glass-border);
+            background: linear-gradient(135deg, rgba(224, 0, 32, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .content-right::before {
+            content: 'VISUAL ASSET AREA';
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-dark);
+            letter-spacing: 0.3em;
+            position: absolute;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .content-right::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                linear-gradient(to right, var(--glass-border) 1px, transparent 1px) 0 0 / 40px 100%,
+                linear-gradient(to bottom, var(--glass-border) 1px, transparent 1px) 0 0 / 100% 40px;
+            opacity: 0.1;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        
+        .ai-network {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .chip-core {
+            animation: core-pulse 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes core-pulse {
+            0% { fill: rgba(224, 0, 32, 0.05); filter: drop-shadow(0 0 5px rgba(224, 0, 32, 0.2)); }
+            100% { fill: rgba(224, 0, 32, 0.2); filter: drop-shadow(0 0 20px rgba(224, 0, 32, 0.6)); }
+        }
+
+        .chip-glow {
+            animation: glow-pulse 3s infinite alternate ease-in-out;
+            transform-origin: 200px 200px;
+        }
+
+        @keyframes glow-pulse {
+            0% { opacity: 0.2; transform: scale(0.9); }
+            100% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        .node {
+            animation: node-pulse 1.5s infinite alternate ease-in-out;
+        }
+
+        .node:nth-child(even) {
+            animation-delay: 0.75s;
+        }
+
+        @keyframes node-pulse {
+            0% { opacity: 0.4; filter: drop-shadow(0 0 2px rgba(224, 0, 32, 0.3)); }
+            100% { opacity: 1; filter: drop-shadow(0 0 10px rgba(224, 0, 32, 0.9)); }
+        }
+
+        .particle {
+            filter: drop-shadow(0 0 4px #FFFFFF);
+        }
+
+        .timecode {
+            position: absolute;
+            right: var(--safe-zone);
+            bottom: var(--safe-zone);
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--accent-red);
+            letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+<body vid="6">
+
+    <div class="ui-layer" vid="7">
+        <div class="hud-crosshair hud-tl" vid="8"></div>
+        <div class="hud-crosshair hud-tr" vid="9"></div>
+        <div class="hud-crosshair hud-bl" vid="10"></div>
+        <div class="hud-crosshair hud-br" vid="11"></div>
+
+        <header vid="12">
+            <a href="#" class="brand-logo" vid="13">
+                <span style="color: var(--accent-red);" vid="14">[REC]</span><span style="color: var(--text-pure);" vid="15">PIC</span>
+            </a>
+            <nav vid="16">
+                <ul vid="17">
+                    <li vid="18"><a href="#" vid="19">O nás</a></li>
+                    <li vid="20"><a href="#" vid="21">Portfolio</a></li>
+                    <li vid="22"><a href="#" vid="23">Proč video</a></li>
+                    <li vid="24"><a href="#" class="active" vid="25">Ai video</a></li>
+                    <li vid="26"><a href="#" vid="27">Kontakt</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions" vid="28">
+                <div class="lang-switch" vid="29"><span style="color: var(--accent-red);" vid="30">CZ</span> / EN</div>
+                <a href="#" class="btn-outline" vid="31">NEZÁVAZNĚ POPTAT</a>
+            </div>
+        </header>
+
+        <main vid="32">
+            <div class="content-left" vid="33">
+                <div class="section-header" vid="34">
+                    <div class="rec-dot" vid="35"></div>
+                    <h1 vid="36">AI video</h1>
+                </div>
+
+                <div class="info-block" vid="37">
+                    <span class="subheadline" vid="38">Tvorba AI videa pro váš business</span>
+                    <p class="paragraph" vid="39">
+                        Tvoření videa pomocí AI, dnes patří do výbavy každé produkce, která chce pracovat chytře. My v RECPIC ji používáme tam, kde to má reálný smysl — při vizualizaci nápadů ještě před natáčením, při tvorbě storyboardů, moodových referencí nebo testování různých kreativních směrů.
+                    </p>
+                </div>
+
+                <div class="info-block" vid="40">
+                    <span class="subheadline" vid="41">Proč zvolit AI video místo klasické produkce?</span>
+                    <p class="paragraph" vid="42">
+                        Pokud kampaň potřebuje více formátů nebo verzí pro různé platformy, AI ušetří čas i peníze, aniž by se celá produkce musela stavět znovu od nuly. Pokud je vše dobře naplánované tak můžete například své kampaně okamžitě aktualizovat nebo personalizovat pro různé cílové skupiny, což z AI videa pro marketing dělá nejefektivnější nástroj současnosti.
+                    </p>
+                </div>
+
+                <div class="info-block" vid="43">
+                    <span class="subheadline" vid="44">Strategie a kreativita zůstávají klíčové</span>
+                    <p class="paragraph" vid="45">
+                        Žádná technologie však nenahradí to, co rozhoduje o tom, jestli video skutečně funguje — tedy strategii, příběh a kreativní vedení. AI nám pomáhá pracovat rychleji a jasněji. Přemýšlení za tím vším je pořád na nás. Ať už tedy potřebujete AI instruktážní video pro onboarding nebo automatické generování produktových videi pro Váš e-shop, neváhejte se nám ozvat.
+                    </p>
+                </div>
+            </div>
+
+            <div class="content-right" vid="46">
+                <svg class="ai-network" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" vid="47">
+                    
+                    <g stroke="rgba(224, 0, 32, 0.3)" stroke-width="1.5" fill="none" vid="48">
+                        <path d="M -100,100 L 120,100 L 150,150 L 170,150" vid="49"></path>
+                        <path d="M 50,-100 L 50,80 L 120,150 L 170,150" vid="50"></path>
+                        
+                        <path d="M 500,80 L 300,80 L 250,150 L 230,150" vid="51"></path>
+                        <path d="M 350,-100 L 350,60 L 280,130 L 230,130" vid="52"></path>
+                        
+                        <path d="M -100,300 L 100,300 L 150,250 L 170,250" vid="53"></path>
+                        <path d="M 80,500 L 80,320 L 140,260 L 170,260" vid="54"></path>
+                        
+                        <path d="M 500,320 L 280,320 L 250,280 L 230,280" vid="55"></path>
+                        <path d="M 320,500 L 320,340 L 260,270 L 230,270" vid="56"></path>
+                    </g>
+
+                    
+                    <g fill="#E00020" vid="57">
+                        <circle cx="120" cy="100" r="3" class="node" vid="58"></circle>
+                        <circle cx="50" cy="80" r="3" class="node" vid="59"></circle>
+                        <circle cx="300" cy="80" r="3" class="node" vid="60"></circle>
+                        <circle cx="280" cy="130" r="3" class="node" vid="61"></circle>
+                        <circle cx="100" cy="300" r="3" class="node" vid="62"></circle>
+                        <circle cx="140" cy="260" r="3" class="node" vid="63"></circle>
+                        <circle cx="280" cy="320" r="3" class="node" vid="64"></circle>
+                        <circle cx="260" cy="270" r="3" class="node" vid="65"></circle>
+                        <circle cx="-20" cy="100" r="3" class="node" vid="66"></circle>
+                        <circle cx="420" cy="80" r="3" class="node" vid="67"></circle>
+                        <circle cx="-50" cy="300" r="3" class="node" vid="68"></circle>
+                        <circle cx="450" cy="320" r="3" class="node" vid="69"></circle>
+                    </g>
+
+                    
+                    <circle r="2" fill="#FFFFFF" class="particle" vid="70">
+                        <animateMotion dur="3s" repeatCount="indefinite" path="M -100,100 L 120,100 L 150,150 L 170,150" vid="71"></animateMotion>
+                    </circle>
+                    <circle r="2" fill="#FFFFFF" class="particle" vid="72">
+                        <animateMotion dur="4s" repeatCount="indefinite" path="M 500,80 L 300,80 L 250,150 L 230,150" vid="73"></animateMotion>
+                    </circle>
+                    <circle r="2" fill="#FFFFFF" class="particle" vid="74">
+                        <animateMotion dur="3.5s" repeatCount="indefinite" path="M -100,300 L 100,300 L 150,250 L 170,250" vid="75"></animateMotion>
+                    </circle>
+                    <circle r="2" fill="#FFFFFF" class="particle" vid="76">
+                        <animateMotion dur="4.2s" repeatCount="indefinite" path="M 500,320 L 280,320 L 250,280 L 230,280" vid="77"></animateMotion>
+                    </circle>
+                    <circle r="2" fill="#FFFFFF" class="particle" vid="78">
+                        <animateMotion dur="2.8s" repeatCount="indefinite" path="M 50,-100 L 50,80 L 120,150 L 170,150" vid="79"></animateMotion>
+                    </circle>
+                    
+                    
+                    <rect x="150" y="150" width="100" height="100" rx="12" fill="rgba(0, 0, 0, 0.8)" stroke="rgba(224, 0, 32, 0.5)" stroke-width="1" vid="80"></rect>
+                    
+                    
+                    <rect x="165" y="165" width="70" height="70" rx="8" class="chip-core" fill="rgba(224, 0, 32, 0.1)" stroke="#E00020" stroke-width="2" vid="81"></rect>
+                    
+                    
+                    <g stroke="#E00020" stroke-width="2" opacity="0.8" vid="82">
+                        <line x1="175" y1="140" x2="175" y2="150" vid="83"></line>
+                        <line x1="190" y1="140" x2="190" y2="150" vid="84"></line>
+                        <line x1="205" y1="140" x2="205" y2="150" vid="85"></line>
+                        <line x1="220" y1="140" x2="220" y2="150" vid="86"></line>
+                        <line x1="175" y1="250" x2="175" y2="260" vid="87"></line>
+                        <line x1="190" y1="250" x2="190" y2="260" vid="88"></line>
+                        <line x1="205" y1="250" x2="205" y2="260" vid="89"></line>
+                        <line x1="220" y1="250" x2="220" y2="260" vid="90"></line>
+                        <line x1="140" y1="175" x2="150" y2="175" vid="91"></line>
+                        <line x1="140" y1="190" x2="150" y2="190" vid="92"></line>
+                        <line x1="140" y1="205" x2="150" y2="205" vid="93"></line>
+                        <line x1="140" y1="220" x2="150" y2="220" vid="94"></line>
+                        <line x1="250" y1="175" x2="260" y2="175" vid="95"></line>
+                        <line x1="250" y1="190" x2="260" y2="190" vid="96"></line>
+                        <line x1="250" y1="205" x2="260" y2="205" vid="97"></line>
+                        <line x1="250" y1="220" x2="260" y2="220" vid="98"></line>
+                    </g>
+
+                    
+                    <circle cx="200" cy="200" r="35" fill="url(#glowGradient)" class="chip-glow" vid="99"></circle>
+
+                    
+                    <text x="200" y="206" fill="#E00020" font-family="'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace" font-size="20" font-weight="bold" text-anchor="middle" letter-spacing="2" vid="100">AI</text>
+                    
+                    <defs vid="101">
+                        <radialGradient id="glowGradient" cx="50%" cy="50%" r="50%" vid="102">
+                            <stop offset="0%" stop-color="rgba(224, 0, 32, 0.5)" vid="103"></stop>
+                            <stop offset="100%" stop-color="rgba(224, 0, 32, 0)" vid="104"></stop>
+                        </radialGradient>
+                    </defs>
+                </svg>
+            </div>
+        </main>
+
+        <div class="timecode" id="tc" vid="105">TCR 00:04:12:08</div>
+    </div>
+
+    <script vid="106">
+        const tc = document.getElementById('tc');
+        let f = 8, s = 12, m = 4;
+        setInterval(() => {
+            f++; if(f>23){f=0;s++;} if(s>59){s=0;m++;}
+            tc.innerText = `TCR 00:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}:${f.toString().padStart(2,'0')}`;
+        }, 41);
+    </script>
+
+
+</body></html>

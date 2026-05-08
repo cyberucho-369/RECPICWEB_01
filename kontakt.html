@@ -1,13 +1,15 @@
-<html lang="cs" vid="0"><head vid="1">
+<html lang="cs" vid="0">
+
+<head vid="1">
     <meta charset="UTF-8" vid="2">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
     <title vid="4">SYS.CONTACT // RECPIC</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;300;400;500;700&amp;family=Inter:wght@300;400;500&amp;display=swap" rel="stylesheet" vid="7">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;300;400;500;700&amp;family=Inter:wght@300;400;500&amp;display=swap"
+        rel="stylesheet" vid="7">
     <style vid="8">
-        
-
         :root {
             --bg: #000000;
             --surface: #0a0a0a;
@@ -16,10 +18,10 @@
             --text-muted: #71717a;
             --border-color: #27272A;
             --border-hover: #52525b;
-            
+
             --font-mono: 'JetBrains Mono', monospace;
             --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            
+
             --pad-sm: 0.5rem;
             --pad-md: 1rem;
             --pad-lg: 2rem;
@@ -46,27 +48,33 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        
+
         .noise-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             pointer-events: none;
             z-index: 50;
             opacity: 0.04;
         }
 
-        
+
         .scanlines {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             pointer-events: none;
             z-index: 49;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.1));
             background-size: 100% 4px;
             opacity: 0.3;
         }
 
-        
+
         .hud-wrapper {
             position: relative;
             width: 100%;
@@ -78,7 +86,7 @@
             flex-direction: column;
         }
 
-        
+
         .crosshair {
             position: absolute;
             width: 30px;
@@ -89,12 +97,36 @@
             opacity: 0.8;
             z-index: 10;
         }
-        .crosshair.tl { top: 0; left: 0; border-top-width: 1px; border-left-width: 1px; }
-        .crosshair.tr { top: 0; right: 0; border-top-width: 1px; border-right-width: 1px; }
-        .crosshair.bl { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
-        .crosshair.br { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
 
-        
+        .crosshair.tl {
+            top: 0;
+            left: 0;
+            border-top-width: 1px;
+            border-left-width: 1px;
+        }
+
+        .crosshair.tr {
+            top: 0;
+            right: 0;
+            border-top-width: 1px;
+            border-right-width: 1px;
+        }
+
+        .crosshair.bl {
+            bottom: 0;
+            left: 0;
+            border-bottom-width: 1px;
+            border-left-width: 1px;
+        }
+
+        .crosshair.br {
+            bottom: 0;
+            right: 0;
+            border-bottom-width: 1px;
+            border-right-width: 1px;
+        }
+
+
         .sys-header {
             display: flex;
             justify-content: space-between;
@@ -135,11 +167,18 @@
         }
 
         @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.2; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.2;
+            }
         }
 
-        
+
         .content-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -148,17 +187,18 @@
             position: relative;
         }
 
-        
-.content-grid::after {
+
+        .content-grid::after {
             content: '';
             position: absolute;
-            top: 0; bottom: 0;
+            top: 0;
+            bottom: 0;
             left: 50%;
             width: 0.3px;
             background-color: var(--accent);
             z-index: 1;
         }
-        
+
         .content-grid::before {
             content: '';
             position: absolute;
@@ -172,7 +212,7 @@
             z-index: 2;
         }
 
-        
+
         .form-section {
             display: flex;
             flex-direction: column;
@@ -196,7 +236,7 @@
             display: flex;
             justify-content: space-between;
         }
-        
+
         .form-label .req {
             color: var(--accent);
         }
@@ -221,15 +261,27 @@
             outline: none;
             border-color: var(--accent);
             background-color: rgba(224, 0, 32, 0.03);
-            
+
             box-shadow: inset 3px 0 0 0 var(--accent);
         }
 
-        
-        textarea::-webkit-scrollbar { width: 6px; }
-        textarea::-webkit-scrollbar-track { background: var(--bg); border-left: 1px solid var(--border-color); }
-        textarea::-webkit-scrollbar-thumb { background: var(--border-hover); }
-        textarea::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        textarea::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        textarea::-webkit-scrollbar-track {
+            background: var(--bg);
+            border-left: 1px solid var(--border-color);
+        }
+
+        textarea::-webkit-scrollbar-thumb {
+            background: var(--border-hover);
+        }
+
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
 
         .btn-submit {
             background: transparent;
@@ -253,8 +305,10 @@
         .btn-submit::before {
             content: '';
             position: absolute;
-            top: 0; left: 0;
-            width: 0; height: 100%;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
             background-color: var(--accent);
             transition: width 0.3s cubic-bezier(0.19, 1, 0.22, 1);
             z-index: -1;
@@ -268,7 +322,7 @@
             width: 100%;
         }
 
-.btn-submit:active {
+        .btn-submit:active {
             transform: scale(0.98);
         }
 
@@ -283,7 +337,7 @@
             text-decoration: none;
             color: var(--text-main);
         }
-        
+
         .timecode {
             font-family: var(--font-mono);
             font-size: 0.75rem;
@@ -293,8 +347,8 @@
             margin-left: auto;
             font-variant-numeric: tabular-nums;
         }
-        
-        
+
+
         .info-section {
             padding-left: var(--pad-xl);
             display: flex;
@@ -305,12 +359,12 @@
             padding-left: var(--pad-xl);
             padding-right: 0;
         }
-        
+
         .info-section {
             padding-right: var(--pad-xl);
             padding-left: 0;
         }
-        
+
         .info-section {
             padding-right: var(--pad-xl);
             padding-left: 0;
@@ -320,12 +374,12 @@
             padding-left: var(--pad-xl);
             padding-right: 0;
         }
-        
+
         .info-section {
             padding-right: var(--pad-xl);
             padding-left: 0;
         }
-        
+
         .info-section {
             padding-right: var(--pad-xl);
             padding-left: 0;
@@ -353,7 +407,7 @@
             padding-bottom: 1.5rem;
             border-bottom: 1px dashed var(--border-color);
         }
-        
+
         .data-row:last-child {
             border-bottom: none;
         }
@@ -370,7 +424,7 @@
             font-size: 1rem;
             color: var(--text-main);
         }
-        
+
         .data-val.highlight {
             color: var(--accent);
         }
@@ -380,31 +434,54 @@
             text-decoration: none;
             transition: color 0.2s;
         }
-        
+
         .data-val a:hover {
             color: var(--accent);
         }
 
-        
+
         /* Removed tech-decor bars */
 
-        
+
         @media (max-width: 900px) {
-            .hud-wrapper { padding: var(--pad-lg); margin: var(--pad-sm); }
-            .content-grid { grid-template-columns: 1fr; gap: var(--pad-xl); }
-            .content-grid::after { display: none; }
-            .form-section { padding-right: 0; }
-            .info-section { padding-left: 0; border-top: 1px solid var(--border-color); padding-top: var(--pad-xl); }
-            .section-heading { font-size: 1.5rem; }
+            .hud-wrapper {
+                padding: var(--pad-lg);
+                margin: var(--pad-sm);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: var(--pad-xl);
+            }
+
+            .content-grid::after {
+                display: none;
+            }
+
+            .form-section {
+                padding-right: 0;
+            }
+
+            .info-section {
+                padding-left: 0;
+                border-top: 1px solid var(--border-color);
+                padding-top: var(--pad-xl);
+            }
+
+            .section-heading {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
+
 <body vid="9">
 
-    
+
     <svg class="noise-overlay" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" vid="10">
         <filter id="noiseFilter" vid="11">
-            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch" vid="12"></feTurbulence>
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch" vid="12">
+            </feTurbulence>
         </filter>
         <rect width="100%" height="100%" filter="url(#noiseFilter)" vid="13"></rect>
     </svg>
@@ -412,13 +489,13 @@
     <div class="scanlines" vid="14"></div>
 
     <main class="hud-wrapper" vid="15">
-        
+
         <div class="crosshair tl" vid="16"></div>
         <div class="crosshair tr" vid="17"></div>
         <div class="crosshair bl" vid="18"></div>
         <div class="crosshair br" vid="19"></div>
 
-        
+
         <header class="sys-header" vid="20">
             <div class="sys-label" vid="21">SYS.<span vid="22">CONTACT</span> // V.1.0</div>
             <div class="rec-indicator" vid="23">
@@ -427,15 +504,15 @@
             </div>
         </header>
 
-        
+
         <div class="content-grid" vid="25">
-            
-            
+
+
             <section class="info-section" vid="26">
                 <h1 class="section-heading" vid="27">Kontaktujte nás:</h1>
-                
+
                 <div class="data-table" vid="28">
-                    
+
                     <div class="data-row" vid="29">
                         <div class="data-key" vid="30">Entity.HQ</div>
                         <div class="data-val" vid="31">
@@ -470,21 +547,22 @@
 
                 </div>
 
-                </section>
+            </section>
 
-            
+
             <section class="form-section" vid="49">
                 <form action="https://api.web3forms.com/submit" method="POST">
                     <input type="hidden" name="access_key" value="9bad58c9-b494-4af4-a17d-a75e5ef37f5a">
                     <input type="hidden" name="subject" value="Nová zpráva z RECPIC webu">
                     <input type="hidden" name="redirect" value="http://127.0.0.1:8090/kontakt.html">
-                    
+
                     <div class="form-group" vid="51">
                         <label for="name" class="form-label" vid="52">
                             <span vid="53">Input.Jméno</span>
                             <span class="req" vid="54">*REQ</span>
                         </label>
-                        <input type="text" id="name" name="name" class="form-input" required="" autocomplete="off" spellcheck="false" vid="55">
+                        <input type="text" id="name" name="name" class="form-input" required="" autocomplete="off"
+                            spellcheck="false" vid="55">
                     </div>
 
                     <div class="form-group" vid="56">
@@ -492,7 +570,8 @@
                             <span vid="58">Input.Email</span>
                             <span class="req" vid="59">*REQ</span>
                         </label>
-                        <input type="email" id="email" name="email" class="form-input" required="" autocomplete="off" spellcheck="false" vid="60">
+                        <input type="email" id="email" name="email" class="form-input" required="" autocomplete="off"
+                            spellcheck="false" vid="60">
                     </div>
 
                     <div class="form-group" style="flex-grow: 1;" vid="61">
@@ -500,7 +579,8 @@
                             <span vid="63">Input.Zpráva</span>
                             <span class="req" vid="64">*REQ</span>
                         </label>
-                        <textarea id="message" name="message" class="form-input" rows="8" required="" spellcheck="false" vid="65"></textarea>
+                        <textarea id="message" name="message" class="form-input" rows="8" required="" spellcheck="false"
+                            vid="65"></textarea>
                     </div>
 
                     <div class="btn-row">
@@ -525,7 +605,7 @@
         let seconds = 0;
         let minutes = 0;
         let hours = 0;
-        
+
         setInterval(() => {
             frames++;
             if (frames >= 30) {
@@ -546,4 +626,6 @@
         }, 33); // ~30fps
     </script>
 
-</body></html>
+</body>
+
+</html>

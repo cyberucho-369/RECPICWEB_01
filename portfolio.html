@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[REC]PIC — Portfolio</title>
+    <meta name="description"
+        content="Podívejte se na naše portfolio. Televizní reklama, produktové video nebo video z akce — kliknutím na náhled spustíte video.">
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* ===== Portfolio Page Specific Styles ===== */
+
+        .portfolio-page-body {
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .portfolio-page-stage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            background: #000;
+            pointer-events: none;
+        }
+
+        .portfolio-page-stage .vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 1) 100%),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, transparent 20%, transparent 80%, rgba(0, 0, 0, 0.8) 100%);
+            z-index: 1;
+        }
+
+        .portfolio-page-ui {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: clamp(1.5rem, 4vw, 3rem);
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        /* Portfolio Header Content */
+        .portfolio-page-header-content {
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-top: 2rem;
+        }
+
+        .pf-eyebrow-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pf-rec-dot-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 0.7rem;
+            color: #E00020;
+            letter-spacing: 0.1em;
+            font-weight: bold;
+        }
+
+        .pf-rec-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #E00020;
+            border-radius: 50%;
+            animation: pf-pulse 1.5s infinite;
+        }
+
+        @keyframes pf-pulse {
+            0% { opacity: 1; box-shadow: 0 0 0 0 rgba(224, 0, 32, 0.7); transform: scale(1); }
+            70% { opacity: 0.8; box-shadow: 0 0 0 10px rgba(224, 0, 32, 0); transform: scale(1.2); }
+            100% { opacity: 1; box-shadow: 0 0 0 0 rgba(224, 0, 32, 0); transform: scale(1); }
+        }
+
+        .pf-eyebrow-text {
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .portfolio-page-heading {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .portfolio-page-subhead {
+            font-size: clamp(1rem, 1.2vw, 1.15rem);
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* Portfolio Grid */
+        .portfolio-page-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            padding-bottom: 4rem;
+        }
+
+        /* Video Card */
+        .pf-video-card {
+            position: relative;
+            display: block;
+            aspect-ratio: 16 / 9;
+            background-color: #0a0a0a;
+            border: 1px solid rgba(224, 0, 32, 0.2);
+            overflow: hidden;
+            text-decoration: none;
+            cursor: pointer;
+            transition: border-color 0.4s ease, transform 0.4s ease;
+        }
+
+        .pf-video-card:hover {
+            border-color: #E00020;
+            transform: translateY(-4px);
+            z-index: 2;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .pf-video-card .pf-thumbnail-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 1;
+            filter: none;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .pf-video-card:hover .pf-thumbnail-img {
+            opacity: 1;
+            filter: none;
+            transform: scale(1.05);
+        }
+
+        .pf-card-overlay {
+            position: absolute;
+            inset: 0;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.1) 40%, transparent 60%);
+            opacity: 1;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .pf-video-card:hover .pf-card-overlay {
+            opacity: 1;
+        }
+
+        .pf-card-info {
+            transform: translateY(10px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .pf-video-card:hover .pf-card-info {
+            transform: translateY(0);
+        }
+
+        .pf-card-title {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            margin-bottom: 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .pf-play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(224, 0, 32, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(4px);
+            pointer-events: none;
+        }
+
+        .pf-play-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: #fff;
+        }
+
+        .pf-video-card:hover .pf-play-btn {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            box-shadow: 0 0 30px rgba(224, 0, 32, 0.5);
+        }
+
+        /* Loading state */
+        .pf-video-card.pf-loading {
+            animation: pf-shimmer 1.5s infinite;
+        }
+
+        @keyframes pf-shimmer {
+            0% { background-color: #0a0a0a; }
+            50% { background-color: #111; }
+            100% { background-color: #0a0a0a; }
+        }
+
+        /* Hidden card (filtered out) */
+        .pf-video-card.pf-hidden {
+            display: none;
+        }
+
+        /* ===== Filter UI ===== */
+        .pf-filter-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .pf-filter-wrapper {
+            position: relative;
+            z-index: 50;
+        }
+
+        .pf-filter-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.2rem;
+            background: transparent;
+            border: 1px solid rgba(224, 0, 32, 0.25);
+            color: rgba(255, 255, 255, 0.8);
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .pf-filter-toggle:hover {
+            border-color: #E00020;
+            color: #fff;
+        }
+
+        .pf-filter-toggle.active {
+            border-color: #E00020;
+            background: rgba(224, 0, 32, 0.08);
+            color: #fff;
+        }
+
+        .pf-filter-icon {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .pf-filter-badge {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #E00020;
+            color: #fff;
+            font-size: 0.6rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .pf-filter-badge.visible {
+            display: flex;
+        }
+
+        .pf-filter-dropdown {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            left: 0;
+            min-width: 220px;
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid rgba(224, 0, 32, 0.25);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 0.75rem 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .pf-filter-dropdown.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .pf-filter-dropdown-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem 0.6rem;
+            border-bottom: 1px solid rgba(224, 0, 32, 0.15);
+            margin-bottom: 0.4rem;
+        }
+
+        .pf-filter-dropdown-title {
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 0.65rem;
+            color: #E00020;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .pf-filter-clear {
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.2s ease;
+            padding: 0;
+        }
+
+        .pf-filter-clear:hover {
+            color: #E00020;
+        }
+
+        .pf-filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            user-select: none;
+        }
+
+        .pf-filter-option:hover {
+            background: rgba(224, 0, 32, 0.06);
+        }
+
+        .pf-filter-checkbox {
+            position: relative;
+            width: 16px;
+            height: 16px;
+            border: 1px solid rgba(224, 0, 32, 0.4);
+            background: transparent;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .pf-filter-checkbox::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: #E00020;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .pf-filter-option.checked .pf-filter-checkbox {
+            border-color: #E00020;
+        }
+
+        .pf-filter-option.checked .pf-filter-checkbox::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .pf-filter-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.02em;
+            text-transform: capitalize;
+            transition: color 0.2s ease;
+        }
+
+        .pf-filter-option:hover .pf-filter-label,
+        .pf-filter-option.checked .pf-filter-label {
+            color: #fff;
+        }
+
+        .pf-filter-count {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.35);
+            letter-spacing: 0.05em;
+        }
+
+        /* Video Modal (portfolio page) */
+        .pf-video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .pf-video-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .pf-modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(8px);
+        }
+
+        .pf-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 1100px;
+            z-index: 2;
+        }
+
+        .pf-modal-close {
+            position: absolute;
+            top: -2.5rem;
+            right: 0;
+            background: none;
+            border: 1px solid rgba(224, 0, 32, 0.3);
+            color: #fff;
+            font-size: 1.5rem;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+
+        .pf-modal-close:hover {
+            border-color: #E00020;
+            background: rgba(224, 0, 32, 0.15);
+        }
+
+        .pf-modal-responsive {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            background: #000;
+            border: 1px solid rgba(224, 0, 32, 0.3);
+        }
+
+        .pf-modal-responsive iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Timecode */
+        .pf-timecode {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 0.65rem;
+            color: #E00020;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .portfolio-page-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .portfolio-page-grid { grid-template-columns: repeat(2, 1fr); }
+            .portfolio-page-heading { font-size: 2.5rem; }
+            .pf-filter-bar { flex-direction: column; align-items: flex-start; gap: 1rem; }
+        }
+
+        @media (max-width: 480px) {
+            .portfolio-page-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body class="portfolio-page-body">
+
+    <div class="portfolio-page-stage">
+        <div class="vignette"></div>
+    </div>
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- ====== HEADER ====== -->
+    <header id="main-header">
+        <a href="index.html" class="logo-link">
+            <span class="text-accent">[REC]</span><span class="text-pure">PIC</span>
+        </a>
+
+        <nav class="main-nav" id="mainNav">
+            <ul class="nav-links-list">
+                <li><a href="o-nas.html" class="nav-link">O nás</a></li>
+                <li><a href="portfolio.html" class="nav-link active">Portfolio</a></li>
+                <li><a href="proc-video.html" class="nav-link">Proč video</a></li>
+                <li><a href="ai-video.html" class="nav-link">Ai video</a></li>
+                <li><a href="kontakt.html" class="nav-link">Kontakt</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <div class="lang-switch">
+                <span class="active">CZ</span> / <span>EN</span>
+            </div>
+            <a href="kontakt.html" class="btn-outline header-cta">NEZÁVAZNĚ POPTAT</a>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="portfolio-page-ui">
+
+        <div class="hud-crosshair hud-tl"></div>
+        <div class="hud-crosshair hud-tr"></div>
+        <div class="hud-crosshair hud-bl"></div>
+        <div class="hud-crosshair hud-br"></div>
+
+        <!-- Portfolio Header -->
+        <div class="portfolio-page-header-content reveal-up">
+            <div class="pf-eyebrow-wrapper">
+                <div class="pf-rec-dot-container">
+                    <div class="pf-rec-dot"></div>
+                    REC
+                </div>
+                <div class="pf-eyebrow-text">
+                    <span>Naše Práce</span>
+                </div>
+            </div>
+
+            <h1 class="portfolio-page-heading">Portfolio</h1>
+            <p class="portfolio-page-subhead">
+                Výběr našich nejnovějších a nejlepších projektů. Televizní reklama, produktové video nebo video z akce?
+                Jsme tu pro vás. Kliknutím na náhled spustíte video.
+            </p>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="pf-filter-bar">
+            <div class="pf-filter-wrapper">
+                <button class="pf-filter-toggle" id="pf-filter-toggle">
+                    <svg class="pf-filter-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                    Filter
+                    <span class="pf-filter-badge" id="pf-filter-badge">0</span>
+                </button>
+                <div class="pf-filter-dropdown" id="pf-filter-dropdown">
+                    <div class="pf-filter-dropdown-header">
+                        <span class="pf-filter-dropdown-title">Kategorie</span>
+                        <button class="pf-filter-clear" id="pf-filter-clear">Reset</button>
+                    </div>
+                    <div class="pf-filter-option" data-tag="event">
+                        <div class="pf-filter-checkbox"></div>
+                        <span class="pf-filter-label">Events</span>
+                    </div>
+                    <div class="pf-filter-option" data-tag="commercial">
+                        <div class="pf-filter-checkbox"></div>
+                        <span class="pf-filter-label">Commercial</span>
+                    </div>
+                    <div class="pf-filter-option" data-tag="social">
+                        <div class="pf-filter-checkbox"></div>
+                        <span class="pf-filter-label">Social</span>
+                    </div>
+                    <div class="pf-filter-option" data-tag="free">
+                        <div class="pf-filter-checkbox"></div>
+                        <span class="pf-filter-label">Free</span>
+                    </div>
+                    <div class="pf-filter-option" data-tag="promo">
+                        <div class="pf-filter-checkbox"></div>
+                        <span class="pf-filter-label">Promo</span>
+                    </div>
+                    <div class="pf-filter-option" data-tag="docu">
+                        <div class="pf-filter-checkbox"></div>
+                        <span class="pf-filter-label">Docu</span>
+                    </div>
+                </div>
+            </div>
+            <div class="pf-filter-count" id="pf-filter-count">
+                <!-- Video count injected by JS -->
+            </div>
+        </div>
+
+        <!-- Dynamic Portfolio Grid -->
+        <div id="portfolio-page-grid" class="portfolio-page-grid">
+            <!-- Cards injected dynamically by script.js -->
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <section class="section-footer-wrap">
+        <div class="noise-overlay"></div>
+        <div class="container relative z-10 flex-col" style="display:flex;flex-direction:column;">
+            <div class="site-footer reveal-up delay-300">
+                <div class="footer-divider-row">
+                    <div class="footer-divider-label">SYS. Footer</div>
+                    <div class="footer-divider-line"></div>
+                </div>
+
+                <footer class="footer-inner">
+                    <a href="index.html" class="logo-link">
+                        <span class="text-accent">[REC]</span><span class="text-pure">PIC</span>
+                    </a>
+
+                    <div class="footer-links-wrap">
+                        <div class="footer-links-row">
+                            <a href="#" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                </svg>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="https://www.linkedin.com/in/ivan-zbiral-5b900617" target="_blank"
+                                rel="noopener noreferrer" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
+                                    </path>
+                                    <rect x="2" y="9" width="4" height="12"></rect>
+                                    <circle cx="4" cy="4" r="2"></circle>
+                                </svg>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="https://www.facebook.com/RecPic" target="_blank" rel="noopener noreferrer"
+                                class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z">
+                                    </path>
+                                </svg>
+                                <span>Facebook</span>
+                            </a>
+                            <a href="https://www.youtube.com/@recpic_001" target="_blank" rel="noopener noreferrer"
+                                class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z">
+                                    </path>
+                                    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                                </svg>
+                                <span>YouTube</span>
+                            </a>
+                        </div>
+                        <div class="footer-links-row">
+                            <a href="mailto:ivan@recpic.cz" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                    </path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                <span class="email-text">ivan@recpic.cz</span>
+                            </a>
+                            <a href="tel:+420774339303" class="footer-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                    </path>
+                                </svg>
+                                <span>+420 774 339 303</span>
+                            </a>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </section>
+
+    <!-- VIDEO MODAL -->
+    <div id="pf-video-modal" class="pf-video-modal" aria-hidden="true">
+        <div class="pf-modal-backdrop" id="pf-modal-close-bg"></div>
+        <div class="pf-modal-content">
+            <button class="pf-modal-close" id="pf-modal-close-btn" aria-label="Close modal">&times;</button>
+            <div class="pf-modal-responsive">
+                <iframe id="pf-modal-iframe" src="" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="pf-timecode" id="pf-tc">TCR 00:00:00:00</div>
+
+    <script src="script.js"></script>
+    <script>
+        // Timecode for portfolio page
+        const pfTc = document.getElementById('pf-tc');
+        let pf = 0, ps = 0, pm = 0;
+        setInterval(() => {
+            pf++; if (pf > 23) { pf = 0; ps++; } if (ps > 59) { ps = 0; pm++; }
+            pfTc.innerText = `TCR 00:${pm.toString().padStart(2, '0')}:${ps.toString().padStart(2, '0')}:${pf.toString().padStart(2, '0')}`;
+        }, 41);
+    </script>
+
+</body>
+
+</html>
