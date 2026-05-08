@@ -171,6 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (url.hostname.includes('youtube.com') || url.hostname.includes('youtu.be')) {
         let videoId = url.searchParams.get('v');
         if (!videoId && url.hostname.includes('youtu.be')) videoId = url.pathname.slice(1);
+        if (!videoId && url.pathname.startsWith('/shorts/')) videoId = url.pathname.split('/')[2];
         if (videoId) return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
       } else if (url.hostname.includes('vimeo.com')) {
         const videoId = url.pathname.split('/').pop();
@@ -269,6 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (url.hostname.includes('youtube.com') || url.hostname.includes('youtu.be')) {
           let videoId = url.searchParams.get('v');
           if (!videoId && url.hostname.includes('youtu.be')) videoId = url.pathname.slice(1);
+          if (!videoId && url.pathname.startsWith('/shorts/')) videoId = url.pathname.split('/')[2];
           if (videoId) return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
         } else if (url.hostname.includes('vimeo.com')) {
           const videoId = url.pathname.split('/').pop();
@@ -287,6 +289,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (match) return match[1].trim().toLowerCase();
       }
       return '';
+    };
+
+    // Ratio parser — extracts ratio from "Ratio:9:16" etc.
+    const parseRatio = (lines) => {
+      for (const line of lines) {
+        const match = line.match(/^ratio:\s*(\d+:\d+)/i);
+        if (match) return match[1];
+      }
+      return '16:9';
     };
 
     // Discover portfolio folders from manifest (skip 01-06, shown on home page)
@@ -312,7 +323,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 num: getFolderNum(folder),
                 title: lines[0] || `Project ${folder}`,
                 videoUrl: lines[1] || '',
-                tag: parseTag(lines)
+                tag: parseTag(lines),
+                ratio: parseRatio(lines)
               };
             })
             .catch(() => null)
@@ -402,9 +414,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // --- Render cards ---
+      const pfModalContent = pfModal ? pfModal.querySelector('.pf-modal-content') : null;
+      const pfModalResponsive = pfModal ? pfModal.querySelector('.pf-modal-responsive') : null;
+
       items.forEach(item => {
+        const isPortrait = item.ratio === '9:16';
         const card = document.createElement('div');
-        card.className = 'pf-video-card reveal-up';
+        card.className = 'pf-video-card reveal-up' + (isPortrait ? ' pf-video-card--portrait' : '');
         card.setAttribute('data-tag', item.tag);
         card.innerHTML = `
           <img class="pf-thumbnail-img" src="assets/portfolio/${item.id}/thumb.jpg" alt="${item.title}" onerror="this.onerror=null; this.src='assets/images/solution-bg.jpg';">
@@ -421,6 +437,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (item.videoUrl && pfModal && pfIframe) {
           card.addEventListener('click', () => {
             pfIframe.src = pfGetEmbedUrl(item.videoUrl);
+            if (pfModalContent) pfModalContent.classList.toggle('pf-modal-content--portrait', isPortrait);
+            if (pfModalResponsive) pfModalResponsive.classList.toggle('pf-modal-responsive--portrait', isPortrait);
             pfModal.classList.add('active');
           });
         }

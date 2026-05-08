@@ -119,6 +119,7 @@
         .portfolio-page-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
+            grid-auto-flow: dense;
             gap: 1.5rem;
             padding-bottom: 4rem;
         }
@@ -221,6 +222,21 @@
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
             box-shadow: 0 0 30px rgba(224, 0, 32, 0.5);
+        }
+
+        /* Portrait / Reel card (9:16) */
+        .pf-video-card--portrait {
+            aspect-ratio: 9 / 16;
+            grid-row: span 2;
+        }
+
+        /* Portrait modal */
+        .pf-modal-content--portrait {
+            max-width: 420px !important;
+        }
+
+        .pf-modal-responsive--portrait {
+            padding-top: 177.78% !important;
         }
 
         /* Loading state */
