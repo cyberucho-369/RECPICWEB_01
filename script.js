@@ -140,27 +140,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (target) target.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // ---------- Shared: extract numeric prefix from folder name ----------
+  const getFolderNum = (name) => {
+    const m = name.match(/^(\d+)/);
+    return m ? parseInt(m[1], 10) : 0;
+  };
+
   // ---------- Dynamic Portfolio & Video Modal ----------
   const portfolioCards = document.querySelectorAll('.portfolio-card[data-portfolio-id]');
   const videoModal = document.getElementById('video-modal');
   const videoIframe = document.getElementById('video-modal-iframe');
-  
+
   if (videoModal) {
     const closeModal = () => {
       videoModal.classList.remove('active');
-      videoIframe.src = ''; // stop playing
+      videoIframe.src = '';
     };
 
     document.getElementById('video-modal-close-btn').addEventListener('click', closeModal);
     document.getElementById('video-modal-close-bg').addEventListener('click', closeModal);
-    
-    // Close on escape key
+
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && videoModal.classList.contains('active')) closeModal();
     });
   }
 
-  // Parse youtube/vimeo link to embed format
   const getEmbedUrl = (urlStr) => {
     try {
       const url = new URL(urlStr.trim());
@@ -172,51 +176,56 @@ document.addEventListener('DOMContentLoaded', () => {
         const videoId = url.pathname.split('/').pop();
         if (videoId) return `https://player.vimeo.com/video/${videoId}?autoplay=1`;
       }
-      return urlStr; // fallback
+      return urlStr;
     } catch(e) {
-      return urlStr; 
+      return urlStr;
     }
   };
 
-  portfolioCards.forEach(card => {
-    const id = card.getAttribute('data-portfolio-id'); // '01', '02', etc.
-    
-    // Fetch info.txt
-    fetch(`assets/portfolio/${id}/info.txt`)
-      .then(res => {
-        if (!res.ok) throw new Error('File not found');
-        return res.text();
-      })
-      .then(text => {
-        const lines = text.split('\n').filter(l => l.trim().length > 0);
-        const title = lines[0] || `Project ${id}`;
-        const videoUrl = lines[1] || '';
+  if (portfolioCards.length) {
+    fetch('assets/portfolio/manifest.json')
+      .then(res => res.ok ? res.json() : [])
+      .then(manifest => {
+        portfolioCards.forEach(card => {
+          const id = card.getAttribute('data-portfolio-id');
+          const targetNum = parseInt(id, 10);
+          const folder = manifest.find(f => getFolderNum(f) === targetNum) || id;
 
-        // Inject DOM
-        card.innerHTML = `
-          <img class="portfolio-thumb" src="assets/portfolio/${id}/thumb.jpg" alt="${title}" onerror="this.onerror=null; this.src='assets/images/solution-bg.jpg';">
-          <div class="portfolio-play-btn">
-            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          </div>
-          <div class="portfolio-info-bar">
-            <h4 class="portfolio-title">${title}</h4>
-          </div>
-        `;
+          fetch(`assets/portfolio/${folder}/info.txt`)
+            .then(res => {
+              if (!res.ok) throw new Error('File not found');
+              return res.text();
+            })
+            .then(text => {
+              const lines = text.split('\n').filter(l => l.trim().length > 0);
+              const title = lines[0] || `Project ${id}`;
+              const videoUrl = lines[1] || '';
 
-        if (videoUrl) {
-          card.addEventListener('click', () => {
-            if (videoModal && videoIframe) {
-              videoIframe.src = getEmbedUrl(videoUrl);
-              videoModal.classList.add('active');
-            }
-          });
-        }
-      })
-      .catch(err => {
-        // Fallback logic if missing
-        console.warn(`Portfolio ${id} data not found:`, err);
+              card.innerHTML = `
+                <img class="portfolio-thumb" src="assets/portfolio/${folder}/thumb.jpg" alt="${title}" onerror="this.onerror=null; this.src='assets/images/solution-bg.jpg';">
+                <div class="portfolio-play-btn">
+                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <div class="portfolio-info-bar">
+                  <h4 class="portfolio-title">${title}</h4>
+                </div>
+              `;
+
+              if (videoUrl) {
+                card.addEventListener('click', () => {
+                  if (videoModal && videoIframe) {
+                    videoIframe.src = getEmbedUrl(videoUrl);
+                    videoModal.classList.add('active');
+                  }
+                });
+              }
+            })
+            .catch(err => {
+              console.warn(`Portfolio ${id} data not found:`, err);
+            });
+        });
       });
-  });
+  }
 
   // ---- Testimonials mobile carousel dots ----
   const testimonialsGrid = document.querySelector('.testimonials-grid');
@@ -280,34 +289,36 @@ document.addEventListener('DOMContentLoaded', () => {
       return '';
     };
 
-    // Discover folders 07–99
-    const MIN_FOLDER = 7;
-    const MAX_FOLDER = 99;
-    const folderPromises = [];
+    // Discover portfolio folders from manifest (skip 01-06, shown on home page)
+    const MIN_SORT = 7;
 
-    for (let i = MIN_FOLDER; i <= MAX_FOLDER; i++) {
-      const folderId = i.toString().padStart(2, '0');
-      folderPromises.push(
-        fetch(`assets/portfolio/${folderId}/info.txt`)
-          .then(res => {
-            if (!res.ok) throw new Error('Not found');
-            return res.text();
-          })
-          .then(text => {
-            const lines = text.split('\n').filter(l => l.trim().length > 0);
-            return {
-              id: folderId,
-              num: i,
-              title: lines[0] || `Project ${folderId}`,
-              videoUrl: lines[1] || '',
-              tag: parseTag(lines)
-            };
-          })
-          .catch(() => null)
-      );
-    }
-
-    Promise.all(folderPromises).then(results => {
+    fetch('assets/portfolio/manifest.json')
+      .then(res => {
+        if (!res.ok) throw new Error('Manifest not found');
+        return res.json();
+      })
+      .then(manifest => {
+        const entries = manifest.filter(f => getFolderNum(f) >= MIN_SORT);
+        return Promise.all(entries.map(folder =>
+          fetch(`assets/portfolio/${folder}/info.txt`)
+            .then(res => {
+              if (!res.ok) throw new Error('Not found');
+              return res.text();
+            })
+            .then(text => {
+              const lines = text.split('\n').filter(l => l.trim().length > 0);
+              return {
+                id: folder,
+                num: getFolderNum(folder),
+                title: lines[0] || `Project ${folder}`,
+                videoUrl: lines[1] || '',
+                tag: parseTag(lines)
+              };
+            })
+            .catch(() => null)
+        ));
+      })
+      .then(results => {
       const items = results.filter(r => r !== null).sort((a, b) => b.num - a.num);
 
       // --- Filter state ---
@@ -425,8 +436,11 @@ document.addEventListener('DOMContentLoaded', () => {
       applyFilters();
 
       if (items.length === 0) {
-        pfGrid.innerHTML = '<p style="color: rgba(255,255,255,0.4); font-family: var(--font-mono, monospace); font-size: 0.85rem; grid-column: 1/-1; text-align: center; padding: 4rem 0;">SYS.NOTICE // No portfolio items found in folders 07+</p>';
+        pfGrid.innerHTML = '<p style="color: rgba(255,255,255,0.4); font-family: var(--font-mono, monospace); font-size: 0.85rem; grid-column: 1/-1; text-align: center; padding: 4rem 0;">SYS.NOTICE // No portfolio items found</p>';
       }
+    }).catch(err => {
+      console.error('Portfolio manifest error:', err);
+      pfGrid.innerHTML = '<p style="color: rgba(255,255,255,0.4); font-family: var(--font-mono, monospace); font-size: 0.85rem; grid-column: 1/-1; text-align: center; padding: 4rem 0;">SYS.NOTICE // Portfolio manifest not found</p>';
     });
   }
 
