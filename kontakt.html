@@ -672,6 +672,11 @@
                     }, 5000);
                 });
         });
+
+        // Zpět button — go back in history, fall through to href="index.html" if no history
+        document.querySelector('.btn-back').addEventListener('click', function(e) {
+            if (history.length > 1) { e.preventDefault(); history.back(); }
+        });
     </script>
 
 </body>
