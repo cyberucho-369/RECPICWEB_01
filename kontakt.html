@@ -551,10 +551,10 @@
 
 
             <section class="form-section" vid="49">
-                <form action="https://api.web3forms.com/submit" method="POST">
+                <form action="https://api.web3forms.com/submit" method="POST" id="contactForm">
                     <input type="hidden" name="access_key" value="9bad58c9-b494-4af4-a17d-a75e5ef37f5a">
                     <input type="hidden" name="subject" value="Nová zpráva z RECPIC webu">
-                    <input type="hidden" name="redirect" value="http://127.0.0.1:8090/kontakt.html">
+                    <!-- redirect input removed for AJAX handling -->
 
                     <div class="form-group" vid="51">
                         <label for="name" class="form-label" vid="52">
@@ -591,6 +591,7 @@
                             Odeslat data
                         </button>
                     </div>
+                    <div id="result" style="display:none; margin-top: 1rem; font-family: var(--font-mono); font-size: 0.875rem; color: var(--accent);"></div>
                 </form>
                 <div class="timecode" id="timecode" vid="67">TC: 00:00:00:00</div>
             </section>
@@ -624,6 +625,52 @@
             const pad = (n, len = 2) => String(n).padStart(len, '0');
             timecodeEl.textContent = `TC: ${pad(hours)}:${pad(minutes)}:${pad(seconds)}:${pad(frames)}`;
         }, 33); // ~30fps
+
+        // Form AJAX submission
+        const form = document.getElementById('contactForm');
+        const result = document.getElementById('result');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+
+            result.style.display = "block";
+            result.innerHTML = "Odesílám data...";
+            result.style.color = "var(--text-main)";
+
+            fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: json
+                })
+                .then(async (response) => {
+                    let json = await response.json();
+                    if (response.status == 200) {
+                        result.innerHTML = "Zpráva byla úspěšně odeslána.";
+                        result.style.color = "#10B981"; // success green
+                        form.reset();
+                    } else {
+                        console.log(response);
+                        result.innerHTML = "Chyba při odesílání: " + json.message;
+                        result.style.color = "var(--accent)";
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    result.innerHTML = "Došlo k chybě. Zkuste to prosím znovu.";
+                    result.style.color = "var(--accent)";
+                })
+                .then(function() {
+                    setTimeout(() => {
+                        result.style.display = "none";
+                    }, 5000);
+                });
+        });
     </script>
 
 </body>
