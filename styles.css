@@ -1227,8 +1227,9 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
   transform: translateY(-4px);
 }
 
-.process-card h3 {
+.process-card h2 {
   font-size: clamp(1.125rem, 1.5vw, 1.25rem);
+  font-family: var(--font-sans);
   font-weight: 500;
   letter-spacing: -0.025em;
   color: black;
@@ -1830,7 +1831,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
   .whychoose-heading { font-size: 1.75rem; }
   .about-paragraph { font-size: 0.85rem; }
   .process-card { padding: 1.25rem; }
-  .process-card h3 { font-size: 1rem; }
+  .process-card h2 { font-size: 1rem; }
   .process-card p { font-size: 0.85rem; }
 }
 
