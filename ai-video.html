@@ -38,12 +38,16 @@
             overflow-x: hidden;
             line-height: 1.5;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
 
         /* ---- Main layout ---- */
         .page-inner {
+            flex: 1;
             max-width: var(--grid-max);
+            width: 100%;
             margin: 0 auto;
             padding: 3rem var(--safe-zone) 4rem;
             display: grid;
