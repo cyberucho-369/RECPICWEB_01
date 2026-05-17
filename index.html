@@ -108,11 +108,32 @@
     <!-- ====== 2. HERO ====== -->
     <section id="section-hero" class="hero">
         <div class="hero-bg">
-            <video autoplay muted loop playsinline preload="metadata" poster="assets/images/hero-poster.jpg" class="hero-video">
-                <source src="assets/video/hero-bg.webm" type="video/webm">
+            <video autoplay muted playsinline preload="metadata" poster="assets/images/hero-poster.jpg" class="hero-video" id="hero-video">
             </video>
+            <script>
+              (function() {
+                var mobile = window.matchMedia('(max-width: 768px)').matches;
+                var vids = mobile
+                  ? ['Hero-bg_9_16_01.webm','Hero-bg_9_16_02.webm','Hero-bg_9_16_03.webm']
+                  : ['Hero-bg_01.webm','Hero-bg_02.webm','Hero-bg_03.webm'];
+                var v = document.getElementById('hero-video');
+                var startIndex = Math.floor(Math.random() * vids.length);
+
+                function loadVideo(index) {
+                  v.src = 'assets/video/' + vids[index];
+                  v.load();
+                  v.play();
+                }
+
+                v.addEventListener('ended', function() {
+                  startIndex = (startIndex + 1) % vids.length;
+                  loadVideo(startIndex);
+                });
+
+                loadVideo(startIndex);
+              })();
+            </script>
             <div class="hero-gradient"></div>
-            <div class="hero-big-number parallax" data-speed="0.2">4</div>
         </div>
 
         <div class="hud-crosshair hud-tl"></div>
