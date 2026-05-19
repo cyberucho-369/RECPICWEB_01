@@ -844,9 +844,9 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
   align-items: flex-start; gap: 2rem; padding-bottom: 1rem;
 }
 .footer-links-wrap {
-  display: flex; flex-direction: column; gap: 1.5rem; width: auto;
+  display: flex; flex-direction: column; gap: 1.5rem; width: 100%;
 }
-.footer-links-row { display: flex; gap: 1.5rem; }
+.footer-links-row { display: flex; flex-wrap: wrap; gap: 1.5rem; }
 .footer-link {
   display: flex; align-items: center; gap: 0.5rem;
   color: var(--text-muted); transition: color 0.3s ease;
@@ -856,6 +856,14 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
 .footer-link:hover { color: var(--accent-red); }
 .footer-link svg { width: 1rem; height: 1rem; }
 .footer-link .email-text { text-transform: none; }
+.footer-info {
+  display: flex; align-items: center;
+  color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-left: auto;
+}
+.footer-link--end { margin-left: auto; }
 
 /* ============================================
    ANIMATIONS

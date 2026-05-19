@@ -13,14 +13,16 @@
     <meta property="og:site_name" content="[REC]PIC">
     <meta property="og:url" content="https://recpic.cz/">
     <meta property="og:title" content="[REC]PIC — Kreativní video produkce Praha">
-    <meta property="og:description" content="RECPIC je kreativní video produkce. Tvoříme videa, která budují důvěru, značku a nové klienty. 16 let na trhu, 300+ projektů.">
+    <meta property="og:description"
+        content="RECPIC je kreativní video produkce. Tvoříme videa, která budují důvěru, značku a nové klienty. 16 let na trhu, 300+ projektů.">
     <meta property="og:image" content="https://recpic.cz/assets/images/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="[REC]PIC — Kreativní video produkce Praha">
-    <meta name="twitter:description" content="RECPIC je kreativní video produkce. Tvoříme videa, která budují důvěru, značku a nové klienty. 16 let na trhu, 300+ projektů.">
+    <meta name="twitter:description"
+        content="RECPIC je kreativní video produkce. Tvoříme videa, která budují důvěru, značku a nové klienty. 16 let na trhu, 300+ projektů.">
     <meta name="twitter:image" content="https://recpic.cz/assets/images/og-image.png">
     <!-- Canonical -->
     <link rel="canonical" href="https://recpic.cz/">
@@ -28,6 +30,7 @@
     <!-- JSON-LD: LocalBusiness -->
     <script type="application/ld+json">
     {
+        
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "RECPIC",
@@ -108,30 +111,31 @@
     <!-- ====== 2. HERO ====== -->
     <section id="section-hero" class="hero">
         <div class="hero-bg">
-            <video autoplay muted playsinline preload="metadata" poster="assets/images/hero-poster.jpg" class="hero-video" id="hero-video">
+            <video autoplay muted playsinline preload="metadata" poster="assets/images/hero-poster.jpg"
+                class="hero-video" id="hero-video">
             </video>
             <script>
-              (function() {
-                var mobile = window.matchMedia('(max-width: 768px)').matches;
-                var vids = mobile
-                  ? ['Hero-bg_9_16_01.webm','Hero-bg_9_16_02.webm','Hero-bg_9_16_03.webm']
-                  : ['Hero-bg_01.webm','Hero-bg_02.webm','Hero-bg_03.webm'];
-                var v = document.getElementById('hero-video');
-                var startIndex = Math.floor(Math.random() * vids.length);
+                (function () {
+                    var mobile = window.matchMedia('(max-width: 768px)').matches;
+                    var vids = mobile
+                        ? ['Hero-bg_9_16_01.webm', 'Hero-bg_9_16_02.webm', 'Hero-bg_9_16_03.webm']
+                        : ['Hero-bg_01.webm', 'Hero-bg_02.webm', 'Hero-bg_03.webm'];
+                    var v = document.getElementById('hero-video');
+                    var startIndex = Math.floor(Math.random() * vids.length);
 
-                function loadVideo(index) {
-                  v.src = 'assets/video/' + vids[index];
-                  v.load();
-                  v.play();
-                }
+                    function loadVideo(index) {
+                        v.src = 'assets/video/' + vids[index];
+                        v.load();
+                        v.play();
+                    }
 
-                v.addEventListener('ended', function() {
-                  startIndex = (startIndex + 1) % vids.length;
-                  loadVideo(startIndex);
-                });
+                    v.addEventListener('ended', function () {
+                        startIndex = (startIndex + 1) % vids.length;
+                        loadVideo(startIndex);
+                    });
 
-                loadVideo(startIndex);
-              })();
+                    loadVideo(startIndex);
+                })();
             </script>
             <div class="hero-gradient"></div>
         </div>
@@ -429,7 +433,9 @@
                             d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z">
                         </path>
                     </svg>
-                    <p class="testimonial-text">Jednoznačně doporučuji, dlouholetá spolupráce na výrobě video obsahu pro výkonnostní kampaně SoMe i TV a radio reklamních spotů pro velké kampaně. Vždy lehce dostupní, kreativní, easy going přístup, flexibilní i s ohledem na rozpočtové limity :)</p>
+                    <p class="testimonial-text">Jednoznačně doporučuji, dlouholetá spolupráce na výrobě video obsahu pro
+                        výkonnostní kampaně SoMe i TV a radio reklamních spotů pro velké kampaně. Vždy lehce dostupní,
+                        kreativní, easy going přístup, flexibilní i s ohledem na rozpočtové limity :)</p>
                     <div class="testimonial-author">
                         <div class="author-avatar">PD</div>
                         <div>
@@ -465,26 +471,34 @@
             <div class="marquee-wrapper reveal-up delay-100">
                 <div class="marquee-track">
                     <div class="marquee-content">
-                        <img src="assets/logos/01_Arriello%20copy.png" alt="Arriello" class="client-logo" loading="lazy">
-                        <img src="assets/logos/02_ceska_Spor.png" alt="Ceska Sporitelna" class="client-logo" loading="lazy">
-                        <img src="assets/logos/03_Doosan_Logo%20copy.png" alt="Doosan" class="client-logo" loading="lazy">
+                        <img src="assets/logos/01_Arriello%20copy.png" alt="Arriello" class="client-logo"
+                            loading="lazy">
+                        <img src="assets/logos/02_ceska_Spor.png" alt="Ceska Sporitelna" class="client-logo"
+                            loading="lazy">
+                        <img src="assets/logos/03_Doosan_Logo%20copy.png" alt="Doosan" class="client-logo"
+                            loading="lazy">
                         <img src="assets/logos/04_Jagr.png" alt="Jagr" class="client-logo" loading="lazy">
                         <img src="assets/logos/05_logo_NutraQ.png" alt="NutraQ" class="client-logo" loading="lazy">
                         <img src="assets/logos/06_Milos-lg-bw-RGB.png" alt="Milos" class="client-logo" loading="lazy">
                         <img src="assets/logos/07_Notiono.png" alt="Notiono" class="client-logo" loading="lazy">
                         <img src="assets/logos/08_skoda%20auto.png" alt="Skoda Auto" class="client-logo" loading="lazy">
-                        <img src="assets/logos/09_vodafone-logo-horiz-rgb-black.png" alt="Vodafone" class="client-logo" loading="lazy">
+                        <img src="assets/logos/09_vodafone-logo-horiz-rgb-black.png" alt="Vodafone" class="client-logo"
+                            loading="lazy">
                     </div>
                     <div class="marquee-content">
-                        <img src="assets/logos/01_Arriello%20copy.png" alt="Arriello" class="client-logo" loading="lazy">
-                        <img src="assets/logos/02_ceska_Spor.png" alt="Ceska Sporitelna" class="client-logo" loading="lazy">
-                        <img src="assets/logos/03_Doosan_Logo%20copy.png" alt="Doosan" class="client-logo" loading="lazy">
+                        <img src="assets/logos/01_Arriello%20copy.png" alt="Arriello" class="client-logo"
+                            loading="lazy">
+                        <img src="assets/logos/02_ceska_Spor.png" alt="Ceska Sporitelna" class="client-logo"
+                            loading="lazy">
+                        <img src="assets/logos/03_Doosan_Logo%20copy.png" alt="Doosan" class="client-logo"
+                            loading="lazy">
                         <img src="assets/logos/04_Jagr.png" alt="Jagr" class="client-logo" loading="lazy">
                         <img src="assets/logos/05_logo_NutraQ.png" alt="NutraQ" class="client-logo" loading="lazy">
                         <img src="assets/logos/06_Milos-lg-bw-RGB.png" alt="Milos" class="client-logo" loading="lazy">
                         <img src="assets/logos/07_Notiono.png" alt="Notiono" class="client-logo" loading="lazy">
                         <img src="assets/logos/08_skoda%20auto.png" alt="Skoda Auto" class="client-logo" loading="lazy">
-                        <img src="assets/logos/09_vodafone-logo-horiz-rgb-black.png" alt="Vodafone" class="client-logo" loading="lazy">
+                        <img src="assets/logos/09_vodafone-logo-horiz-rgb-black.png" alt="Vodafone" class="client-logo"
+                            loading="lazy">
                     </div>
                 </div>
             </div>
@@ -553,7 +567,8 @@
 
         <!-- Full-bleed image on right -->
         <div class="whychoose-bg-right">
-            <img src="assets/images/Proc_My_picture3.jpg" alt="RECPIC video produkce" class="whychoose-img" loading="lazy">
+            <img src="assets/images/Proc_My_picture3.jpg" alt="RECPIC video produkce" class="whychoose-img"
+                loading="lazy">
             <div class="whychoose-img-overlay"></div>
             <div class="whychoose-corner wc-tl"></div>
             <div class="whychoose-corner wc-tr"></div>
@@ -1086,6 +1101,7 @@
                                 </svg>
                                 <span>YouTube</span>
                             </a>
+                            <span class="footer-info">RECPIC s.r.o., K Matěji 2356/20, Praha 6, 160 00</span>
                         </div>
                         <div class="footer-links-row">
                             <a href="mailto:ivan@recpic.cz" class="footer-link">
@@ -1106,6 +1122,15 @@
                                     </path>
                                 </svg>
                                 <span>+420 774 339 303</span>
+                            </a>
+                            <a href="https://www.google.com/maps/place/RECPIC+s.r.o/@50.115158,14.3797534,17z/data=!3m1!4b1!4m6!3m5!1s0xe737d5f3ba33fe9:0xf55700c2d48dfe39!8m2!3d50.115158!4d14.3823283!16s%2Fg%2F11xg59w598?entry=ttu"
+                                target="_blank" rel="noopener noreferrer" class="footer-link footer-link--end">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span>IČO: 25761510 &bull; najdete nás</span>
                             </a>
                         </div>
                     </div>
