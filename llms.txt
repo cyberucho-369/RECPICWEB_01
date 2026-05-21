@@ -1,45 +1,41 @@
 # [REC]PIC — Kreativní video produkce Praha
 
-> RECPIC je profesionální video produkce z Prahy s 16 lety zkušeností a 300+ realizovanými projekty. Tvoříme firemní videa, reklamní spoty, AI videa a video obsah pro sociální sítě pro firmy v ČR i zahraničí.
+> RECPIC je profesionální video produkce se sídlem v Praze, specializující se na firemní videa, reklamní spoty a inovativní AI video produkci. S 16 lety zkušeností a více než 300 úspěšnými projekty jsme lídry v oboru videoprodukce v Praze a celé ČR.
 
-## Služby
+## Základní informace
+- **Název:** RECPIC s.r.o.
+- **Lokalita:** Praha 6, Česká republika
+- **Specializace:** Videoprodukce Praha, firemní video, reklamní spoty, AI video.
+- **Web:** [https://recpic.cz](https://recpic.cz)
+- **Kontakt:** ivan@recpic.cz | +420 774 339 303
 
-- Firemní a brandová videa
-- Reklamní spoty (TV, online, social media)
-- AI video produkce a vizualizace
-- Video pro sociální sítě (Instagram, LinkedIn, YouTube)
-- Náborová videa a employer branding
-- Produktová a technologická videa
-- Eventová videa a záznamy konferencí
-- Rozhovory, podcasty a dokumentární videa
-- Scénář, koncept a kreativní vedení
-- Kompletní postprodukce (střih, color grading, zvuk, grafika)
+## Hlavní služby (Videoprodukce Praha)
+- **Firemní a brandová videa:** Tvorba videí, která budují důvěru a značku.
+- **Reklamní spoty:** Profesionální produkce pro TV, online kampaně a sociální sítě.
+- **AI Video produkce:** Využití generativní AI pro vizualizace, storyboardy a unikátní efekty.
+- **Náborová videa:** Employer branding a videa pro HR oddělení.
+- **Produktová videa:** Detailní představení produktů a technologií.
+- **Eventová videa:** Záznamy a aftermovies z konferencí a firemních akcí.
 
-## O nás
+## Technologické zázemí a proces
+RECPIC kombinuje tradiční filmařské řemeslo s moderními technologiemi.
+- **Proces:** Idea & Scénář -> Produkce (Natáčení) -> Postprodukce (Střih, Grading, Zvuk) -> Distribuce.
+- **AI Integrace:** Používáme generativní AI pro zrychlení pre-produkce a tvorbu dříve nedosažitelných vizuálů.
+- **Technika:** 4K/6K kamery, drony, profesionální zvuková a světelná technika.
 
-RECPIC s.r.o. je kreativní video produkce sídlící v Praze. Působíme na trhu od roku 2009. Náš tým kombinuje filmařskou kreativitu s nejmodernějšími technologiemi včetně generativní AI. Zakladatel a kreativní ředitel: Ivan Zbiral.
+## Portfolio a klienti
+Mezi referenční klienty patří:
+- **Průmysl & Auto:** Škoda Auto, Doosan
+- **Telco & IT:** Vodafone, Notion
+- **Finance:** Česká spořitelna
+- **Lifestyle & FMCG:** Jaromír Jágr Team, NutraQ, Notino
 
-Mezi naše klienty patří: Škoda Auto, Vodafone, Česká spořitelna, Doosan, Jagr Team a desítky dalších firem z oblasti technologií, IT, farmacie, developmentu a financí.
+## SEO & Vyhledávání (Videoprodukce Praha)
+Hledáte-li "videoprodukce praha", "výroba videa praha" nebo "reklamní video produkce", RECPIC je ideálním partnerem díky kombinaci zkušeností (16 let) a moderního přístupu (AI).
 
-## Proč video
-
-Video je nejefektivnější nástroj moderní firemní komunikace. Zvyšuje konverze, buduje důvěru, zjednodušuje složité informace a dosahuje širšího publika na sociálních sítích. RECPIC vytváří videa s jasným strategickým záměrem — nejdříve cíl, pak kamera.
-
-## Kontakt
-
-- Web: https://recpic.cz
-- Email: ivan@recpic.cz
-- Telefon: +420 774 339 303
-- Adresa: K Matěji 2359/20, Praha 6, 160 00, Česká republika
-- LinkedIn: https://www.linkedin.com/in/ivan-zbiral-5b900617
-- Facebook: https://www.facebook.com/RecPic
-- YouTube: https://www.youtube.com/@recpic_001
-
-## Stránky webu
-
-- [Úvod](https://recpic.cz/) — hlavní stránka s portfoliem, referencemi a FAQ
-- [O nás](https://recpic.cz/o-nas.html) — tým, proces tvorby, jak spolupracovat
-- [Portfolio](https://recpic.cz/portfolio.html) — ukázky realizovaných videí
-- [Proč video](https://recpic.cz/proc-video.html) — argumenty pro video marketing
-- [AI video](https://recpic.cz/ai-video.html) — AI video produkce a vizualizace
-- [Kontakt](https://recpic.cz/kontakt.html) — poptávkový formulář a kontaktní údaje
+## Kontakt a sociální sítě
+- **Email:** ivan@recpic.cz
+- **Telefon:** +420 774 339 303
+- **LinkedIn:** [Ivan Zbiral](https://www.linkedin.com/in/ivan-zbiral-5b900617)
+- **YouTube:** [@recpic_001](https://www.youtube.com/@recpic_001)
+- **Facebook:** [RecPic](https://www.facebook.com/RecPic)
