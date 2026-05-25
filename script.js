@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   if (portfolioCards.length) {
-    fetch('assets/portfolio/manifest.json')
+    fetch('/assets/portfolio/manifest.json')
       .then(res => res.ok ? res.json() : [])
       .then(manifest => {
         portfolioCards.forEach(card => {
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const targetNum = parseInt(id, 10);
           const folder = manifest.find(f => getFolderNum(f) === targetNum) || id;
 
-          fetch(`assets/portfolio/${folder}/info.txt`)
+          fetch(`/assets/portfolio/${folder}/info.txt`)
             .then(res => {
               if (!res.ok) throw new Error('File not found');
               return res.text();
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
               const videoUrl = lines[1] || '';
 
               card.innerHTML = `
-                <img class="portfolio-thumb" src="assets/portfolio/${folder}/thumb.jpg" alt="${title}" onerror="this.onerror=null; this.src='assets/images/solution-bg.jpg';">
+                <img class="portfolio-thumb" src="/assets/portfolio/${folder}/thumb.jpg" alt="${title}" onerror="this.onerror=null; this.src='/assets/images/solution-bg.jpg';">
                 <div class="portfolio-play-btn">
                   <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                 </div>
@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Discover portfolio folders from manifest (skip 01-06, shown on home page)
     const MIN_SORT = 7;
 
-    fetch('assets/portfolio/manifest.json')
+    fetch('/assets/portfolio/manifest.json')
       .then(res => {
         if (!res.ok) throw new Error('Manifest not found');
         return res.json();
@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(manifest => {
         const entries = manifest.filter(f => getFolderNum(f) >= MIN_SORT);
         return Promise.all(entries.map(folder =>
-          fetch(`assets/portfolio/${folder}/info.txt`)
+          fetch(`/assets/portfolio/${folder}/info.txt`)
             .then(res => {
               if (!res.ok) throw new Error('Not found');
               return res.text();
@@ -423,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.className = 'pf-video-card reveal-up' + (isPortrait ? ' pf-video-card--portrait' : '');
         card.setAttribute('data-tag', item.tag);
         card.innerHTML = `
-          <img class="pf-thumbnail-img" src="assets/portfolio/${item.id}/thumb.jpg" alt="${item.title}" onerror="this.onerror=null; this.src='assets/images/solution-bg.jpg';">
+          <img class="pf-thumbnail-img" src="/assets/portfolio/${item.id}/thumb.jpg" alt="${item.title}" onerror="this.onerror=null; this.src='/assets/images/solution-bg.jpg';">
           <div class="pf-card-overlay">
             <div class="pf-card-info">
               <h3 class="pf-card-title">${item.title}</h3>
