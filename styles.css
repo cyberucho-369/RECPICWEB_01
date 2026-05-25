@@ -1907,23 +1907,24 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
 }
 @media (max-width: 768px) {
   .portfolio-page-grid { grid-template-columns: 1fr; gap: 1rem; padding-bottom: 2rem; }
-  .pf-video-card--portrait { grid-row: span 1; }
+  .pf-video-card--portrait { grid-row: span 1; aspect-ratio: 3 / 4; max-height: 70vh; }
   .portfolio-page-ui { padding: clamp(1rem, 3vw, 1.5rem); }
   .portfolio-page-header-content { margin-top: 1rem; margin-bottom: 2rem; }
   .pf-filter-bar { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
   .pf-card-title { font-size: 0.9rem; }
-  .pf-play-btn { width: 44px; height: 44px; }
+  .pf-card-info { transform: translateY(0); }
+  .pf-play-btn { width: 44px; height: 44px; opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
   .pf-play-btn svg { width: 16px; height: 16px; }
   .pf-modal-content { width: 95%; }
   .pf-timecode { font-size: 0.55rem; bottom: 1rem; right: 1rem; }
 }
 @media (max-width: 480px) {
   .portfolio-page-grid { grid-template-columns: 1fr; gap: 0.75rem; }
-  .pf-video-card--portrait { grid-row: span 1; }
+  .pf-video-card--portrait { grid-row: span 1; aspect-ratio: 3 / 4; max-height: 65vh; }
   .portfolio-page-heading { font-size: 2rem; }
   .pf-card-overlay { padding: 1rem; }
   .pf-card-title { font-size: 0.85rem; }
-  .pf-play-btn { width: 40px; height: 40px; }
+  .pf-play-btn { width: 40px; height: 40px; opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
   .pf-play-btn svg { width: 14px; height: 14px; }
   .pf-filter-toggle { padding: 0.5rem 1rem; font-size: 0.7rem; }
 }
