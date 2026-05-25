@@ -3,7 +3,7 @@
 <head vid="1">
     <meta charset="UTF-8" vid="2">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
-    <title>Kontaktujte nás | [REC]PIC — Profesionální videoprodukce Praha</title>
+    <title>Kontakt | Videoprodukce Praha — RECPIC s.r.o.</title>
     <meta name="description" content="Poptat videoprodukci v Praze. RECPIC — firemní videa, reklamy a AI produkce. Konzultace zdarma, rychlá odezva.">
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -26,26 +26,39 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "RECPIC",
-      "legalName": "RECPIC s.r.o.",
+      "@type": ["LocalBusiness", "ProfessionalService"],
+      "name": "RECPIC s.r.o.",
+      "alternateName": "[REC]PIC",
+      "description": "Kreativní video produkce v Praze. Tvoříme firemní, reklamní a AI videa pro značky jako Škoda Auto, Vodafone, Česká spořitelna.",
       "url": "https://recpic.cz",
-      "logo": "https://recpic.cz/assets/images/og-image.png",
-      "description": "Kreativní video produkce z Prahy. 16 let zkušeností, 300+ dokončených projektů.",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "K Matěji 2359/20",
-        "addressLocality": "Praha 6",
-        "postalCode": "160 00",
-        "addressCountry": "CZ"
-      },
+      "logo": "https://recpic.cz/assets/images/logo.png",
+      "image": "https://recpic.cz/assets/images/og-image.png",
       "telephone": "+420774339303",
       "email": "ivan@recpic.cz",
+      "priceRange": "50000 - 250000 CZK",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "K Matěji 2356/20",
+        "addressLocality": "Praha 6",
+        "postalCode": "16000",
+        "addressCountry": "CZ"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 50.115158,
+        "longitude": 14.3823283
+      },
+      "areaServed": ["Praha", "Česká republika"],
+      "foundingDate": "2010",
       "sameAs": [
         "https://www.linkedin.com/in/ivan-zbiral-5b900617",
         "https://www.facebook.com/RecPic",
         "https://www.youtube.com/@recpic_001"
-      ]
+      ],
+      "founder": {
+        "@type": "Person",
+        "name": "Ivan Zbiral"
+      }
     }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
@@ -628,7 +641,7 @@
                     </div>
 
                     <div class="btn-row">
-                        <a href="index.html" class="btn-submit btn-back">
+                        <a href="/" class="btn-submit btn-back">
                             ← Zpět
                         </a>
                         <button type="submit" class="btn-submit">
@@ -716,7 +729,7 @@
                 });
         });
 
-        // Zpět button — go back in history, fall through to href="index.html" if no history
+        // Zpět button — go back in history, fall through to href="/" if no history
         document.querySelector('.btn-back').addEventListener('click', function(e) {
             if (history.length > 1) { e.preventDefault(); history.back(); }
         });
