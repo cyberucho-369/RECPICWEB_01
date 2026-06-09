@@ -311,7 +311,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
 .eyebrow-text span { display: block; animation: cycleWords 9s infinite; }
 
 .hero h1 {
-  font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 400;
+  font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 400;
   line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 1.5rem;
 }
 .hero-sub {
