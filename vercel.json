@@ -1,0 +1,11 @@
+{
+  "redirects": [
+    { "source": "/portfolio.html", "destination": "/portfolio/", "permanent": true },
+    { "source": "/o-nas.html", "destination": "/o-nas/", "permanent": true },
+    { "source": "/proc-video.html", "destination": "/proc-video/", "permanent": true },
+    { "source": "/ai-video.html", "destination": "/ai-video/", "permanent": true },
+    { "source": "/kontakt.html", "destination": "/kontakt/", "permanent": true },
+    { "source": "/index.html", "destination": "/", "permanent": true }
+  ],
+  "trailingSlash": true
+}
