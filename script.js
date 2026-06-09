@@ -95,7 +95,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     mainNav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
+      link.addEventListener('click', (e) => {
+        if (link.classList.contains('nav-dropdown-toggle')) {
+          e.preventDefault();
+          link.closest('.nav-dropdown').classList.toggle('open');
+          return;
+        }
         mobileToggle.classList.remove('active');
         mainNav.classList.remove('active');
         document.body.style.overflow = '';

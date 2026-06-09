@@ -31,6 +31,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://recpic.cz/sluzby/firemni-video/</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://recpic.cz/kontakt/</loc>
     <lastmod>2025-05-25</lastmod>
     <changefreq>yearly</changefreq>
