@@ -5,6 +5,8 @@
     { "source": "/proc-video.html", "destination": "/proc-video/", "permanent": true },
     { "source": "/ai-video.html", "destination": "/ai-video/", "permanent": true },
     { "source": "/kontakt.html", "destination": "/kontakt/", "permanent": true },
+    { "source": "/contact/", "destination": "/kontakt/", "permanent": true },
+    { "source": "/contact.html", "destination": "/kontakt/", "permanent": true },
     { "source": "/index.html", "destination": "/", "permanent": true }
   ],
   "trailingSlash": true
