@@ -417,6 +417,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const pfModalContent = pfModal ? pfModal.querySelector('.pf-modal-content') : null;
       const pfModalResponsive = pfModal ? pfModal.querySelector('.pf-modal-responsive') : null;
 
+      // Static cards in the HTML exist so crawlers and no-JS visitors see the
+      // projects. Drop them before appending the interactive versions.
+      if (items.length) pfGrid.innerHTML = '';
+
       items.forEach(item => {
         const isPortrait = item.ratio === '9:16';
         const card = document.createElement('div');
@@ -453,12 +457,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // Initial count
       applyFilters();
 
-      if (items.length === 0) {
+      if (items.length === 0 && !pfGrid.querySelector('.pf-video-card')) {
         pfGrid.innerHTML = '<p style="color: rgba(255,255,255,0.4); font-family: var(--font-mono, monospace); font-size: 0.85rem; grid-column: 1/-1; text-align: center; padding: 4rem 0;">SYS.NOTICE // No portfolio items found</p>';
       }
     }).catch(err => {
       console.error('Portfolio manifest error:', err);
-      pfGrid.innerHTML = '<p style="color: rgba(255,255,255,0.4); font-family: var(--font-mono, monospace); font-size: 0.85rem; grid-column: 1/-1; text-align: center; padding: 4rem 0;">SYS.NOTICE // Portfolio manifest not found</p>';
+      if (!pfGrid.querySelector('.pf-video-card')) pfGrid.innerHTML = '<p style="color: rgba(255,255,255,0.4); font-family: var(--font-mono, monospace); font-size: 0.85rem; grid-column: 1/-1; text-align: center; padding: 4rem 0;">SYS.NOTICE // Portfolio manifest not found</p>';
     });
   }
 
