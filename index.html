@@ -122,26 +122,37 @@
     <!-- ====== 2. HERO ====== -->
     <section id="section-hero" class="hero">
         <div class="hero-bg">
-            <video autoplay muted playsinline preload="metadata" poster="assets/images/hero-poster.jpg"
+            <video autoplay muted playsinline preload="metadata"
                 class="hero-video" id="hero-video">
             </video>
             <script>
                 (function () {
+                    // Each clip has a poster cut from its own frame 0, so the
+                    // handover from still to video is invisible. The poster is
+                    // set together with the source; the element carries no
+                    // poster attribute so the wrong orientation is never fetched.
+                    //
+                    // The videos are served at full master quality on purpose:
+                    // this is a video production company's showreel, so visible
+                    // compression artifacts cost more than the extra bytes. The
+                    // poster is what makes the hero appear instantly.
                     var mobile = window.matchMedia('(max-width: 768px)').matches;
-                    var vids = mobile
-                        ? ['Hero-bg_9_16_01.webm', 'Hero-bg_9_16_02.webm', 'Hero-bg_9_16_03.webm']
-                        : ['Hero-bg_01.webm', 'Hero-bg_02.webm', 'Hero-bg_03.webm'];
+                    var names = mobile
+                        ? ['Hero-bg_9_16_01', 'Hero-bg_9_16_02', 'Hero-bg_9_16_03']
+                        : ['Hero-bg_01', 'Hero-bg_02', 'Hero-bg_03'];
                     var v = document.getElementById('hero-video');
-                    var startIndex = Math.floor(Math.random() * vids.length);
+                    var startIndex = Math.floor(Math.random() * names.length);
 
                     function loadVideo(index) {
-                        v.src = 'assets/video/' + vids[index];
+                        var name = names[index];
+                        v.poster = 'assets/images/hero/' + name + '.webp';
+                        v.src = 'assets/video/' + name + '.webm';
                         v.load();
                         v.play();
                     }
 
                     v.addEventListener('ended', function () {
-                        startIndex = (startIndex + 1) % vids.length;
+                        startIndex = (startIndex + 1) % names.length;
                         loadVideo(startIndex);
                     });
 
