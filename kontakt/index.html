@@ -479,6 +479,116 @@
             background: var(--border-color);
         }
 
+        /* ---------------------------------------------------------------
+         * GDPR acknowledgement.
+         * Same square marker as .select-marker so it reads as one system.
+         * A real checkbox underneath: unticked by default and `required`,
+         * which is what makes the visitor's action affirmative.
+         * ------------------------------------------------------------- */
+        .form-consent {
+            margin-top: 0.5rem;
+        }
+
+        .consent-option {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: var(--pad-md);
+            border: 1px solid var(--border-color);
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .consent-option:hover {
+            border-color: var(--border-hover);
+        }
+
+        /* Transparent but NOT zero-sized: a required control with no box
+           cannot be focused, and the browser then refuses to submit without
+           showing its validation message anywhere. Keeping real dimensions
+           over the marker anchors that message where the visitor is looking. */
+        .consent-option input {
+            position: absolute;
+            left: var(--pad-md);
+            top: calc(var(--pad-md) + 0.15rem);
+            width: 14px;
+            height: 14px;
+            margin: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .consent-marker {
+            position: relative;
+            width: 14px;
+            height: 14px;
+            margin-top: 0.15rem;
+            border: 1px solid rgba(224, 0, 32, 0.4);
+            background: transparent;
+            flex-shrink: 0;
+            transition: border-color 0.2s ease;
+        }
+
+        .consent-marker::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: var(--accent);
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .consent-option input:checked ~ .consent-marker {
+            border-color: var(--accent);
+        }
+
+        .consent-option input:checked ~ .consent-marker::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .consent-option input:focus-visible ~ .consent-marker {
+            outline: 1px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .consent-text {
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+            flex-grow: 1;
+        }
+
+        .consent-option input:checked ~ .consent-text {
+            color: var(--text-main);
+        }
+
+        .consent-text a {
+            color: var(--accent);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .consent-req {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        /* Browsers cannot focus a visually hidden input, so surface the
+           native validation message on the box the visitor can actually see. */
+        .consent-option.invalid {
+            border-color: var(--accent);
+            background: rgba(224, 0, 32, 0.04);
+        }
+
 
         textarea::-webkit-scrollbar {
             width: 6px;
@@ -740,7 +850,8 @@
                         <div class="data-key" vid="35">Sys.Registry</div>
                         <div class="data-val" vid="36">
                             IČO: <span class="highlight" vid="37">25761510</span><br vid="38">
-                            DIČ: CZ25761510
+                            DIČ: CZ25761510<br>
+                            <a href="/ochrana-osobnich-udaju/">Ochrana osobních údajů</a>
                         </div>
                     </div>
 
@@ -768,6 +879,7 @@
                 <form action="https://api.web3forms.com/submit" method="POST" id="contactForm">
                     <input type="hidden" name="access_key" value="9bad58c9-b494-4af4-a17d-a75e5ef37f5a">
                     <input type="hidden" name="subject" value="Nová zpráva z RECPIC webu">
+                    <input type="hidden" name="souhlas_zneni" value="Beru na vedomi zpracovani osobnich udaju za ucelem vyrizeni poptavky (verze 2026-10-27)">
                     <!-- redirect input removed for AJAX handling -->
 
                     <div class="form-group" vid="51">
@@ -840,6 +952,22 @@
                         </label>
                         <textarea id="message" name="message" class="form-input" rows="8" required="" spellcheck="false"
                             vid="65"></textarea>
+                    </div>
+
+                    <!-- GDPR art. 13 information notice. The lawful basis for a quote
+                         request is art. 6(1)(b) - steps prior to a contract - so this is
+                         an acknowledgement, not a consent tick. It is unticked by default
+                         and required: the visitor has to act affirmatively. -->
+                    <div class="form-group form-consent">
+                        <label class="consent-option" for="souhlas_gdpr">
+                            <input type="checkbox" id="souhlas_gdpr" name="souhlas_gdpr" value="ano" required>
+                            <span class="consent-marker"></span>
+                            <span class="consent-text">Beru na vědomí, že společnost RECPIC s.r.o. zpracuje mé
+                                osobní údaje za účelem vyřízení této poptávky. Podrobnosti najdete v
+                                <a href="/ochrana-osobnich-udaju/" target="_blank"
+                                    rel="noopener">Zásadách ochrany osobních údajů</a>.</span>
+                            <span class="req consent-req">*REQ</span>
+                        </label>
                     </div>
 
                     <div class="btn-row">
@@ -1021,6 +1149,13 @@
         });
 
         document.addEventListener('click', () => closeAllSelects(null));
+
+        // The privacy-policy link sits inside the consent <label>, so a click
+        // on it would otherwise toggle the checkbox on the way through.
+        var consentLink = document.querySelector('.consent-text a');
+        if (consentLink) {
+            consentLink.addEventListener('click', function (e) { e.stopPropagation(); });
+        }
 
         // GA4 recommended event: fires once, on first real interaction
         let formStarted = false;
